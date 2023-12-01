@@ -1,33 +1,44 @@
-# Project
+# Microsoft Fabric Real-Time Analytics Workshop
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+Analytics on real-time data presents unique challenges compared to traditional batch and near real-time scenarios. With real-time analytics, potentially large volumes of data need continuous ingestion, transformation, and visualization. 
 
-As the maintainer of this project, please make a few updates:
+In Microsoft Fabric, Real-Time Analytics is a fully managed big data analytics platform optimized for streaming, and time-series data. It utilizes a query language and engine with exceptional performance for searching structured, semi-structured, and unstructured data. Real-Time Analytics is fully integrated with the entire suite of Fabric products, for both data loading, data transformation, and advanced visualization scenarios.
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+An example of a real-time analytics architecture in Microsoft Fabric is illustrated below. 
 
-## Contributing
+![Data Lakehouse with Azure Synapse Analytics](./images/readme/ArchitectureSlide1.png)
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+In this workshop, participants will get hands-on with a ficticious financial company "AbboCost." AbboCost would like to set up a stock monitoring platform to monitor price fluctuations and report on historical data. 
 
-When you submit a pull request, a CLA bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+To complete the solution, an Azure Container Instance (ACI) is deployed that generates ficticious stock data. A Microsoft Fabric environment will be provisioned (if needed), data will be ingested into a new database, and Power BI reports will be created. 
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+## :thinking: Prerequisites
 
-## Trademarks
+* An [Azure account](https://azure.microsoft.com/free/) with an active subscription.
+  * If you are working through this content as part of a proctored workshop, your proctor may be able to provide you with an Azure Pass or other lab environment.
+  * If you are a [Visual Studio subscriber](https://azure.microsoft.com/en-us/pricing/member-offers/credit-for-visual-studio-subscribers/), you may leverage this benefit to host the data in your account.
+  * If you don't have access to an Azure subscription, you may be able to sign up for a [free account](https://www.azure.com/free).
+* You must have the necessary privileges within your Azure subscription to create resources, create Microsoft Fabric capacity, register resource providers (if required), etc. Note that some organizational accounts may have administrative restrictions on Power BI features, which may limit functionality. 
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+## :books: Learning Modules
+
+Foundational Modules
+
+0. [Environment Setup](./modules/module00.md)
+1. [Fabric Setup and Configuration](./modules/module01.md)
+2. [Exploring the Data](./modules/module02.md)
+3. [Reporting in Power BI](./modules/module03.md)
+4. [(Optional) Data Activator](./modules/module04.md)
+5. [Coming Soon - Data Warehousing](./modules/module05.md)
+6. [Coming Soon - Data Lakehouse](./modules/module06.md)
+7. [(Optional) Data Science](./modules/module07.md)
+
+Continued Learning & Additional Modules
+
+10. [(Optional) Advanced KQL, Dashboards, Troubleshooting](./modules/module10.md)
+   * 10a: [KQL Queryset Improvements](./modules/module10a.md)
+   * 10b: [Additional Real-time Dashboard](./modules/module10b.md)
+
+
+<div align="right"><a href="#fabric-real-time-workshop">↥ back to top</a></div>
+
