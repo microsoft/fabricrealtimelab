@@ -14,4 +14,6 @@ Coming soon
 
 permalink:
 
-https://github.com/bhitney/fabricrealtimelab/blob/d64c435ba75896fe747913f8c1ce1d4362b834a0/resources/module05/scripts/Create%20Dimension%20and%20Fact%20tables.sql
+
+
+https://github.com/bhitney/fabricrealtimelab/blob/27a0ba037a9bf2bfdbf939bbe4c6ad39d3fddaf1/resources/module05/scripts/test.py
