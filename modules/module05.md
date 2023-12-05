@@ -9,3 +9,7 @@ Coming soon
 Create Dimension and Fact Tables:
 
 https://github.com/bhitney/fabricrealtimelab/blob/27a0ba037a9bf2bfdbf939bbe4c6ad39d3fddaf1/resources/module05/scripts/Create%20Dimension%20and%20Fact%20tables.sql#L1-L29
+
+Test two:
+
+/fabricrealtimelab/blob/27a0ba037a9bf2bfdbf939bbe4c6ad39d3fddaf1/resources/module05/scripts/Create%20Dimension%20and%20Fact%20tables.sql#L1-L29
