@@ -1,11 +1,11 @@
-# Module 05 - Data Warehousing
+# Module 05a - Data Warehousing
 
 [< Previous Module](../modules/module04.md) - **[Home](../README.md)** - [Next Module >](./module05b.md)
 
 ## :stopwatch: Estimated Duration
 
-45 minutes for 05a
-120 minutes overall
+* 45 minutes for 05a
+* 120 minutes overall
 
 ## :thinking: Prerequisites
 
@@ -29,9 +29,9 @@ The data currently streams at the rate of 1 request per second, resulting in 86,
 In this ETL (extract, transform, and load) process, we'll extract all data that hasn't yet been imported, determined by the current watermark into a staging table. This data will then be summarized, and then placed in the dimension/fact tables. Note that while we are importing only one table (stock prices), the framework we are building supports ingestion for multiple tables. If we had customers, orders, accounts, and so on, we can extend this to import those as well. 
 
 This module is broken down into 3 submodules.
-* [Module 05A - Setting up the Warehouse and Pipeline]
-* [Module 05B - Building the dimension and fact tables, expanding the pipeline]
-* [Module 05C - xxx]
+* [Module 05a - Setting up the Warehouse and Pipeline]
+* [Module 05b - Building the dimension and fact tables, completing the pipeline]
+* [Module 05c - Semantic Modeling and reporting]
 
 ## Table of Contents
 
@@ -217,5 +217,3 @@ In this first part of module 05, we created a Synapse Data Warehouse, a Data Pip
 ## :thinking: Additional Learning
 
 * [Data Warehousing in Fabric](https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing)
-
-

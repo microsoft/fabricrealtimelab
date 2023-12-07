@@ -4,7 +4,8 @@
 
 ## :stopwatch: Estimated Duration
 
-30 minutes
+* 30 minutes for 05c
+* 120 minutes overall
 
 ## :thinking: Prerequisites
 
@@ -13,98 +14,61 @@
 
 ## :loudspeaker: Introduction
 
-With the completion of Module 05a and Module 05b, we are one step closer to finishing our pipeline.
+With the completion of Module 05a and Module 05b, our warehouse and ingestion process is complete.
 
-The next step...
+One final step is to operationalize the data by creating a semantic model and viewing the data in Power BI. (Naturally, we don't have a lot of data yet in the warehouse to make these reports too interesting.)
 
 ## Table of Contents
 
 1. [](#1-download-the-notebook)
 
-## 1. Create the procedure to load daily prices
+## 1. Create a semantic model
 
+A semantic model, conceptually, provides an abstraction of our data for consumption in business analytics. Typically, we expose data in our data warehouse via semantic model that is then used in Power BI. At a very basic level, they will include the relationships between tables. 
 
-```sql
-CREATE PROCEDURE [ETL].[sp_Fact_Stocks_Daily_Prices_Load]
-AS
-BEGIN
-BEGIN TRANSACTION
+When we created our data warehouse, a default semantic model was created automatically. We could leverage this in Power BI, but it also includes many artifacts of the table we may not need. So, we'll create a new semantic model with just our fact and two dimension tables.
 
-    CREATE TABLE [dbo].[fact_StocksDailyPrices_OLD]  
-    AS 
-    (SELECT * FROM dbo.fact_Stocks_Daily_Prices)
+![New Semantic Model](../images/module05/dw-newsemanticmodel.png)
 
-    DROP TABLE [dbo].[fact_Stocks_Daily_Prices]
+For our model, we'll give it a name like StocksModel, and select only the fact and dimensions table we are concerned with, as shown in the image below:
 
-    CREATE TABLE [dbo].[fact_Stocks_Daily_Prices]
-    AS 
-    (SELECT
-        ROW_NUMBER() Over (ORDER BY ISNULL(newf.Symbol_SK, oldf.Symbol_SK)) as StocksDailyPrice_SK
-        ,ISNULL(newf.Symbol_SK, oldf.Symbol_SK) as Symbol_SK
-        ,ISNULL(newf.PriceDateKey, oldf.PriceDateKey) as PriceDateKey
-        ,MinPrice = CASE 
-                        WHEN newf.MinPrice IS NULL THEN oldf.MinPrice
-                        WHEN oldf.MinPrice IS NULL THEN newf.MinPrice
-                        ELSE CASE WHEN newf.MinPrice < oldf.MinPrice THEN newf.MinPrice ELSE oldf.MinPrice END
-                    END
-        ,MaxPrice = CASE 
-                        WHEN newf.MaxPrice IS NULL THEN oldf.MaxPrice
-                        WHEN oldf.MaxPrice IS NULL THEN newf.MaxPrice
-                        ELSE CASE WHEN newf.MaxPrice > oldf.MaxPrice THEN newf.MaxPrice ELSE oldf.MaxPrice END
-                    END
-         ,ClosePrice = CASE 
-                        WHEN newf.ClosePrice IS NULL THEN oldf.ClosePrice
-                        WHEN oldf.ClosePrice IS NULL THEN newf.ClosePrice
-                        ELSE newf.ClosePrice
-                    END
-    FROM 
-        [stg].[vw_StocksDailyPricesEX] newf
-    FULL OUTER JOIN
-        [dbo].[fact_StocksDailyPrices_OLD] oldf
-        ON oldf.Symbol_SK = newf.Symbol_SK
-        AND oldf.PriceDateKey = newf.PriceDateKey
-    )
+![Tables in Model](../images/module05/dw-semantictables.png)
 
-    DROP TABLE [dbo].[fact_StocksDailyPrices_OLD]
-COMMIT
+## 2. Add relationships
 
-END
-GO
-```
+The model designer should automatically open after creating the semantic model above. If it doesn't, or if you'd like to return to the designer at a later time, you can do so by opening the model from the list of resources in the workspace, and then selecting Open Data Model from the semantic model item, as shown below.
 
-## 2. Add activity to the pipeline to load daily stock prices
+![Open Data Model](../images/module05/opendatamodel.png)
 
-Add a stored procedure activity to the pipeline named Populate Fact Stocks Daily Prices that loads the stocks prices from staging into the fact table. Connect the success output of the Populate Symbols Dimension to the new Populate Fact Stocks Daily Prices activity.
-
-IMAGE OF PIPELINE AROUND 1444
-
-## 3. Run the pipeline
-
-Run the pipeline and verify the pipeline runs and fact and dimension tables are being loaded. 
-
-IMAGE 1:50
-
-## 4. Schedule the pipeline
-
-Next, schedule the pipeline to run periodically. This will vary by business case, but this could be run frequently (every few minutes) or once or twice per day.
-
-## 5. Create the data model of the stock prices
-
-On our model, we can hide the non-essential tables for reporting, and create relationships between the fact and dimension tables.
-
-Click on the model tab to open the model view. Hide every table except the fact and dimension tables. To create relationships between the fact and dimension tables, drag the key from the fact table to the corresponding key in the dimension table. This should create a 1:many relationship between the two tables, and look similar to the below image.
+To create relationships between the fact and dimension tables, drag the key from the fact table to the corresponding key in the dimension table. This should create a 1:many relationship between the two tables, and look similar to the below image. Note the button to create a New Report -- this will be the next step.
 
 * Fact:PriceDateKey -> dim_Date:DateKey
 * Fact:Symbol_SK -> dim_Symbol:Symbol_SK
 
-IMAGE 201
+![Relationships in Model](../images/module05/model-relationships.png)
 
 ## 6. Create a simple report
 
+As shown in the image on the previous step, click New Report to load the semantic model in Power BI. While we won't have much data yet to make much of a report, conceptually, we can build a report similar to below:
 
+![Report](../images/module05/report.png)
+
+A more advanced use will be integrating both historical data from the warehouse with real time data from the current day -- we'll explore this in a future module.
+
+## :tada: Summary
+
+Congratulations! You created a data warehouse. While our model is simple and data size is small, the same concepts apply: allow for future integration to handle additional data, and be sure the process can support incremental loads as needed. 
+
+One very common use case when ingesting data is to handle "slowly changing dimensions" (SCD). The concept behind SCD is to handle both current and historical data during the ingestion process. For example, suppose a customer has an address in the system -- every time the address is modified, the address record should be added to the table as the current address, while leaving the previous addresses in place for historical reference. Currently, this is not needed within this dataset, but it's a pattern in most warehouses to be aware of.
+
+## :white_check_mark: Results
+
+- [x] Completed the data warehouse
+- [x] Completed the pipeline
+- [x] Built a semantic model
+- [x] Built a simple report
 
 ## :thinking: Additional Learning
 
 * [Data Warehousing in Fabric](https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing)
-
 

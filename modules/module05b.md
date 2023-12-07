@@ -4,8 +4,8 @@
 
 ## :stopwatch: Estimated Duration
 
-30 minutes for 05b
-120 minutes overall
+* 45 minutes for 05b
+* 120 minutes overall
 
 ## :thinking: Prerequisites
 
@@ -191,7 +191,6 @@ In the pipeline, add a new Stored Procedure activity that executes the procedure
 * Settings: 
  * Stored procedure name: ETL.sp_Dim_Symbol_Load.sql
 
-IMAGE OF SYMBOLS IN PIPELINE 1:30
 ![Load Symbols in Pipeline](../images/module05/pipeline-loadsymbol.png)
 
 ## 6. Create the procedure to load daily prices
@@ -278,3 +277,7 @@ Second, the pipeline can be run throughout day and supports incremental loading,
 
 - [x] Completed the ingestion pipeline
 - [x] Verified the pipeline is working
+
+## :thinking: Additional Learning
+
+* [Data Warehousing in Fabric](https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing)
