@@ -29,7 +29,7 @@ Foundational Modules
 2. [Exploring the Data](./modules/module02.md)
 3. [Reporting in Power BI](./modules/module03.md)
 4. [(Optional) Data Activator](./modules/module04.md)
-5. [Coming Soon - Data Warehousing](./modules/module05.md)
+5. [(Optional) Data Warehousing](./modules/module05a.md)
 6. [Coming Soon - Data Lakehouse](./modules/module06.md)
 7. [(Optional) Data Science](./modules/module07.md)
 
