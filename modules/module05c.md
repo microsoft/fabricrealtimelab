@@ -20,7 +20,9 @@ One final step is to operationalize the data by creating a semantic model and vi
 
 ## Table of Contents
 
-1. [](#1-download-the-notebook)
+1. [Create a semantic model](#1-create-a-semantic-model)
+2. [Add relationships](#2-add-relationships)
+3. [Create a simple reportl](#3-create-a-simple-report)
 
 ## 1. Create a semantic model
 
@@ -47,9 +49,9 @@ To create relationships between the fact and dimension tables, drag the key from
 
 ![Relationships in Model](../images/module05/model-relationships.png)
 
-## 6. Create a simple report
+## 3. Create a simple report
 
-As shown in the image on the previous step, click New Report to load the semantic model in Power BI. While we won't have much data yet to make much of a report, conceptually, we can build a report similar to below:
+As shown in the image on the previous step, click New Report to load the semantic model in Power BI. While we won't have much data yet to make much of a report, conceptually, we can build a report similar to below, which shows a report after the lab has been running for a week or so. The top chart shows the closing price for each stock on each day, while the bottom one shows the high/low/close of the WHO stock:
 
 ![Report](../images/module05/report.png)
 
