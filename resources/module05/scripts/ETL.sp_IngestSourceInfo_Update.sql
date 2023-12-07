@@ -12,5 +12,4 @@ WHERE
 
 END
 
-
 GO
