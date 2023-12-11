@@ -1,4 +1,4 @@
-# Module 01 - Fabric Setup and Configuration
+# Module 01 - KQL Database Configuration and Ingestion
 
 [< Previous Module](../modules/module00.md) - **[Home](../README.md)** - [Next Module >](./module02.md)
 
@@ -43,9 +43,11 @@ After eanbling One Lake, you may need to refresh the page to verify the One Lake
 
 ## 2. Send data from the eventstream to the KQL database
 
-Navigate back to the Eventstream. Now, 
+Navigate back to the eventstream created in the previous module. Our data should be arriving into our eventstream, and we'll now configure the data to be ingested into the KQL database we created above. On the eventstream, click on New destination and select KQL Database:
 
 ![Eventstream](../images/module01/eventstream-kql.png)
+
+On the KQL Settings, 
 
 ![Eventstream KQL Settings](../images/module01/eventstream-kqlsettings.png)
 

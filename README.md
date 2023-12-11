@@ -25,7 +25,7 @@ In this workshop, participants will get hands-on with a ficticious financial com
 Foundational Modules
 
 0. [Environment Setup](./modules/module00.md)
-1. [Fabric Setup and Configuration](./modules/module01.md)
+1. [KQL Database Configuration and Ingestion](./modules/module01.md)
 2. [Exploring the Data](./modules/module02.md)
 3. [Reporting in Power BI](./modules/module03.md)
 4. [(Optional) Data Activator](./modules/module04.md)
