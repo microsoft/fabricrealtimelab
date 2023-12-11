@@ -21,7 +21,7 @@ In order to follow along with the workshop exercises, we need to provision a set
 * Option 1 - Deploy the app via Jupyter notebook
 * Option 2 - Deploy the app via Azure Container Instance
 
-There's no right or wrong choice. For those using a Fabric free trial, we recommend using the Jupyter notebook (option 1) as it keeps the costs at zero, and gets you a bit more hands on with Fabric. The notebook must be kept running for the data to be generated. For those who have an existing environment (not a trial, and/or in a large organization) you may wish to go the container route (option 2) because running the script inside a container is more efficient than using a Spark cluster that the Jupyter notebook will use. (The pay-as-you-go cost for running the container and event hub is is roughly $1.70/day.) When deploying via a container, the container starts automatically and begins creating data immediately.
+Both options yield the same results and is simply a matter of preference. For those using a Fabric free trial, we recommend using the Jupyter notebook (option 1) as it keeps the costs at zero, and gets you a bit more hands on with Fabric. The notebook must be kept running for the data to be generated. For those who have an existing environment (not a trial, and/or in a large organization) you may wish to go the container route (option 2) because running the script inside a container is more efficient than using a Spark cluster that the Jupyter notebook will use. (The pay-as-you-go cost for running the container and event hub is is roughly $1.70/day.) When deploying via a container, the container starts automatically and begins creating data immediately.
 
 You always have the option to revisit this option later, should you wish to make a change.
 
@@ -41,11 +41,11 @@ If a Fabric Trial is available, we recommend taking advantage of that opportunit
 
 To create a Fabric capacity outside of a trial environment, create a new resource from the Azure portal, and search for Fabric. 
 
-![Create Fabric Capacity](../images/module01/fabricmarketplace.png)
+![Create Fabric Capacity](../images/module00/fabricmarketplace.png)
 
 On the Create Fabric capacity page, assign the capacity to a resource group in a region that is available to you or recommended by your proctor, and change the size to the smallest size to minimize costs.
 
-![Create Fabric Capacity](../images/module01/fabriccapacity.png)
+![Create Fabric Capacity](../images/module00/fabriccapacity.png)
 
 To learn more about Fabric capacities, visit this page:
 [https://learn.microsoft.com/en-us/fabric/enterprise/licenses](https://learn.microsoft.com/en-us/fabric/enterprise/licenses)
@@ -54,11 +54,11 @@ Next, we'll create the Workspace within our Fabric capacity. Workspaces are assi
 
 In the [Fabric portal](https://app.fabric.microsoft.com/), click on Workspaces in the left nav and create a new workspace called RealTimeWorkspace.
 
-![Create Fabric Workspace](../images/module01/createworkspace.png)
+![Create Fabric Workspace](../images/module00/createworkspace.png)
 
 Be sure to assign the workspace to the capacity created above. To do this, expand the advanced settings and ensure Fabric capacity is selected as the licensing mode, with the capacity created above selected.
 
-![Fabric Advanced Settings](../images/module01/createworkspacesettings.png)
+![Fabric Advanced Settings](../images/module00/createworkspacesettings.png)
 
 ## 1. Option 1 - Deploy the app via Jupyter Notebook
 
