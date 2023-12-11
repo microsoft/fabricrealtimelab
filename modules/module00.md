@@ -29,11 +29,11 @@ We'll begin by creating our Fabric workspace, and then deploy the app using one 
 
 ## Table of Contents
 
-0. [Create Fabric Capacity and Workspace](#0-create-fabric-capacity-and-workspace)
-1. [Option 1 - Deploy and run the app via Jupyter notebook](#1-option-1-deploy-the-app-via-jupyter-notebook)
-2. [Option 2 - Deploy the app via Azure Container Instance](#2-option-2-deploy-the-app-via-azure-container-instance)
+1. [Create Fabric Capacity and Workspace](#1-create-fabric-capacity-and-workspace)
+2. [Option 1 - Deploy and run the app via Jupyter notebook](#2-option-1-deploy-the-app-via-jupyter-notebook)
+3. [Option 2 - Deploy the app via Azure Container Instance](#3-option-2-deploy-the-app-via-azure-container-instance)
 
-## 0. Create Fabric Capacity and Workspace
+## 1. Create Fabric Capacity and Workspace
 
 Microsoft Fabric is deployed to an Azure Active Directory tenant. Within each Fabric tenant, Fabric capacities can be created to group resources for various purposes -- this might be done organizationally (sales, marketing, development), geographically, or other logical grouping. 
 
@@ -60,7 +60,7 @@ Be sure to assign the workspace to the capacity created above. To do this, expan
 
 ![Fabric Advanced Settings](../images/module00/createworkspacesettings.png)
 
-## 1. Option 1 - Deploy the app via Jupyter Notebook
+## 2. Option 1 - Deploy the app via Jupyter Notebook
 
 This option deploys as a Jupyter notebook, generating our stock prices and publishing to an Eventstream within Fabric.
 
@@ -94,7 +94,7 @@ This option deploys as a Jupyter notebook, generating our stock prices and publi
 
 With this step completed, we're ready to move on -- you can skip Option 2.
 
-## 2. Option 2 - Deploy the app via Azure Container Instance
+## 3. Option 2 - Deploy the app via Azure Container Instance
 
 This option deploys the stock generator app to an Azure Container Instance using an ARM template. The app will generate stock data that publishes the data to an Azure Event Hub, which is also configured during the deployment of the ARM template. 
 
