@@ -47,23 +47,30 @@ Navigate back to the eventstream created in the previous module. Our data should
 
 ![Eventstream](../images/module01/eventstream-kql.png)
 
-On the KQL Settings, 
+On the KQL settings, configure this for Direct ingestion. While we have the opportunity to process event data at this stage, for our purposes, we will ingest the data directly into the KQL database. Set the destination name to KQL, and select your workspace and KQL database created above:
 
 ![Eventstream KQL Settings](../images/module01/eventstream-kqlsettings.png)
 
+On the first settings page, enter a name for the table to hold our data in our StockDB, such as StockHistory:
+
 ![Eventstream KQL Settings Page 1](../images/module01/eventstream-kqlconfig1.png)
+
+The next page allows us to inspect and configure the schema. Be sure to change the format from TXT to JSON. The default columns of symbol, price, and timestamp should be formatted like the image below:
+
 ![Eventstream KQL Settings Page 2](../images/module01/eventstream-kqlconfig2.png)
-![Eventstream KQL Settings Page 2](../images/module01/eventstream-kqlconfig3.png)
 
+On the final page, verify the settings show a green checkmark and if there are no errors, click close to complete the configuration:
 
+![Eventstream KQL Settings Page 3](../images/module01/eventstream-kqlconfig3.png)
 
 ## :tada: Summary
 
-We have created and configured our Fabric environment, created a KQL database, and configured the database to ingest data from the Event Hub. 
+With the above steps completed, we have created a KQL database, and configured the database to ingest data from the Event Hub. 
 
 ## :white_check_mark: Results
 
 - [x] Created the KQL Database
+- [x] Completed the ingestion process from the eventstream to the KQL database
 
 
 [Continue >](./module02.md)
