@@ -1,5 +1,7 @@
 # Microsoft Fabric Real-Time Analytics Workshop
 
+Welcome to the Microsoft Fabric Real-time Analytics end-to-end workshop!
+
 Analytics on real-time data presents unique challenges compared to traditional batch and near real-time scenarios. With real-time analytics, potentially large volumes of data need continuous ingestion, transformation, and visualization. 
 
 In Microsoft Fabric, Real-Time Analytics is a fully managed big data analytics platform optimized for streaming, and time-series data. It utilizes a query language and engine with exceptional performance for searching structured, semi-structured, and unstructured data. Real-Time Analytics is fully integrated with the entire suite of Fabric products, for both data loading, data transformation, and advanced visualization scenarios.
@@ -8,9 +10,7 @@ An example of a real-time analytics architecture in Microsoft Fabric is illustra
 
 ![Data Lakehouse with Azure Synapse Analytics](./images/readme/ArchitectureSlide1.png)
 
-In this workshop, participants will get hands-on with a ficticious financial company "AbboCost." AbboCost would like to set up a stock monitoring platform to monitor price fluctuations and report on historical data. 
-
-To complete the solution, an Azure Container Instance (ACI) is deployed that generates ficticious stock data. A Microsoft Fabric environment will be provisioned (if needed), data will be ingested into a new database, and Power BI reports will be created. 
+In this workshop, participants will get hands-on with a ficticious financial company "AbboCost." AbboCost would like to set up a stock monitoring platform to monitor price fluctuations and report on historical data. Throughout the workshop, we'll look at how every aspect of Microsoft Fabric can be incorporated as part of a larger solution -- by having everything in an integrated solution, we'll be able to quickly and securely integrate data, build reports, create data warehouses and lakehouses, forecast using ML models, and so on.
 
 ## :thinking: Prerequisites
 
@@ -25,7 +25,7 @@ To complete the solution, an Azure Container Instance (ACI) is deployed that gen
 Foundational Modules
 
 0. [Environment Setup](./modules/module00.md)
-1. [Fabric Setup and Configuration](./modules/module01.md)
+1. [KQL Database Configuration and Ingestion](./modules/module01.md)
 2. [Exploring the Data](./modules/module02.md)
 3. [Reporting in Power BI](./modules/module03.md)
 4. [(Optional) Data Activator](./modules/module04.md)
