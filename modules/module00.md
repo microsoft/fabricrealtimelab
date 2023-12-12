@@ -30,8 +30,8 @@ We'll begin by creating our Fabric workspace, and then deploy the app using one 
 ## Table of Contents
 
 1. [Create Fabric Capacity and Workspace](#1-create-fabric-capacity-and-workspace)
-2. [Option 1 - Deploy and run the app via Jupyter notebook](#2-option-1-deploy-the-app-via-jupyter-notebook)
-3. [Option 2 - Deploy the app via Azure Container Instance](#3-option-2-deploy-the-app-via-azure-container-instance)
+2. [Option 1 - Deploy and run the app via Jupyter notebook](#2-option-1---deploy-the-app-via-jupyter-notebook)
+3. [Option 2 - Deploy the app via Azure Container Instance](#3-option-2---deploy-the-app-via-azure-container-instance)
 
 ## 1. Create Fabric Capacity and Workspace
 
