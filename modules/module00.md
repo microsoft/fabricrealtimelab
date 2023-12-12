@@ -76,9 +76,9 @@ This option deploys as a Jupyter notebook, generating our stock prices and publi
 
 ![Create Custom App](../images/module00/setupcustomapp.png)
 
-4. On the keys tab of the Custom App, reveal the first connection string and copy it to your clipboard:
+4. On the 'keys' tab of the Custom App, reveal the first connection string and copy it to your clipboard:
 
-![Copy Connection String](../images/module00/copyconnstring.png)
+![Copy Connection String](../images/module00/copyappconnstring.png)
 
 5. Switch to the Data Science persona. On the home page for the persona, click Import Notebook and upload the notebook you downloaded earlier:
 
