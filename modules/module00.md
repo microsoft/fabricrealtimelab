@@ -30,8 +30,8 @@ We'll begin by creating our Fabric workspace, and then deploy the app using one 
 ## Table of Contents
 
 1. [Create Fabric Capacity and Workspace](#1-create-fabric-capacity-and-workspace)
-2. [Option 1 - Deploy and run the app via Jupyter notebook](#2-option-1-deploy-the-app-via-jupyter-notebook)
-3. [Option 2 - Deploy the app via Azure Container Instance](#3-option-2-deploy-the-app-via-azure-container-instance)
+2. [Option 1 - Deploy and run the app via Jupyter notebook](#2-option-1---deploy-the-app-via-jupyter-notebook)
+3. [Option 2 - Deploy the app via Azure Container Instance](#3-option-2---deploy-the-app-via-azure-container-instance)
 
 ## 1. Create Fabric Capacity and Workspace
 
@@ -76,15 +76,15 @@ This option deploys as a Jupyter notebook, generating our stock prices and publi
 
 ![Create Custom App](../images/module00/setupcustomapp.png)
 
-4. On the keys tab of the Custom App, reveal the first connection string and copy it to your clipboard:
+4. On the 'Keys' tab of the Custom App, reveal the first connection string and copy it to your clipboard:
 
-![Copy Connection String](../images/module00/copyconnstring.png)
+![Copy Connection String](../images/module00/copyappconnstring.png)
 
-5. Switch to the Data Science persona. On the home page for the persona, click Import Notebook and upload the notebook you downloaded earlier:
+5. Switch to the Data Science persona. On the home page for the persona, click 'Import Notebook' and upload the notebook you downloaded earlier:
 
 ![Import Notebook](../images/module00/importnotebook.png)
 
-6. In the notebook, paste the connection string from above in the single quotes of the ConnectionString variable of the first cell. It should look similar to the below:
+6. In the notebook, paste the connection string from above in the single quotes of the 'ConnectionString' variable of the first cell. It should look similar to the below:
 
 ![Paste Connection String](../images/module00/pasteconnstring.png)
 
@@ -103,6 +103,13 @@ To auto-deploy the resources, use these steps below.
 1. `Right-click` or `Ctrl + click` the button below to open the Azure Portal in a new window.
 
     [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbhitney%2Ffabricrealtimelab%2Fmain%2Fresources%2Ffabricrealtimeworkshop_armtemplate.json)
+
+
+    [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Ffabricrealtimelab%2Fmain%2Fresources%2Fmodule00%2Ffabricrealtimeworkshop_armtemplate.json)
+
+
+
+
 
 2. Beneath the **Resource group** field, click **Create new** and provide a unique name (e.g. `realtimeworkshop`), select a valid location, and then click **Review + create**.
 
