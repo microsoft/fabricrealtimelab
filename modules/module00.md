@@ -104,6 +104,13 @@ To auto-deploy the resources, use these steps below.
 
     [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbhitney%2Ffabricrealtimelab%2Fmain%2Fresources%2Ffabricrealtimeworkshop_armtemplate.json)
 
+
+    [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Ffabricrealtimelab%2Fmain%2Fresources%2Fmodule00%2Ffabricrealtimeworkshop_armtemplate.json)
+
+
+
+
+
 2. Beneath the **Resource group** field, click **Create new** and provide a unique name (e.g. `realtimeworkshop`), select a valid location, and then click **Review + create**.
 
     Suggested Locations:
