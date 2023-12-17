@@ -27,7 +27,7 @@ erDiagram
     "FACT STOCK" ||--o{ SYMBOL:Symbol_SK
 ```
 
-
+```mermaid
 flowchart LR
     A[Event Hub] --> B{EventStream}
     B --> C[(KQL DB)]
