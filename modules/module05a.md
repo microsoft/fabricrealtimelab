@@ -197,10 +197,18 @@ In the data warehouse, we should also see data in the staging table, as shown be
 Note: if we'd like 'reset' our ingestion pipeline, we can run a query like the one below. It's often handy in development to have a reset script to allow for incremental testing. This will reset the date and delete the data from the staging table.
 
 ```sql
+-- ONLY RUN THIS TO 'RESET' the ingestion tables
+
 exec ETL.sp_IngestSourceInfo_Update 'StocksPrices', '2022-12-31 23:59:59.000000'
 GO
 
 delete stg.StocksPrices
+GO
+
+delete dim_Symbol
+GO
+
+delete fact_Stocks_Daily_Prices
 GO
 ```
 

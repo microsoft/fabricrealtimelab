@@ -4,7 +4,7 @@ CREATE PROC [ETL].[sp_Dim_Symbol_Load]
 AS
 BEGIN
 
-DECLARE @MaxSK INT = (SELECT ISNULL(MAX(Symbol_SK),0) + 1 FROM [dbo].[dim_Symbol])
+DECLARE @MaxSK INT = (SELECT ISNULL(MAX(Symbol_SK),0) FROM [dbo].[dim_Symbol])
 
 INSERT [dbo].[dim_Symbol]
 SELECT  
@@ -19,8 +19,8 @@ FROM
     , Market = CASE SUBSTRING(Symbol,1,1)
                     WHEN 'B' THEN 'NASDAQ'
                     WHEN 'W' THEN 'NASDAQ'
-                    WHEN 'I' THEN 'DOJ'
-                    WHEN 'T' THEN 'SP500'
+                    WHEN 'I' THEN 'NYSE'
+                    WHEN 'T' THEN 'NYSE'
                     ELSE 'No Market'
                 END
     FROM 

@@ -39,8 +39,7 @@ In our data warehouse, run the following SQL to create our fact and dimension ta
 -- Dimensions and Facts (dbo)
 CREATE TABLE dbo.fact_Stocks_Daily_Prices
 (
-   StocksDailyPrice_SK INT NOT NULL
-   ,Symbol_SK INT NOT NULL
+   Symbol_SK INT NOT NULL
    ,PriceDateKey DATE NOT NULL
    ,MinPrice FLOAT NOT NULL
    ,MaxPrice FLOAT NOT NULL
@@ -116,7 +115,7 @@ CREATE PROC [ETL].[sp_Dim_Symbol_Load]
 AS
 BEGIN
 
-DECLARE @MaxSK INT = (SELECT ISNULL(MAX(Symbol_SK),0) + 1 FROM [dbo].[dim_Symbol])
+DECLARE @MaxSK INT = (SELECT ISNULL(MAX(Symbol_SK),0) FROM [dbo].[dim_Symbol])
 
 INSERT [dbo].[dim_Symbol]
 SELECT  
@@ -131,7 +130,7 @@ FROM
     , Market = CASE SUBSTRING(Symbol,1,1)
                     WHEN 'B' THEN 'NASDAQ'
                     WHEN 'W' THEN 'NASDAQ'
-                    WHEN 'I' THEN 'EURONEXT'
+                    WHEN 'I' THEN 'NYSE'
                     WHEN 'T' THEN 'NYSE'
                     ELSE 'No Market'
                 END
@@ -186,7 +185,8 @@ GO
 
 ## 5. Add activity to load symbols
 
-In the pipeline, add a new Stored Procedure activity that executes the procedure that loads the stock symbols.
+In the pipeline, add a new Stored Procedure activity that executes the procedure that loads the stock symbols. This should be connected to the success output of the foreach activity (not within the foreach activity).
+
 * Name: Populate Symbols Dimension
 * Settings: 
  * Stored procedure name: ETL.sp_Dim_Symbol_Load.sql
@@ -203,42 +203,38 @@ AS
 BEGIN
 BEGIN TRANSACTION
 
-    CREATE TABLE [dbo].[fact_StocksDailyPrices_OLD]  
-    AS 
-    (SELECT * FROM dbo.fact_Stocks_Daily_Prices)
+    UPDATE fact
+    SET 
+        fact.MinPrice = CASE 
+                        WHEN fact.MinPrice IS NULL THEN stage.MinPrice
+                        ELSE CASE WHEN fact.MinPrice < stage.MinPrice THEN fact.MinPrice ELSE stage.MinPrice END
+                    END
+        ,fact.MaxPrice = CASE 
+                        WHEN fact.MaxPrice IS NULL THEN stage.MaxPrice
+                        ELSE CASE WHEN fact.MaxPrice > stage.MaxPrice THEN fact.MaxPrice ELSE stage.MaxPrice END
+                    END
+        ,fact.ClosePrice = CASE 
+                        WHEN fact.ClosePrice IS NULL THEN stage.ClosePrice
+                        WHEN stage.ClosePrice IS NULL THEN fact.ClosePrice
+                        ELSE stage.ClosePrice
+                    END 
+    FROM [dbo].[fact_Stocks_Daily_Prices] fact  
+    INNER JOIN [stg].[vw_StocksDailyPricesEX] stage
+        ON fact.PriceDateKey = stage.PriceDateKey
+        AND fact.Symbol_SK = stage.Symbol_SK
 
-    DROP TABLE [dbo].[fact_Stocks_Daily_Prices]
-
-    CREATE TABLE [dbo].[fact_Stocks_Daily_Prices]
-    AS 
-    (SELECT
-        ROW_NUMBER() Over (ORDER BY ISNULL(newf.Symbol_SK, oldf.Symbol_SK)) as StocksDailyPrice_SK
-        ,ISNULL(newf.Symbol_SK, oldf.Symbol_SK) as Symbol_SK
-        ,ISNULL(newf.PriceDateKey, oldf.PriceDateKey) as PriceDateKey
-        ,MinPrice = CASE 
-                        WHEN newf.MinPrice IS NULL THEN oldf.MinPrice
-                        WHEN oldf.MinPrice IS NULL THEN newf.MinPrice
-                        ELSE CASE WHEN newf.MinPrice < oldf.MinPrice THEN newf.MinPrice ELSE oldf.MinPrice END
-                    END
-        ,MaxPrice = CASE 
-                        WHEN newf.MaxPrice IS NULL THEN oldf.MaxPrice
-                        WHEN oldf.MaxPrice IS NULL THEN newf.MaxPrice
-                        ELSE CASE WHEN newf.MaxPrice > oldf.MaxPrice THEN newf.MaxPrice ELSE oldf.MaxPrice END
-                    END
-         ,ClosePrice = CASE 
-                        WHEN newf.ClosePrice IS NULL THEN oldf.ClosePrice
-                        WHEN oldf.ClosePrice IS NULL THEN newf.ClosePrice
-                        ELSE newf.ClosePrice
-                    END
+    INSERT INTO [dbo].[fact_Stocks_Daily_Prices]  
+        (Symbol_SK, PriceDateKey, MinPrice, MaxPrice, ClosePrice)
+    SELECT
+        Symbol_SK, PriceDateKey, MinPrice, MaxPrice, ClosePrice
     FROM 
-        [stg].[vw_StocksDailyPricesEX] newf
-    FULL OUTER JOIN
-        [dbo].[fact_StocksDailyPrices_OLD] oldf
-        ON oldf.Symbol_SK = newf.Symbol_SK
-        AND oldf.PriceDateKey = newf.PriceDateKey
+        [stg].[vw_StocksDailyPricesEX] stage
+    WHERE NOT EXISTS (
+        SELECT * FROM [dbo].[fact_Stocks_Daily_Prices] fact
+        WHERE fact.PriceDateKey = stage.PriceDateKey
+            AND fact.Symbol_SK = stage.Symbol_SK
     )
 
-    DROP TABLE [dbo].[fact_StocksDailyPrices_OLD]
 COMMIT
 
 END
