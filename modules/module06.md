@@ -43,6 +43,7 @@ Most of this lab will be done within a Jupyter Notebook, an industry standard wa
 5. [Load Fact Table](#5-load-fact-table)
 6. [Build semantic model and simple report](#6-build-semantic-model-and-simple-report)
 7. [Load additional data](#7-load-additional-data)
+8. [Additional challenge for the overachiever](#8-additional-challenge-for-the-overachiever)
 
 ## 1. Create the Lakehouse
 
@@ -211,7 +212,7 @@ The query above will pull the min, max, and close price for each stock over the 
 
 ![Compare Data](../images/module06/comparedata.png)
 
-From the Lakehouse, the same query can be run. From within the Lakehouse, switch to the SQL analytics endpoint in the top right of the Lakehouse page. Using the same query, modify the data warehouse connection to be fully qualified. For example, instead of *from dim_symbol* change to match your data warehouse name, such as *from StocksDW.dbo.dim_symbol*. There are a few tables where this will need to be changed: 
+From the Lakehouse, the same query can be run. From within the Lakehouse, switch to the SQL analytics endpoint in the top right of the Lakehouse page. Using the same query, modify the data warehouse connection to be fully qualified. For example, instead of *from dim_symbol* change to match your data warehouse name, such as *from StocksDW.dbo.dim_symbol*. There are three locations where this will need to be changed: 
 
 ![Comparing from the Lakehouse](../images/module06/lakehousecompareresults.png)
 
@@ -233,23 +234,3 @@ In this module, you implemented a lambda architecture to store data in the lakeh
 - [x] Created a semantic model and simple report
 
 [Continue >](./module07.md)
-
-
-
-<!--
-
-SELECT dwfact.PriceDateKey, 
-(SELECT Symbol FROM dim_Symbol WHERE Symbol_SK = dwfact.Symbol_SK) as Symbol,
-dwfact.MinPrice as dw_MinPrice, lhfact.MinPrice as lh_MinPrice,
-dwfact.MaxPrice as dw_MaxPrice, lhfact.MaxPrice as lh_MaxPrice,
-dwfact.ClosePrice as dw_ClosePrice, lhfact.ClosePrice as lh_ClosePrice
-FROM dbo.fact_Stocks_Daily_Prices dwfact
-INNER JOIN StocksLakehouse.dbo.fact_stocks_daily_prices lhfact
-ON dwfact.PriceDateKey = lhfact.PriceDateKey 
-AND (SELECT Symbol FROM dim_Symbol WHERE Symbol_SK = dwfact.Symbol_SK) = 
-(SELECT Symbol FROM StocksLakehouse.dbo.dim_symbol WHERE Symbol_SK = lhfact.Symbol_SK)
-WHERE dwfact.PriceDateKey >= '2023-12-01' and 
-dwfact.PriceDateKey <= '2023-12-03'
-ORDER BY dwfact.PriceDateKey ASC, Symbol ASC
-
--->
