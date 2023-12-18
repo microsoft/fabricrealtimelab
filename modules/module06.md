@@ -73,15 +73,11 @@ configure table/etc.
 
 Next, download the following notebooks and then import them into the Lakehouse. Note: if you have issues importing these notebooks, be sure you are downloading the raw notebook file.
 
+*Right click* and use *Save link as*:
 
 * [Lakehouse 1 - Create Schema](<https://github.com/bhitney/fabricrealtimelab/raw/main/resources/module06/Lakehouse 1 - Create Schema.ipynb>)
-* [Lakehouse 2 - Stock Load](../resources/module06/Lakehouse 2 - Stock Load.ipynb)
-* [Lakehouse 3 - Historical Import](../resources/module06/Lakehouse 3 - Historical Import.ipynb)
-
-
-* [Lakehouse 1 - Create Schema](<../resources/module06/Lakehouse 1 - Create Schema.ipynb>)
-* [Lakehouse 2 - Stock Load](../resources/module06/Lakehouse 2 - Stock Load.ipynb)
-* [Lakehouse 3 - Historical Import](../resources/module06/Lakehouse 3 - Historical Import.ipynb)
+* [Lakehouse 2 - Stock Load](<https://github.com/bhitney/fabricrealtimelab/raw/main/resources/module06/Lakehouse 2 - Stock Load.ipynb>)
+* [Lakehouse 3 - Historical Import](<https://github.com/bhitney/fabricrealtimelab/raw/main/resources/module06/Lakehouse 3 - Historical Import.ipynb>)
 
 These may also be downloaded in the following zip file:
 
