@@ -18,7 +18,7 @@ Now that our data is streaming into our KQL database, we can begin to query and 
 ## Table of Contents
 
 1. [Create KQL Queryset](#1-create-kql-queryset)
-2. [Return recent prices, and calculate the price difference over time](#2-return-recent-prices--and-calculate-the-price-difference-over time)
+2. [Query recent prices](#2-query-recent-prices)
 3. [Calculate biggest price changes and time change occured](#3-calculate-biggest-price-changes-and-time-change-occured)
 
 ## 1. Create KQL Queryset
@@ -45,7 +45,7 @@ StockPrice
 | summarize IngestionCount = count() by bin(ingestion_time(), 1h)
 ```
 
-## 2. Return recent prices, and calculate the price difference over time
+## 2. Query recent prices
 
 We can begin to add our own calculations, such as calculating the change over time. For example, the [prev()](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/prevfunction) function, a type of windowing function, allows us to look at values from previous rows; we can use this to calculate the change in price.
 

@@ -124,17 +124,47 @@ erDiagram
 
 Our fact table contains the daily stock prices (the high, low, and closing price), while our dimensions are for our date and stock symbols (which might contain company details and other information). Although simple, conceptually this model represents a typical star schema that can be applied to larger datasets. 
 
-Load the 
+Load the Lakehouse 2 notebook. Similarly to the above step, attach the Lakehouse to the notebook. We recommend you run each cell individually, but you can also click Run All. Be sure the sourceTableName in the first cell matches the name of your table that contains the imported data from the Event Hub.
 
+When you have finished running through the notebook, feel free to run it a few times and observe the behavior. There are a few key points to keep in mind: 
+* While this notebook can be run as a scheduled task, it's primarily designed to be used interactively. We could remove much of the display code and other artifacts to improve performance.
+* Take note of the symbol incremental load (dim_symbol_incremental_load). A business question that must be asked is, "Can we handle new stock symbols in the data feed?" In a real world scenario, this might not be possible, or it may be very possible depending on the data source. We made the decision here to support new symbols that might not exist, however, this takes processing time. As with all business problems, this is a tradeoff between performance and functionality.
+
+To scheduled the notebook to run periodically, click on the Run tab, and click schedule. The notebook can be configured to run periodically (such as every 15 minutes):
+
+![Schedule Notebook](../images/module06/schedule.png)
 
 ## 6. Build semantic model and simple report
 
+In this step, we'll create a new semantic model that we can use for reporting, and create a simple Power BI report.
+
+Open the StocksLakehouse, and from the top nav bar, select New Semantic Model. Name the model StocksDimensionalModel and select the fact and two dimension tables, as show below:
+
+![New Semantic Model](../images/module06/newsemanticmodel.png)
+
+When the semantic model opens, we need to define relationships between the fact and dimension tables. The easiest way to do this is to drag the Symbol_SK from the fact table to the Symbol_SK on the dim_symbol table, and ensure there is a 1:many relationship between the dim_symbol (1) and the fact table (many). Similarly, drag the PriceDateKey from the fact table to the DateKey column on the dim_date table:
+
+![Semantic Model Relationships](../images/module06/relationships.png)
+
+When complete, click the New Report button to create a new report. Similar to our reports created in earlier modules, add a line chart to our canvas, and configure it as follows:
+
+* X-axis: PriceDateKey (fact_stocks_daily_prices)
+* Y-axis: ClosePrice (fact_stocks_daily_prices)
+* Legend: Symbol (dim_symbol)
+
+![Simple Report](../images/module06/simplereport.png)
+
+Of course, our report doesn't contain much data because the stock data is aggregated per day. If you'd like to add more data, complete the next step.
+
 ## 7. Load additional data
 
-This step is optional. If you are completing this lab in a single day, the fact table will only have a single data point for each stock as the data is aggregated to high/low/close prices for each day. Additional data is available that can be imported; this allows for more interesting reports and analysis. (These same files are shared by the data science module.)
+This step is optional. 
 
-To complete this step, load the Lakehouse 3 notebook. This notebook will download additional history data, and process it very similarly to the Lakehouse 2 notebook that loads the fact table. 
+If you are completing this lab in a single day, the fact table will only have a single data point for each stock as the data is aggregated to high/low/close prices for each day. Additional data is available that can be imported; this allows for more interesting reports and analysis. (These same files are shared by the data science module.)
 
+To complete this step, load the Lakehouse 3 notebook. This notebook will download additional history data, and process it very similarly to the Lakehouse 2 notebook that loads the fact table. Run through the notebook -- notice the difference is that the data is being loaded from CSV files and then loaded into the fact table.
+
+![Report with Historical Data](../images/module06/reportwithhistorical.png)
 
 
 
