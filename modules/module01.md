@@ -41,9 +41,9 @@ After eanbling One Lake, you may need to refresh the page to verify the One Lake
 
 ![One Lake Active](../images/module01/kqlonelakeactive.png)
 
-## 2. Send data from the eventstream to the KQL database
+## 2. Send data from the EventStream to the KQL database
 
-Navigate back to the eventstream created in the previous module. Our data should be arriving into our eventstream, and we'll now configure the data to be ingested into the KQL database we created above. On the eventstream, click on New destination and select KQL Database:
+Navigate back to the EventStream created in the previous module. Our data should be arriving into our EventStream, and we'll now configure the data to be ingested into the KQL database we created above. On the EventStream, click on New destination and select KQL Database:
 
 ![Eventstream](../images/module01/eventstream-kql.png)
 
@@ -65,12 +65,12 @@ On the final page, verify the settings show a green checkmark and if there are n
 
 ## :tada: Summary
 
-With the above steps completed, we have created a KQL database, and configured the database to ingest data from the Event Hub. 
+With the above steps completed, we have created a KQL database, and configured the database to ingest data from the EventStream. 
 
 ## :white_check_mark: Results
 
 - [x] Created the KQL Database
-- [x] Completed the ingestion process from the eventstream to the KQL database
+- [x] Completed the ingestion process from the EventStream to the KQL database
 
 
 [Continue >](./module02.md)
