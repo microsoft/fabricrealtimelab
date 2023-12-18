@@ -54,11 +54,13 @@ Within your Fabric workspace, switch to the data engineering persona (bottom lef
 
 ## 2. Add Lakehouse to EventStream
 
-Open the EventStream created in the first module. Click the plus symbol on the output of the EventStream to add a new destination. select lakehouse and create a new database named StockData.
+Open the EventStream created in the first module. Click the plus symbol on the output of the EventStream to add a new destination. Select Lakehouse from the context menu, and in the side panel that opens, select the Lakehouse created above and create a new table called StockData. Ensure the input data format is Json; this should look similar to the image below:
 
->> PIC OF EVENTSTREAM
+![Add Destination to EventStream](../images/module06/addeventstream.png)
 
-configure table/etc.
+Once complete, we should have our EventStream publishing data to both the KQL Database (hot path) and our Lakehouse (cold path), and look similar to the image below:
+
+![Completed EventStream](../images/module06/completedeventstream.png)
 
 ## 3. Import Notebooks
 
@@ -167,6 +169,47 @@ To complete this step, load the Lakehouse 3 notebook. This notebook will downloa
 ![Report with Historical Data](../images/module06/reportwithhistorical.png)
 
 With more data to work with, what kind of interesting reports can be made?
+
+## 8. Additional challenge for the overachiever
+
+This step is optional.
+
+Have you completed both the Synapse Data Warehouse and Lakehouse (this) modules? If so, you have two dimensional models made with very different approaches, but yield the same results. At least, they _should_ yield the same results. How can you check?
+
+Fortunately, this is quite easy. The Lakehouse exposes a SQL Analytics endpoint that can be queried, so we can very easily join to Lakehouse tables as if they were in our Synapse Data Warehouse. Alternatively, we can join to the Synapse Data Warehouse from the Lakehouse.
+
+In this example, we'll use SQL from the Synapse Data Warehouse to compare results. 
+
+In our Synapse Data Warehouse, create a new SQL Query, and enter the following T-SQL. Note that the names of the Lakehouse may need to be modified slightly depending on how it was named, and the dates can be set automatically or specifically as needed:
+
+```sql
+declare @beginDate date = '2023-12-01'
+declare @endDate date = '2023-12-03'
+
+-- set @endDate = (SELECT coalesce(max(PriceDateKey),convert(Date, getdate())) FROM dbo.fact_Stocks_Daily_Prices)
+-- set @beginDate = DATEADD(day, 2, @endDate)
+
+print @beginDate
+print @endDate
+
+SELECT dwfact.PriceDateKey, 
+(SELECT Symbol FROM dim_Symbol WHERE Symbol_SK = dwfact.Symbol_SK) as Symbol,
+dwfact.MinPrice as dw_MinPrice, lhfact.MinPrice as lh_MinPrice,
+dwfact.MaxPrice as dw_MaxPrice, lhfact.MaxPrice as lh_MaxPrice,
+dwfact.ClosePrice as dw_ClosePrice, lhfact.ClosePrice as lh_ClosePrice
+FROM dbo.fact_Stocks_Daily_Prices dwfact
+INNER JOIN StocksLakehouse.dbo.fact_stocks_daily_prices lhfact
+ON dwfact.PriceDateKey = lhfact.PriceDateKey 
+AND (SELECT Symbol FROM dim_Symbol WHERE Symbol_SK = dwfact.Symbol_SK) = 
+(SELECT Symbol FROM StocksLakehouse.dbo.dim_symbol WHERE Symbol_SK = lhfact.Symbol_SK)
+WHERE dwfact.PriceDateKey >= @beginDate and 
+dwfact.PriceDateKey <= @endDate
+ORDER BY dwfact.PriceDateKey ASC, Symbol ASC
+```
+
+The query above will pull the min, max, and close price for each stock over the time period from both the Data Warehouse and Lakehouse, and place them side-by-side in the query results. The results should be identical for the Data Warehouse and Lakehouse. However, because the data for the Lakehouse may have been set up later, it is possible some values may not be equal if the max or min prices occured before data was being ingested into the Lakehouse.
+
+![Compare Data](../images/module06/comparedata.png)
 
 ## :tada: Summary
 
