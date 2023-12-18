@@ -211,6 +211,12 @@ The query above will pull the min, max, and close price for each stock over the 
 
 ![Compare Data](../images/module06/comparedata.png)
 
+From the Lakehouse, the same query can be run. From within the Lakehouse, switch to the SQL analytics endpoint in the top right of the Lakehouse page. Using the same query, modify the data warehouse connection to be fully qualified. For example, instead of *from dim_symbol* change to match your data warehouse name, such as *from StocksDW.dbo.dim_symbol*. There are a few tables where this will need to be changed: 
+
+![Comparing from the Lakehouse](../images/module06/lakehousecompareresults.png)
+
+Congratulations! You've not only compared the results, you've seen how easy it is to integrate both data warehouse and lakehouse artifacts. Notebooks can query the data warehouse from Spark, as well. Keep in mind: a lakehouse is read-only from a SQL analytics endpoint. A Synapse Data Warehouse is read-only from Spark. See [this decision guide](https://learn.microsoft.com/en-us/fabric/get-started/decision-guide-data-store) for more information.
+
 ## :tada: Summary
 
 In this module, you implemented a lambda architecture to store data in the lakehouse from the Event Hub, and ran several notebooks to process the data into a dimensional model. You then created a semantic model for reporting, and used that model in a Power BI report.
@@ -218,6 +224,7 @@ In this module, you implemented a lambda architecture to store data in the lakeh
 ## References
 
 * [Wikipedia page on Lambda architecture](https://en.wikipedia.org/wiki/Lambda_architecture)
+* [Fabric Storage Decision Guide](https://learn.microsoft.com/en-us/fabric/get-started/decision-guide-data-store)
 
 ## :white_check_mark: Results
 
