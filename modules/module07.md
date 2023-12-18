@@ -43,12 +43,11 @@ Finally, Prophet has built-in validation. In developing most models, we'd typica
 
 ## 1. Download the Notebook
 
-Notebook files themselves are JSON documents with a .ipynb extension (short for Interactive Python Notebook). We've also exported the Notebook as an HTML document so it can be viewed outside of an interactive notebook. 
+Notebook files themselves are JSON documents with a .ipynb extension (short for Interactive Python Notebook). To view the notebook, click on the notebook link below. The notebook is presented in a readable format in GitHub -- click the download button near the upper right to download the notebook, and save the ipynb notebook file to a convenient location.  
 
 * [Download the Stock Analysis Notebook](../resources/module07/StockAnalysis.ipynb)
-* [Open the Stock Analysis Notebook in HTML Format](../resources/module07/StockAnalysis.html) -- note, some charts may not render correctly in the HTML output.
 
-Save the ipnyb notebook file to a convenient location. 
+![Download Notebook](../images/module07/downloadnotebook.png)
 
 ## 2. Prepare the Environment
 
