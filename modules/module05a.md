@@ -24,9 +24,9 @@ A Synapse Data Warehouse stores its data in OneLake in Delta/Parquet similar to 
 
 Whether you choose a lakehouse or warehouse, the end goals are similar: to have highly curated data to support the business analytics requirements. Often, this is done in a star-schema with dimension and fact tables. These tables serve as a single source of truth for the business. 
 
-The data currently streams at the rate of 1 request per second, resulting in 86,400 values per day, per stock. For the purposes of our warehouse, we'll collapse that to daily values including a daily high, daily low, and closing price of each stock. This reduces the rowcount from nearly 700,000 to 8.
+The data from our sample app currently streams at the rate of 1 request per second per stock symbol, resulting in 86,400 values for each stock per day. For the purposes of our warehouse, we'll collapse that to daily values including a daily high, daily low, and closing price of each stock. This reduces the rowcount from nearly 700,000 to 8. 
 
-In this ETL (extract, transform, and load) process, we'll extract all data that hasn't yet been imported, determined by the current watermark into a staging table. This data will then be summarized, and then placed in the dimension/fact tables. Note that while we are importing only one table (stock prices), the framework we are building supports ingestion for multiple tables. If we had customers, orders, accounts, and so on, we can extend this to import those as well. 
+In this ETL (extract, transform, and load) process, we'll extract all data that hasn't yet been imported, as determined by the current watermark into a staging table. This data will then be summarized, and then placed in the dimension/fact tables. Note that while we are importing only one table (stock prices), the framework we are building supports ingestion for multiple tables. 
 
 This module is broken down into 3 submodules.
 * [Module 05a - Setting up the Warehouse and Pipeline]
@@ -197,10 +197,18 @@ In the data warehouse, we should also see data in the staging table, as shown be
 Note: if we'd like 'reset' our ingestion pipeline, we can run a query like the one below. It's often handy in development to have a reset script to allow for incremental testing. This will reset the date and delete the data from the staging table.
 
 ```sql
+-- ONLY RUN THIS TO 'RESET' the ingestion tables
+
 exec ETL.sp_IngestSourceInfo_Update 'StocksPrices', '2022-12-31 23:59:59.000000'
 GO
 
 delete stg.StocksPrices
+GO
+
+delete dim_Symbol
+GO
+
+delete fact_Stocks_Daily_Prices
 GO
 ```
 

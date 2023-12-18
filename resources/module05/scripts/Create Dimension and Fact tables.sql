@@ -2,8 +2,7 @@
 
 CREATE TABLE dbo.fact_Stocks_Daily_Prices
 (
-   StocksDailyPrice_SK INT NOT NULL
-   ,Symbol_SK INT NOT NULL
+   Symbol_SK INT NOT NULL
    ,PriceDateKey DATE NOT NULL
    ,MinPrice FLOAT NOT NULL
    ,MaxPrice FLOAT NOT NULL

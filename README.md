@@ -22,16 +22,19 @@ In this workshop, participants will get hands-on with a ficticious financial com
 
 ## :books: Learning Modules
 
-Foundational Modules
+Core Modules for real-time analytics:
 
 0. [Environment Setup](./modules/module00.md)
 1. [KQL Database Configuration and Ingestion](./modules/module01.md)
 2. [Exploring the Data](./modules/module02.md)
 3. [Reporting in Power BI](./modules/module03.md)
-4. [(Optional) Data Activator](./modules/module04.md)
-5. [(Optional) Data Warehousing](./modules/module05a.md)
-6. [Coming Soon - Data Lakehouse](./modules/module06.md)
-7. [(Optional) Data Science](./modules/module07.md)
+
+Additional modules for end-to-end solution:
+
+4. [Data Activator](./modules/module04.md)
+5. [Data Warehousing: Synapse Data Warehouse and Data Pipelines](./modules/module05a.md)
+6. [Data Lakehouse: Fabric Lakehouse and Notebooks](./modules/module06.md)
+7. [Data Science: Using the Lakehouse and Notebooks](./modules/module07.md)
 
 Continued Learning & Additional Modules
 
