@@ -19,7 +19,7 @@ Now that our data is streaming into our KQL database, we can begin to query and 
 
 1. [Create KQL Queryset](#1-create-kql-queryset)
 2. [Return recent prices, and calculate the price difference over time](#2-return-recent-prices--and-calculate-the-price-difference-over time)
-3. [Calculate biggest price changes and time change occured](<#3-calculate-biggest-price-changes-and-time-change-occured)
+3. [Calculate biggest price changes and time change occured](#3-calculate-biggest-price-changes-and-time-change-occured)
 
 ## 1. Create KQL Queryset
 
