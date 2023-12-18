@@ -37,12 +37,12 @@ Most of this lab will be done within a Jupyter Notebook, an industry standard wa
 ## Table of Contents
 
 1. [Create the Lakehouse](#1-create-the-lakehouse)
-## 2. Add Lakehouse to EventStream
-## 3. Import Notebooks
-## 4. Create Schema
-## 5. Load Fact Table
-## 6. Build semantic model and simple report
-## 7. Load additional data
+2. [Add Lakehouse to EventStream](#2-add-lakehouse-to-eventstream)
+3. [Import Notebooks](#3-import-notebooks)
+4. [Create Schema](#4-create-schema)
+5. [Load Fact Table](#5-load-fact-table)
+6. [Build semantic model and simple report](#6-build-semantic-model-and-simple-report)
+7. [Load additional data](#7-load-additional-data)
 
 ## 1. Create the Lakehouse
 
@@ -154,7 +154,7 @@ When complete, click the New Report button to create a new report. Similar to ou
 
 ![Simple Report](../images/module06/simplereport.png)
 
-Of course, our report doesn't contain much data because the stock data is aggregated per day. If you'd like to add more data, complete the next step.
+Of course, our report doesn't contain much data because the stock data is aggregated per day. If you'd like to add more data, complete the next step. Save the report with a name like 'DailyStockReport'.
 
 ## 7. Load additional data
 
@@ -166,13 +166,27 @@ To complete this step, load the Lakehouse 3 notebook. This notebook will downloa
 
 ![Report with Historical Data](../images/module06/reportwithhistorical.png)
 
+With more data to work with, what kind of interesting reports can be made?
 
+## :tada: Summary
+
+In this module, you implemented a lambda architecture to store data in the lakehouse from the Event Hub, and ran several notebooks to process the data into a dimensional model. You then created a semantic model for reporting, and used that model in a Power BI report.
 
 ## References
 
-https://en.wikipedia.org/wiki/Lambda_architecture
+* [Wikipedia page on Lambda architecture](https://en.wikipedia.org/wiki/Lambda_architecture)
+
+## :white_check_mark: Results
+
+- [x] Modified EventStream to ingest data to the lakehouse
+- [x] Ran several notebooks to create the dimensional model and process the data
+- [x] Created a semantic model and simple report
+
+[Continue >](./module07.md)
 
 
+
+<!--
 
 SELECT dwfact.PriceDateKey, 
 (SELECT Symbol FROM dim_Symbol WHERE Symbol_SK = dwfact.Symbol_SK) as Symbol,
@@ -187,3 +201,5 @@ AND (SELECT Symbol FROM dim_Symbol WHERE Symbol_SK = dwfact.Symbol_SK) =
 WHERE dwfact.PriceDateKey >= '2023-12-01' and 
 dwfact.PriceDateKey <= '2023-12-03'
 ORDER BY dwfact.PriceDateKey ASC, Symbol ASC
+
+-->
