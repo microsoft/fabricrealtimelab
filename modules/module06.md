@@ -73,7 +73,7 @@ configure table/etc.
 
 Next, download the following notebooks and then import them into the Lakehouse. Note: if you have issues importing these notebooks, be sure you are downloading the raw notebook file.
 
-* [Lakehouse 1 - Create Schema](../resources/module06/Lakehouse 1 - Create Schema.ipynb)
+* [Lakehouse 1 - Create Schema](<../resources/module06/Lakehouse 1 - Create Schema.ipynb>)
 * [Lakehouse 2 - Stock Load](../resources/module06/Lakehouse 2 - Stock Load.ipynb)
 * [Lakehouse 3 - Historical Import](../resources/module06/Lakehouse 3 - Historical Import.ipynb)
 
