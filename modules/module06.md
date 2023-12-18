@@ -110,3 +110,19 @@ To complete this step, load the Lakehouse 3 notebook. This notebook will downloa
 ## References
 
 https://en.wikipedia.org/wiki/Lambda_architecture
+
+
+
+SELECT dwfact.PriceDateKey, 
+(SELECT Symbol FROM dim_Symbol WHERE Symbol_SK = dwfact.Symbol_SK) as Symbol,
+dwfact.MinPrice as dw_MinPrice, lhfact.MinPrice as lh_MinPrice,
+dwfact.MaxPrice as dw_MaxPrice, lhfact.MaxPrice as lh_MaxPrice,
+dwfact.ClosePrice as dw_ClosePrice, lhfact.ClosePrice as lh_ClosePrice
+FROM dbo.fact_Stocks_Daily_Prices dwfact
+INNER JOIN StocksLakehouse.dbo.fact_stocks_daily_prices lhfact
+ON dwfact.PriceDateKey = lhfact.PriceDateKey 
+AND (SELECT Symbol FROM dim_Symbol WHERE Symbol_SK = dwfact.Symbol_SK) = 
+(SELECT Symbol FROM StocksLakehouse.dbo.dim_symbol WHERE Symbol_SK = lhfact.Symbol_SK)
+WHERE dwfact.PriceDateKey >= '2023-12-01' and 
+dwfact.PriceDateKey <= '2023-12-03'
+ORDER BY  dwfact.PriceDateKey ASC, Symbol ASC
