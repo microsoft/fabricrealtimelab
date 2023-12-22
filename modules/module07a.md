@@ -17,12 +17,12 @@ If you have not created any Fabric resources and consuming this module as a stan
 
 This module is broken down into 3 sections:
 * [Module 07a - Building and storing an ML model](./module07b.md)
-* [Module 07b - Using models, saving to Lakehouse, building a report](./module07b.md)
+* [Module 07b - Using models, saving to the lakehouse, building a report](./module07b.md)
 * [Module 07c - Solution in practice](./module07c.md)
 
 ## :loudspeaker: Introduction
 
-As a refresher on the scenario, AbboCost Financial has been modernizing their stock market solution. In previous modules, we've developed the solution by creating real-time dashboards, a data warehouse, and more.
+As a refresher on the scenario, AbboCost Financial has been modernizing their stock market reporting for their financial analysts. In previous modules, we've developed the solution by creating real-time dashboards, a data warehouse, and more.
 
 In this module, AbboCost would like to explore predictive analytics help inform their advisors. The goal is to analyze historical data for patterns that can be used to create forecasts of future values. Microsoft Fabric's Data Science capability is the ideal place to do this kind of exploration.
 
