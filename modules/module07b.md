@@ -75,7 +75,7 @@ Once the notebook has been run, you are ready to move to the next step.
 
 In this step, we'll build a semantic model (formerly called Power BI datasets) to use in our Power BI report. A semantic model represents data that is ready for reporting and acts as an abstraction on top of a data source. ([Read more on semantic models here](https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand)); typically a semantic model will be purpose built (serving a specific reporting need) and may have transformations, relationships, and enrichments like measures to make developing reports easier.
 
-> :bulb: **About the word 'model'...**
+> :bulb: **About the word 'model':**
 > In order to disambiguate the term 'model,' we'll do our best to always qualify the type of model we're referring to. Because this is a machine learning module, we use the term 'model' frequently to refer to a machine learning model (or ML model), which is different from a semantic model.
 
 To create a semantic model, open the lakehouse. You can build a new semantic model by either method:
@@ -96,13 +96,13 @@ When the model appears, if you have the dim_symbols table, create a relationship
 
 Launch Power BI Desktop and create a new report. On the Home ribbon, click the OneLake data hub and first bring in the KQL StockHistory table; after this is done, repeat this with the StocksLakehousePredicitions semantic model: 
 
-![Add KQL from OneLake data hub](../images/module07/pbidaddsql.png)
+![Add KQL from OneLake data hub](../images/module07/pbid-addkql.png)
 
 Select the Modeling tab, and click on Manage relationships. Configure a many-to-many relationship between the StockHistory symbol and the stock_predicitions symbol. Set the cross filter direction to both, and be sure the cardinality is set to many-to-many:
 
-![PBID Manage Relationships](../images/module07/pbidmanytomany.png)
+![PBID Manage Relationships](../images/module07/pbid-manytomany.png)
 
-> :bulb: **Many to Many Relationships**
+> :bulb: **Many to Many Relationships:**
 > Using many-to-many relationships is fairly rare in visuals because data sources are typically normalized for performance and data integrity. However, they are more commonly used in situations where we are mashing up hot-path and cold-path data, as the data is received from different data sources and is often not normalized. This is one of those cases.
 
 Next, add 3 line charts to your report: 2 across the top row, and 1 across the bottom row. Configure them as follows:
