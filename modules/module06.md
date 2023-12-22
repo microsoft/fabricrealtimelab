@@ -29,10 +29,17 @@ flowchart LR
     B --> C[(KQL DB)]
     B --> D[(Lakehouse Tables)]
 ```
-
 ## :bulb: About Notebooks
 
 Most of this lab will be done within a Jupyter Notebook, an industry standard way of doing exploratory data analyis, building models, and visualizing datasets, and processing data. A notebook itself is separated into indiviual sections called cells which contain code or text documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is generally the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
+
+## :bulb: About Medallion Architecture
+
+In a lakehouse medallion architure (with bronze, silver, gold layers) data is ingested in the raw/bronze layer, typically "as-is" from the source. Data is processed through an Extract, Load, and Transform (ELT) process where the data is incrementally processed, until it reaches the curated gold layer for reporting. A typical architecture may look similar to:
+
+![Medallion Architecture](../images/module06/onelake-medallion-lakehouse-architecture-example.png)
+
+These layers are not intended to be a hard rule, but rather a guiding principle. Some architures may have 2 layers, others may have 4 or more. The layers are typically separated into different lakehouses. For the purposes of this lab, we'll be using the same lakehouse to store a all layers. Read more on implementing a [medallion architecture in Fabric here](https://learn.microsoft.com/en-us/fabric/onelake/onelake-medallion-lakehouse-architecture).
 
 ## Table of Contents
 
@@ -55,7 +62,7 @@ Within your Fabric workspace, switch to the data engineering persona (bottom lef
 
 ## 2. Add Lakehouse to EventStream
 
-Open the EventStream created in the first module. Click the plus symbol on the output of the EventStream to add a new destination. Select Lakehouse from the context menu, and in the side panel that opens, select the Lakehouse created above and create a new table called StockData. Ensure the input data format is Json; this should look similar to the image below:
+Open the EventStream created in the first module. Click the plus symbol on the output of the EventStream to add a new destination. Select Lakehouse from the context menu, and in the side panel that opens, select the Lakehouse created above and create a new table called raw_stock_data. Ensure the input data format is Json; this should look similar to the image below:
 
 ![Add Destination to EventStream](../images/module06/addeventstream.png)
 
@@ -99,7 +106,7 @@ If there is no lakehouse associated with the notebook, click Add underneath Add 
 
 ![Add Lakehouse to Notebook](../images/module06/addlakehousetonotebook.png)
 
-With the notebook loaded and the lakehouse attached, notice the schema on the left. The StockData table was configured with our EventStream, and is the landing place for the data that is ingested from the Event Hub. This is our raw/bronze level data, as it represents data without any processing or validation.
+With the notebook loaded and the lakehouse attached, notice the schema on the left. The raw_stock_data table was configured with our EventStream, and is the landing place for the data that is ingested from the Event Hub. This is our raw/bronze level data, as it represents data without any processing or validation.
 
 ![Lakehouse Schema](../images/module06/lakehouseschema1.png)
 
@@ -188,7 +195,7 @@ declare @beginDate date = '2023-12-01'
 declare @endDate date = '2023-12-03'
 
 -- set @endDate = (SELECT coalesce(max(PriceDateKey),convert(Date, getdate())) FROM dbo.fact_Stocks_Daily_Prices)
--- set @beginDate = DATEADD(day, 2, @endDate)
+-- set @beginDate = DATEADD(day, -2, @endDate)
 
 print @beginDate
 print @endDate
@@ -224,6 +231,7 @@ In this module, you implemented a lambda architecture to store data in the lakeh
 
 ## References
 
+* [Fabric Medallion Architecture](https://learn.microsoft.com/en-us/fabric/onelake/onelake-medallion-lakehouse-architecture)
 * [Wikipedia page on Lambda architecture](https://en.wikipedia.org/wiki/Lambda_architecture)
 * [Fabric Storage Decision Guide](https://learn.microsoft.com/en-us/fabric/get-started/decision-guide-data-store)
 

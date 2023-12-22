@@ -34,7 +34,7 @@ Additional modules for end-to-end solution:
 4. [Data Activator](./modules/module04.md)
 5. [Data Warehousing: Synapse Data Warehouse and Data Pipelines](./modules/module05a.md)
 6. [Data Lakehouse: Fabric Lakehouse and Notebooks](./modules/module06.md)
-7. [Data Science: Using the Lakehouse and Notebooks](./modules/module07.md)
+7. [Data Science: Using the Lakehouse and Notebooks](./modules/module07a.md)
 
 Continued Learning & Additional Modules
 

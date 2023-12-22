@@ -1,6 +1,6 @@
-# Module 06 - Data Science
+# Module 07c - Data Science: Solution in practice
 
-[< Previous Module](../modules/module07b.md) - **[Home](../README.md)** - [Next Module >](./module10.md)
+[< Previous Module](./modules/module07b.md) - **[Home](../README.md)** - [Next Module >](./module10.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -12,10 +12,10 @@
 - [x] Completed Module 07a
 - [x] Completed Module 07b
 
-This module is broken down into 3 submodules.
-* [Module 07a - Building and storing an ML model]
-* [Module 07b - Using ML models, saving to Lakehouse, building a report]
-* [Module 07c - Solution in practice]
+This module is broken down into 3 sections:
+* [Module 07a - Building and storing an ML model](./module07b.md)
+* [Module 07b - Using models, saving to Lakehouse, building a report](./module07b.md)
+* [Module 07c - Solution in practice](./module07c.md)
 
 ## :loudspeaker: Introduction
 

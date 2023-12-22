@@ -1,6 +1,6 @@
-# Module 06 - Data Science
+# Module 07b - Data Science: Using models, saving to Lakehouse, building a report
 
-[< Previous Module](../modules/module07a.md) - **[Home](../README.md)** - [Next Module >](./module07c.md)
+[< Previous Module](./modules/module07a.md) - **[Home](../README.md)** - [Next Module >](./module07c.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -18,13 +18,12 @@ Recommended modules for reports:
 - [x] Completed [Module 03 - Reporting](../modules/module03.md)
 - [x] Completed [Module 06 - Lakehouse](../modules/module03.md)
 
-You can complete the reporting section without the recommended modules above, but the functionality will be a bit limited.
+You can complete the reporting section without the recommended modules above, but the functionality will be limited.
 
-This module is broken down into 3 submodules:
-
-* [Module 07a - Building and storing an ML model]
-* [Module 07b - Using models, saving to Lakehouse, building a report]
-* [Module 07c - Solution in practice]
+This module is broken down into 3 sections:
+* [Module 07a - Building and storing an ML model](./module07b.md)
+* [Module 07b - Using models, saving to Lakehouse, building a report](./module07b.md)
+* [Module 07c - Solution in practice](./module07c.md)
 
 ## :loudspeaker: Introduction
 

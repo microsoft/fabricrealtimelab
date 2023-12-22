@@ -120,7 +120,7 @@ The top part of the query (before the partition statement) retrieves the last 5 
 
 The results look like:
 
-![Chart Issue](../images/module10/module10a/newqueryresults.png)
+![New Query Results](../images/module10/module10a/newqueryresults.png)
 
 The resulting query is far more resilient to order/data issues, and maintains a loose coupling with the data producer. Naturally, a query like this is more computationally expensive, so we'd want to be cognizant of the amount of data we are querying.
 

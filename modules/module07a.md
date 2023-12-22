@@ -1,6 +1,6 @@
-# Module 06 - Data Science
+# Module 07a - Data Science: Building and storing an ML model
 
-[< Previous Module](../modules/module06.md) - **[Home](../README.md)** - [Next Module >](./module07b.md)
+[< Previous Module](./modules/module06.md) - **[Home](../README.md)** - [Next Module >](./module07b.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -15,10 +15,10 @@ We've designed this module to be stand-alone with no dependencies on earlier mod
 
 If you have not created any Fabric resources and consuming this module as a stand-alone exercise, you can follow the instructions in [Module 01 - Create Fabric Capacity](./module01.md?#1-create-fabric-capacity) to get a Fabric environment up and running.
 
-This module is broken down into 3 submodules.
-* [Module 07a - Building and storing an ML model]
-* [Module 07b - Using models, saving to Lakehouse, building a report]
-* [Module 07c - Solution in practice]
+This module is broken down into 3 sections:
+* [Module 07a - Building and storing an ML model](./module07b.md)
+* [Module 07b - Using models, saving to Lakehouse, building a report](./module07b.md)
+* [Module 07c - Solution in practice](./module07c.md)
 
 ## :loudspeaker: Introduction
 
