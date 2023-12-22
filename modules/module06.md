@@ -1,6 +1,6 @@
 # Module 06 - Data Lakehouse
 
-[< Previous Module](../modules/module05.md) - **[Home](../README.md)** - [Next Module >](./module07.md)
+[< Previous Module](../modules/module05.md) - **[Home](../README.md)** - [Next Module >](./module07a.md)
 
 ## :stopwatch: Estimated Duration
 
