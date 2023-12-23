@@ -194,8 +194,9 @@ In our Synapse Data Warehouse, create a new SQL Query, and enter the following T
 declare @beginDate date = '2023-12-01'
 declare @endDate date = '2023-12-03'
 
--- set @endDate = (SELECT coalesce(max(PriceDateKey),convert(Date, getdate())) FROM dbo.fact_Stocks_Daily_Prices)
--- set @beginDate = DATEADD(day, -2, @endDate)
+-- comment these lines out to use hard-coded dates
+set @endDate = (SELECT coalesce(max(PriceDateKey),convert(Date, getdate())) FROM dbo.fact_Stocks_Daily_Prices)
+set @beginDate = DATEADD(day, -2, @endDate)
 
 print @beginDate
 print @endDate
