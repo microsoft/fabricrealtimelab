@@ -32,12 +32,8 @@ In this case, we should generate our predictions immediately after creating the 
 1. [Methods to retrain](#1-methods-to-retrain)
 2. [Open and explore the notebook](#2-open-and-explore-the-notebook)
 3. [Run the notebook](#3-run-the-notebook)
-
-3. [Import the Notebook](#3-import-the-notebook)
-
-4. [Explore the Notebook](#4-explore-the-notebook)
-
-6. [Examine the model and runs](#6-examine-the-model-and-runs)
+4. [Examine the results](#4-examine-the-results)
+5. [Additional challenges](#5-additional-challenges)
 
 ## 1. Methods to retrain
 
@@ -57,7 +53,7 @@ Open the DS 3 - Build and Predict notebook. For reference, the three notebooks u
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
 * [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
 
-Take some time exploring the notebook. Notice a few key things:
+Take some time exploring the notebook, and notice a few key things:
 
 * There is no logging to or using MLflow. Data scientists can still use MLflow for developing models, logging metrics, and collaborating. 
 * The ML models are built, then predicitions are made immediately and saved to the predictions table. There is no persistence of the model.
@@ -104,25 +100,21 @@ if not df.rdd.isEmpty():
 
 If you are running this in a time constrained lab environment, you may wish to specify one or two stocks to save time. Running the entire notebook across all symbols will take about 25 minutes.
 
-## 2. Examine the results
+## 4. Examine the results
 
-Use the last cell of the notebook (frozen by default) to query the stock predictions table to verify results are being written to the table.
+Use the last cell of the notebook (frozen by default) to query the stock predictions table to verify results are being written to the table. If you reload the report created in the previous section, you should see considerably more data in the reports.
 
-## 3. Additional Challenges
+## 5. Additional Challenges
 
-This notebook can be scheduled as needed (perhaps once per evening or weekly). 
+This notebook can be scheduled as needed (perhaps once per evening or weekly). Also, instead of loading data from the CSV files, the data should be loaded from the raw_stock_data table. 
 
-
-Additional Challenge ideas:
-
-* Consider trimming previous predictions if they are no longer needed. Create a cell that deletes predictions older than a certain value, such as older than 1 year.
-* Create a new report that includes past predictions AND actual values, to show model accuracy.
+For even more, if you completed the Lakehouse module, check out the [Predicition vs Actual Reporting](../modules/module10c.md) bonus module.
 
 ## :tada: Summary
 
-In this module, 
+In this module, we further refined the process to build a model and generate predictions in a single step.
 
 ## :white_check_mark: Results
 
-- [x] Loaded a notebook into your Fabric environment, created an ML model and stored it in MLflow, and evaluated the model performance.
+- [x] Loaded a notebook into your Fabric environment that focuses on building an ML model and generating predictions.
 
