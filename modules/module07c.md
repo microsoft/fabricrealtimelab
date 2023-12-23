@@ -19,17 +19,18 @@ This module is broken down into 3 sections:
 
 ## :loudspeaker: Introduction
 
-The first two sections in this module approach data science in a traditional approach: the development of the model (exploration, feature engineering, tuning, etc.), building, and then deploying the model was completed in the first section. Consumption of the model, in the second section, is typically a separate process, and may even be done by different teams.
+The first two sections in this module approach data science in a traditional approach: the development of the model (exploration, feature engineering, tuning, etc.), building, and then deploying the model was completed in the first section. Consumption of the model, in the second section, is typically a separate process and may even be done by different teams.
 
-However, in this specific scenario, there is little benefit to creating the model and generating predictions separately. This is because the model we developed is univariate: the predictions the model generates will not change without retraining the model. This is because the model is based solely on fitting the data to time without consideration of other variables. (Prophet can incoporate holidays and other regressors, but these are always built into the model.)
+However, in this specific scenario, there is little benefit to creating the model and generating predictions separately. This is because the model we developed is univariate: the predictions the model generates will not change without retraining the model. 
 
-Many ML models are multivariate: for example, consider a travel time estimator that calculates travel time between two locations. Such a model could have many input variables, but two big ones would include the time of day and weather conditions. Because the weather is changing frequently, we'd pass this data into the model to generate new travel time predicitions (input: time of day and weather, output: travel time).
+Most ML models are multivariate: for example, consider a travel time estimator that calculates travel time between two locations. Such a model could have many input variables, but two major variables would certainly include the time of day and weather conditions. Because the weather is changing frequently, we'd pass this data into the model to generate new travel time predicitions (inputs: time of day and weather, output: travel time).
 
 In this case, we should generate our predictions immediately after creating the model; if we want to generate new predictions, we should consider retraining the ML model with the latest available data for improved accuracy. For practical purposes, then, this section shows how we could implement the ML model building and forecasting in a single step. Of course, we could have a separate process for each stock if we wanted -- but for simplicity, all of the stocks will share the same basic model parameters.
 
 ## Table of Contents
 
-1. [Download the Notebook](#1-download-the-notebook)
+1. [Methods to retrain](#1-methods-to-retrain)
+
 2. [Prepare the Environment](#2-prepare-the-environment)
 3. [Import the Notebook](#3-import-the-notebook)
 4. [Explore the Notebook](#4-explore-the-notebook)
