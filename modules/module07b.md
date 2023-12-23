@@ -35,10 +35,9 @@ In this module, we'll build a notebook that queries MLflow for available models,
 
 1. [Open and explore the Notebook](#1-open-and-explore-the-notebook)
 2. [Run the notebook](#2-run-the-notebook)
-3. [Build a semantic model](#3-import-the-notebook)
-4. [Build a simple report in Power BI Desktop](#4-explore-the-notebook)
-5. [](#5-run-the-notebook)
-6. [](#6-examine-the-model-and-runs)
+3. [Build a semantic model](#3-build-a-semantic-model)
+4. [Build a simple report in Power BI Desktop](#4-build-a-simple-report-in-power-bi-desktop)
+5. [Publish the report](#5-publish-the-report)
 
 ## 1. Open and explore the notebook
 
