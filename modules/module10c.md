@@ -21,11 +21,11 @@ In this module, you'll create a simple report that shows predicted vs actual val
 
 ## Table of Contents
 
-1. [](#1-)
-1. [](#1-)
-1. [](#1-)
-1. [](#1-)
-
+1. [Mashing up the data](#1-mashing-up-the-data)
+2. [Build the lakehouse views](#2-build-the-lakehouse-views)
+3. [Build a semantic model](#3-build-a-semantic-model)
+4. [Alter the model settings](#4-alter-the-model-settings)
+5. [Next steps](#5-next-steps)
 
 ## 1. Mashing up the data
 
@@ -34,9 +34,9 @@ Creating a visual report that shows predicted vs actual is a bit more complicate
 * (Bronze) raw_stocks_data: the raw, per second feed of every stock symbol
 * (Gold) fact_stocks_daily_prices: a daily look at the high/low/close prices
 
-The problem with the fact table, despite being highly curated data, is that tha data is a little *too curated* to evaluate the model performance, as it only contains summarized daily data. The raw_stocks_data is *not curated enough* -- containing data points for every second is too much data. 
+The problem with the fact table, despite being highly curated data, is the data is a little *too curated* to evaluate the model performance, as it only contains summarized daily data. The raw_stocks_data is *not curated enough* -- containing data points for every second is too much data. 
 
-There are two ways to accomplish this task. One method is to build additional curated tables that store the data at the needed depth. This is an ideal approach, and indeed, is one of the reasons medallion architecture is so useful: it offers the flexibility to model the data in many different ways to suit changing busines requirements. 
+There are two ways to accomplish this task. One method is to build additional curated tables that store the data at the needed depth. This is an ideal approach, and indeed, is one of the reasons medallion architecture is so useful: it offers the flexibility to model the data in many different ways to suit changing busines requirements. In this approach, the data is cleansed and summarized into the silver level, which could then be summarized for our fact tables at the gold level:
 
 ```mermaid
 flowchart LR
@@ -46,9 +46,7 @@ flowchart LR
     D --> E[(Gold / modeled)]
 ```
 
-In this approach, the data is cleansed and summarized into the silver level, which could then be summarized for our fact tables at the gold level.
-
-However, for data exploration purposes, an interim approach to support ad-hoc queries is to build views of the data that do the summarization and leverage query caching in the semantic model for performance. Because predicitions are refreshed intermittently (for example, daily), the semantic model can also be updated daily to reflect any changes. The SQL analytics endpoint in our lakehouse allows us to create views, so we can create the views for our ad-hoc queries until the architecture is can support the queries natively.
+However, for data exploration purposes, an interim approach to support diagnostic or limited-use visualizations is to build views of the data that do the aggregation, and leverage query caching in the semantic model for performance. Because predicitions are refreshed intermittently (for example, daily), the semantic model can also be updated daily to reflect any changes. The SQL analytics endpoint in our lakehouse allows us to create views, so we can create the views for our ad-hoc queries until the architecture is can support the queries natively.
 
 ## 2. Build the lakehouse views
 
@@ -85,7 +83,6 @@ However, this query is incredibly expensive. In the next step, we'll add this to
 Switch to the model tab and create New semantic model, adding the vwPredictionsWithActual view created above, and give it a name like StocksLakehouse_PredicitionsWithActual_Model.
 
 ![New Semantic Model](../images/module10/module10c/newsemanticmodel.png)
-
 
 ## 4. Alter the model settings
 
@@ -126,6 +123,7 @@ With the initial report created, we can consider several next steps:
 3. Evaluate performance of the queries using [Query Insights](https://learn.microsoft.com/en-us/fabric/data-warehouse/query-insights)
 
 ## :books: Resources
+
 * [Query Insights in Fabric](https://learn.microsoft.com/en-us/fabric/data-warehouse/query-insights)
 
 ## :tada: Summary
