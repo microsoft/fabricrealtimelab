@@ -116,8 +116,8 @@ Top right chart: StockHistory (KQL)
 * X-axis: Timestamp
 * Y-axix: Price
 * Label: 
-    * Without dim_symbol: None (will show overall market)
-    * With dim_symbol: Market from dim_symbol (will show the NYSE/NASDAQ markets)
+    * Without dim_symbol table: None (will show overall market)
+    * With dim_symbol table: Market from dim_symbol (will show the NYSE/NASDAQ markets)
 
 Bottom chart: Predicition
 * X-axis: Timestamp
@@ -134,43 +134,29 @@ On each visual, configure the filter to only show data as follows:
 
 Once complete, your report should look similar to the image below, showing the time filter on the bottom visual:
 
-![Initial Report](../images/module07/pbid-initialreport.png)
+![Initial Report](../images/module07/pbid-initialreportview.png)
 
-Note: if you do not have the dim_symbol table, the top-right market chart will simply show the overall market.
+Note: if you do not have the dim_symbol table available, the top-right market chart will simply show the overall market.
 
+Next, right click the predicted_price table and select New Measure. Measures are formulas written in the Data Analysis Expressions (DAX) language; for this DAX formula, enter *currdate = NOW()* as shown below:
 
+![Create Measure](../images/module07/pbid-createmeasure.png)
 
---add measure
---configure line
---configure refresh
---publish
+With the prediction chart selected, navigate to the additional visualizaton options (the magnifying glass/chart icon) and add a new  X-Axis Constant Line. Use the formula button (fx) to choose a field, and select the currdate measure, as shown in the image below. Enable the Shade area to before, and configure the transparency and colors to your preference.
 
----
+![Add X-Axis Constant Line](../images/module07/pbid-addcurrdatetovisual.png)
 
+You can also add other features, like solid veritcal lines. When complete, your chart should look similar to the image below, where the dashed line on the predictions chart shows the current time, the past is shaded slightly, and lines appear for 12 hour block:
 
+![X-Axis Constant Line](../images/module07/pbid-withline.png)
 
+With the relationships in place, all visual should cross filter, so when selecting either a symbol on a chart, or market, all elements should react accordingly. In the image below, we selected the IDGD stock from the real-time chart, and it updated the prediction chart to show only the selected symbol:
 
--Add a new measure to the predicted_price table, named CurrDate. Set CurrDate = NOW():
-
--On the prediction chart, add an X-Axis Constant Line under the additional visualizations (hour glass icon):
-
--Next, we'll add a line to the prediction so we can see the current time on the chart. Using the formula button, choose the CurrDate measure created above. Choose a color of your liking, and set the style to your preference (we used blue, 50% transparency, dashed line). Enable the Shade Area, set the position to before, and select a color and transparency to your preference (we used blue, 86% transparency). Feel free to explore other options, like a Data label.
-
--Set the filter on the Timestsamp on the prediction chart to Relative date to show items when the value is in the next 2 days, and check the box for Include today.
-
--Set the filter on the Timestamp on the current price (upper left) to Relative time and show items when the value is in the last 30 minutes.
-
--Set the filter on the Timestamp on the market report (upper right) to Relative time and show items when the value is in the last 2 hours.
-
-Your final report should appear like:
-
-Lastly, without any visual selected, change the Page refresh rate to a something like every 5 or 10 seconds, though this setting may be limited by your administrator.
+![Cross Filtering](../images/module07/pbid-crossfilter.png)
 
 ## 5. Publish the report
 
-From within Power BI Desktop, publish the report to your workspace:
-
-You may also publish the report to a dashboard...
+On the Power BI Desktop Home tab, you can publish the report to the Power BI service by clicking the publish button. You may also publish the report to a dashboard, change the refresh interval, and make additional modifications for end-users.
 
 ## :thinking: Additional Learning
 
