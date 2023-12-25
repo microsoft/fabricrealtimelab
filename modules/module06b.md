@@ -28,14 +28,16 @@ flowchart LR
     D --> E[(Gold / modeled)]
 ```
 
-Our goal in this module is to build curated / silver data suitable for use in data science and anywhere else curated data is needed. With the raw data having a per-second frequency, this data size is often not ideal for reporting or analysis. Further, the data isn't cleansed at all, so we're at risk of non-conformed data causing problems. The goal is to build cleansed data aggregation tables that store the data in per minute and per hour level frequency. Fortunately, data wrangler makes this an easy task.
+Our goal in this module is to build curated / silver data suitable for use in data science and anywhere else curated data is needed. With the raw data having a per-second frequency, this data size is often not ideal for reporting or analysis. Further, the data isn't cleansed, so we're at risk of non-conformed data causing issues in reports or pipelines where erronious data isn't expected. The goal is to build cleansed data aggregation tables that store the data in per minute and per hour level frequency. Fortunately, data wrangler makes this an easy task.
 
 ## Table of Contents
 
 1. [Import Notebook](#1-import-notebook)
 2. [Review the notebook](#2-review-the-notebook-)
-1. [](#1-)
-
+3. [Build cleansing routine](#3-)
+4. [Build aggregation routine](#3-)
+5. [Run the merge](#3-)
+6. [Additional steps](#3-)
 
 ## 1. Import Notebook
 
@@ -64,9 +66,9 @@ From the data engineering persona home page, select *Import notebook*, and impor
 
 ## 2. Review the notebook
 
-Take a moment to scroll through the notebook. Several of the components should look familiar the notebooks used previously. Notice the following:
+Take a moment to scroll through the notebook. Be sure to add the default lakehouse if it is not already added. Several of the components should look familiar to the notebooks used previously. Notice the following:
 
-1. Two tables in the Lakehouse are created: *stocks_minute_agg* and *stocks_hour_agg* ift they do not already exist.
+1. Two tables in the Lakehouse are created: *stocks_minute_agg* and *stocks_hour_agg* if they do not already exist.
 2. An 'anomaly' data frame is created to illustrate data cleansing.
 3. A merge function writes the data to the tables.
 4. The latest data written to the tables is queried. Notice that we are not using a watermark to keep track of what has been imported. Because we're aggregating to the minute or hour, we'll process all data from the most recent hour/minute.
@@ -74,63 +76,180 @@ Take a moment to scroll through the notebook. Several of the components should l
 
 ## 3. Build cleansing routine
 
-Run all of the cells until the first cell that says "# add data wrangler here", running the cell immediately above that loads df_stocks from the table. Click in the "# add data wrangler here" cell to make it the active cell. From the top window, select Data, and click Open in Data Wrangler:
+Run all of the cells until the first cell with the content "# add data wrangler here", running the cell immediately above that loads *df_stocks* from the table. Click in the "# add data wrangler here" cell to make it the active cell. From the top window, select Data, and click *Transform DataFrame in Data Wrangler*:
 
-IMAGE OF DATA WRANGLER
+![Start Data Wrangler](../images/module06/datawrangler-load.png)
 
-A list of all dataframes (both Pandas and Spark) will be listed. Data wrangler can work with both types of dataframes. For this first exercise, select *anomaly_df* to load the dataframe in data wrangler. Once loaded, the screen should look like:
+A list of all dataframes (both pandas and Spark) will be listed. Data wrangler can work with both types of dataframes. For this first exercise, select *anomaly_df* to load the dataframe in data wrangler. Once loaded, the screen should look like:
 
-IMAGE OF anomaly_df IN WRANGLER
+![Anomly dataframe in data wrangler](../images/module06/datawrangler-main.png)
 
-In data wrangler, we'll record a number of steps to process data. Once completed, the code that performs these steps will be added to our notebook where we can further refine as needed. For this first task and to get familiar with data wrangler, we'll preprocess the data by getting rid of invalid/null data, or where prices are zero. 
+In data wrangler, we'll record a number of steps to process data. In the screenshot above, notice the data is visualized in the central column. Operations are in the top left, while an overview of each step is in the bottom left. Once completed, the code that performs these steps will be added to our notebook where we can further refine as needed. For this first task and to get familiar with data wrangler, we'll preprocess the data by getting rid of invalid/null data, or where prices are zero. 
 
 To remove null/empty values:
+
+Click Operations > Find and replace > Drop missing values. Select the *symbol* and *price* columns and click *Apply*. Notice the rows that match are highlighted in red in the middle window (in the screenshot below). Click *Apply*.
+
+![Drop missing values](../images/module06/datawrangler-dropmissing.png)
+
 To remove zero-price values:
 
+Click Operations > Sort and filter > Filter. Uncheck *Keep matching rows*, select *price*, and set the condition to *equal* to *0*. Notice the rows with zero are dropped.
 
-IMAGE OF STEPS
+![Drop zero price](../images/module06/datawrangler-dropzero.png)
 
-Notice that each step is recorded (and can be deleted/examined), and example code is shown. The data modification in data wrangler is shown using Pandas dataframes, but code will be written to process Spark dataframes once data wrangler is closed. Click *Add to notebook* to add the code to the notebook.
+Click *Add code to notebook* in the upper left. On the *Add code to notebook* window, ensure *Include pandas code* is unchecked and click *Add*. The code inserted will look similar to the below:
 
-IMAGE OF DATA WRANGLER DONE
+```python
+# Code generated by Data Wrangler for PySpark DataFrame
 
-The code will then be added to the cell and look similar to:
+def clean_data(anomaly_df):
+    # Drop rows with missing data in columns: 'symbol', 'price'
+    anomaly_df = anomaly_df.dropna(subset=['symbol', 'price'])
+    # Filter rows based on column: 'price'
+    anomaly_df = anomaly_df.filter(~(anomaly_df['price'] == 0))
+    return anomaly_df
 
-IMAGE OF CODE IN CELL
+anomaly_df_clean = clean_data(anomaly_df)
+display(anomaly_df_clean)
+```
 
-The function takes a dataframe, processes it, and returns a new dataframe with the name *_cleansed* added to the end of the dataframe. Even though this was built using the anomaly dataframe, we can pass in the df_stocks dataframe just the same. It is common to used a different name for the output dataframe (such as *df_stocks_cleansed*) to make the cell idempotent. Run the cell and observe the output has removed the rows:
+Run the cell and observe the output has removed the invalid rows.
 
-ROWS REMOVED
+The function created, *clean_data*, contains all of the steps in sequence and can be modified as needed. Because we loaded data wrangler with the *anomaly_df*, the method is written to take that dataframe by name, but this can be any dataframe that matches the schema. Additionally, we can edit the name of the function if we'd like it to be a bit clearer. 
 
-Notice that the sample code that is commented out has been renamed and modified to use df_stocks. Do the same with your code: modify the call to pass in df_stocks instead, and rename the created dataframe to *df_stocks_cleansed*. This is a great benefit to data wrangler: it produces code that we can modify as needed. Run the new cell -- the output should be same dataframe passed in, because the data should be clean with no outliers. You don't have to rename the function, but it can be convenient to keep multiple data wrangler routines distinct. 
+Modify the function name from *clean_data* to *remove_invalid_rows*, and change the line *anomaly_df_clean = clean_data(anomaly_df)* to *df_stocks_clean = remove_invalid_rows(df_stocks)* as shown below. Also, while not necessary for functionality, you can change the name of the dataframe used in the function to simply *df* as shown below:
 
+```python
+# Code generated by Data Wrangler for PySpark DataFrame
+
+def remove_invalid_rows(df):
+    # Drop rows with missing data in columns: 'symbol', 'price'
+    df = df.dropna(subset=['symbol', 'price'])
+    # Filter rows based on column: 'price'
+    df = df.filter(~(df['price'] == 0))
+    return df
+
+df_stocks_clean = remove_invalid_rows(df_stocks)
+display(df_stocks_clean)
+```
+
+This function will now remove the invalid rows from our *df_stocks* dataframe and return a new dataframe called *df_stocks_clean*. It is common to used a different name for the output dataframe (such as *df_stocks_clean*) to make the cell idempotent. 
+
+Run this cell before continuing to the next step.
 
 ## 4. Build aggregation routine
 
-This step will be more involved because we'll build more steps in data wrangler.
+This step will be more involved because we'll build more steps in data wrangler. In this step, we'll add several derived columns in order to group the data.
 
-Load data wranger again, this time selecting the *df_stocks_cleansed* dataframe. Perform the following steps:
+Load data wranger again, this time selecting the *df_stocks_clean* dataframe. Perform the following steps:
 
-Step 1: Convert timestamp to timestamp type
+Step 1: Convert timestamp from string to timestamp type
+
+Click on the three dots in the corner of the *timestamp* column and select *Change column type*. For the *New type*, select *datetime64[ns]* and click *Apply*:
+
+![Change timestamp type](../images/module06/datawrangler-changetimestamp.png)
 
 Step 2: Add new datestamp column
 
+Select Operations > New column by example. Under *Target columns*, choose *timestamp*. Enter a *Derived column name* of *datestamp*. Do not yet click *Apply*; in the new *datestamp* column, enter an example value for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *2023-12-01*. This allows data wrangler to infer we are looking for the date without a time component; once the columns autofill, click *Apply*:
+
+![Add datestamp](../images/module06/datawrangler-adddatestamp.png)
+
 Step 3: Add new hour column
+
+Following the steps above, create another new column named *hour*, also using *timestamp* as a *Target columns*. In the new *hour* column, enter an hour for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *13*. This allows data wrangler to infer we are looking for the hour component, and should build code similar to:
+
+```python
+# Derive column 'hour' from column: 'timestamp'
+def hour(timestamp):
+    """
+    Transform based on the following examples:
+       timestamp                  Output
+    1: 2023-12-01T13:22:00.938 => "13"
+    """
+    number1 = timestamp.hour
+    return f"{number1:01.0f}"
+```
 
 Step 4: Add new minute column
 
-Step 5: Group by symbol, datestamp, hour, and minute
-    1. Add aggregations for minimum price, maximum price, and last price
+Same as above, create a new *minute* column. In the new *minute* column, enter a minute for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *22*. The code should look similar to:
 
-You may keep the output the same *df_stocks_cleansed* or make a new dataframe based on preference. Even though we want individual steps to be idempotent, this may be applied to a series of like steps, as is the case here. Run the cell, and observe the output has changed considerably to aggregate the data from per-second to per-minute.
+```python
+# Derive column 'minute' from column: 'timestamp'
+def minute(timestamp):
+    """
+    Transform based on the following examples:
+       timestamp                  Output
+    1: 2023-12-01T13:22:00.938 => "22"
+    """
+    number1 = timestamp.minute
+    return f"{number1:01.0f}"
+```
+
+Step 5: Group by symbol, datestamp, hour, and minute
+
+Click Operations > Group by and aggregate. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. Click *Add aggregation*. Create three new aggregations: price - Maximum, price - Minimum, and price - Last value, which should look similar to the image below:
+
+![Final aggregation](../images/module06/datawrangler-aggregation.png)
+
+Click *Apply* and add the code to the notebook. 
+
+Step 6: Review the code
+
+In the cell that is added, in the last two lines of the cell, notice the dataframe returned is named *df_stocks_clean_1*. Because this is part of the same cleansing process, rename this *df_stocks_clean* (to overwrite itself), like below: 
+
+```python
+# old
+# df_stocks_clean_1 = clean_data(df_stocks_clean)
+# display(df_stocks_clean_1)
+
+df_stocks_clean = clean_data(df_stocks_clean)
+display(df_stocks_clean)
+```
 
 ## 5. Run the merge
 
-Run the next cell that calls the merge function, which writes the data into the table. You can query the table to verify rows are written, and even re-reun the entire notebook to continue ingesting data.
+Run the next cell that calls the merge function, which writes the data into the table. 
+
+```python
+# write the data to the stocks_minute_agg table
+
+merge_minute_agg(df_stocks_clean)
+```
+
+You can query the table to verify rows are written, and even re-reun the entire notebook to continue ingesting data.
 
 ## 6. Additional steps
 
-For an added challenge, create a new data wrangler step that further aggregates the data to per-hour precision. This can be done by loading *df_stocks_cleansed* into data wrangler, grouping by symbol, datestamp, and hour, and then creating new min/max/last based on the existing aggregations columns.
+For an added challenge, create a new data wrangler step that further aggregates the data to per-hour precision. This can be done by loading the existing *df_stocks_cleansed* into data wrangler, grouping by symbol, datestamp, and hour, and then creating new min/max/last based on the existing aggregations columns, which would look like:
+
+![Hour aggregation](../images/module06/datawrangler-houragg.png)
+
+Example code has been commented out in the notebook -- in the code completed, we changed the alias' of the columns to keep the same names, and also named the return dataframe *df_stocks_clean_hour* as shown in the code snippet below:
+
+```python
+# Code generated by Data Wrangler for PySpark DataFrame
+
+from pyspark.sql import functions as F
+
+def clean_data(df_stocks_clean):
+    # Performed 3 aggregations grouped on columns: 'symbol', 'datestamp', 'hour'
+    df_stocks_clean = df_stocks_clean.groupBy('symbol', 'datestamp', 'hour').agg(F.max('price_max').alias('price_max'), F.min('price_min').alias('price_min'), F.last('price_last').alias('price_last'))
+    df_stocks_clean = df_stocks_clean.dropna()
+    df_stocks_clean = df_stocks_clean.sort(df_stocks_clean['symbol'].asc(), df_stocks_clean['datestamp'].asc(), df_stocks_clean['hour'].asc())
+    return df_stocks_clean
+
+df_stocks_clean_hour = clean_data(df_stocks_clean)
+display(df_stocks_clean_hour)
+```
+
+The code to merge can be completed as:
+
+```python
+merge_hour_agg(df_stocks_clean_hour)
+```
 
 ## :tada: Summary
 
@@ -148,4 +267,4 @@ In this module, you leveraged data wrangler to quickly preprocess and transform 
 - [x] Built aggregation routine in data wrangler
 - [x] Loaded new aggregation tables 
 
-[Continue >](./module07.md)
+[Continue >](./module07a.md)

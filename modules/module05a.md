@@ -225,3 +225,5 @@ In this first part of module 05, we created a Synapse Data Warehouse, a Data Pip
 ## :thinking: Additional Learning
 
 * [Data Warehousing in Fabric](https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing)
+
+[Continue >](./module05b.md)

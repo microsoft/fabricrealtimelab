@@ -81,3 +81,4 @@ In this module, you modified the Power BI admin settings to allow for frequent p
 
 - [x] Created a Power BI real-time report.
 
+[Continue >](./module04.md)
