@@ -1,6 +1,6 @@
-# Module 06 - Data Lakehouse
+# Module 06 - Data Wrangler
 
-[< Previous Module](../modules/module05.md) - **[Home](../README.md)** - [Next Module >](./module07a.md)
+[< Previous Module](../modules/module06a.md) - **[Home](../README.md)** - [Next Module >](./module07a.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -8,16 +8,17 @@
 
 ## :thinking: Prerequisites
 
-- [x] Lab environment deployed from [setup](../modules/module00.md)
-- [x] Completed [Module 01](../modules/module01.md)
-- [x] Completed [Module 02](../modules/module02.md)
-- [x] Completed [Module 03](../modules/module03.md)
+- [x] Completed [Module 06a - Data Lakehouse](../modules/module06a.md)
 
-Completing [Module 05](../modules/module05a.md) is not required, but may be helpful in undertstanding developing a star schema.
+This module is broken down into 2 sections:
+* [Module 06a - Building a data lakehouse](./module06a.md)
+* [Module 06b - Using data wrangler to add silver aggregation tables](./module06b.md)
 
 ## :loudspeaker: Introduction
 
-This is an optional module. 
+
+
+
 
 In this module, we'll build a Lakehouse architecture to ingest and store our stock data into a traditional star schema using fact and dimension tables. If you've completed the Data Warehouse module, this module is similar in result, but different in approach by using Notebooks within a Lakehouse.
 
@@ -82,13 +83,14 @@ To view the notebook, click on the notebook link below for each notebook. The no
 * [Lakehouse 3 - Historical Import](<https://github.com/bhitney/fabricrealtimelab/raw/main/resources/module06/Lakehouse 3 - Historical Import.ipynb>)
 -->
 
-* [Lakehouse 1 - Create Schema](<../resources/module07/Lakehouse 1 - Create Schema.ipynb>)
-* [Lakehouse 2 - Stock Load](<../resources/module07/Lakehouse 2 - Stock Load.ipynb>)
-* [Lakehouse 3 - Historical Import](<../resources/module07/Lakehouse 3 - Historical Import.ipynb>)
+* [Lakehouse 1 - Create Schema](<../resources/module06/Lakehouse 1 - Create Schema.ipynb>)
+* [Lakehouse 2 - Stock Load](<../resources/module06/Lakehouse 2 - Stock Load.ipynb>)
+* [Lakehouse 3 - Historical Import](<../resources/module06/Lakehouse 3 - Historical Import.ipynb>)
+* [Lakehouse 4 - Data Wrangler](<../resources/module06/Lakehouse 4 - Data Wrangler.ipynb>)
 
 These may also be downloaded in the following zip file:
 
-* [All Notebooks](../resources/module06/module6notebooks.zip)
+* [All Module 06 Notebooks](../resources/module06/module6notebooks.zip)
 
 ![Download Notebook](../images/module06/downloadnotebook.png)
 
