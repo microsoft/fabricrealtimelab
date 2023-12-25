@@ -12,70 +12,34 @@
 
 This module is broken down into 2 sections:
 * [Module 06a - Building a data lakehouse](./module06a.md)
-* [Module 06b - Using data wrangler to add silver aggregation tables](./module06b.md)
+* [Module 06b - Using data wrangler to add an aggregation table](./module06b.md)
 
 ## :loudspeaker: Introduction
 
+In this module, we'll use *data wrangler* to preprocess and aggregate data, and store the data in a new aggregation table. 
 
-
-
-
-In this module, we'll build a Lakehouse architecture to ingest and store our stock data into a traditional star schema using fact and dimension tables. If you've completed the Data Warehouse module, this module is similar in result, but different in approach by using Notebooks within a Lakehouse.
-
-From an architecture perspective, we'll look to implement a lambda architecture by splitting hot path and cold path data from the EventStream. Hot path will continue to the KQL database as already configured, and cold path will be added to write this raw data to our Lakehouse. Our event structure will resemble the following:
+A traditional medallion architecture may look similar to:
 
 ```mermaid
 flowchart LR
     A[Event Hub] --> B{EventStream}
-    B --> C[(KQL DB)]
-    B --> D[(Lakehouse Tables)]
+    B --> C[(Bronze / raw)]
+    C --> D[(Silver / curated)]
+    D --> E[(Gold / modeled)]
 ```
-## :bulb: About Notebooks
 
-Most of this lab will be done within a Jupyter Notebook, an industry standard way of doing exploratory data analyis, building models, and visualizing datasets, and processing data. A notebook itself is separated into indiviual sections called cells which contain code or text documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is generally the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
-
-## :bulb: About Medallion Architecture
-
-In a lakehouse medallion architure (with bronze, silver, gold layers) data is ingested in the raw/bronze layer, typically "as-is" from the source. Data is processed through an Extract, Load, and Transform (ELT) process where the data is incrementally processed, until it reaches the curated gold layer for reporting. A typical architecture may look similar to:
-
-![Medallion Architecture](../images/module06/onelake-medallion-lakehouse-architecture-example.png)
-
-These layers are not intended to be a hard rule, but rather a guiding principle. Some architures may have 2 layers, others may have 4 or more. The layers are typically separated into different lakehouses. For the purposes of this lab, we'll be using the same lakehouse to store a all layers. Read more on implementing a [medallion architecture in Fabric here](https://learn.microsoft.com/en-us/fabric/onelake/onelake-medallion-lakehouse-architecture).
+Our goal in this module is to build curated / silver data suitable for use in data science and anywhere else curated data is needed. With the raw data having a per-second frequency, this data size is often not ideal for reporting or analysis. Further, the data isn't cleansed at all, so we're at risk of non-conformed data causing problems. The goal is to build cleansed data aggregation tables that store the data in per minute and per hour level frequency. Fortunately, data wrangler makes this an easy task.
 
 ## Table of Contents
 
-1. [Create the Lakehouse](#1-create-the-lakehouse)
-2. [Add Lakehouse to EventStream](#2-add-lakehouse-to-eventstream)
-3. [Import Notebooks](#3-import-notebooks)
-4. [Create Schema](#4-create-schema)
-5. [Load Fact Table](#5-load-fact-table)
-6. [Build semantic model and simple report](#6-build-semantic-model-and-simple-report)
-7. [Load additional data](#7-load-additional-data)
-8. [Additional challenge for the overachiever](#8-additional-challenge-for-the-overachiever)
+1. [Import Notebook](#1-import-notebook)
+2. [Review the notebook](#2-review-the-notebook-)
+1. [](#1-)
 
-## 1. Create the Lakehouse
 
-Start by creating a lakehouse. Note: if you completing this module after the data science module or another module that uses a lakehouse, you may re-use that lakehouse or create a new one.
+## 1. Import Notebook
 
-Within your Fabric workspace, switch to the data engineering persona (bottom left), and from the home page of the persona, create a new Lakehouse by clicking the Lakehouse button. Name the lakehouse StocksLakehouse. 
-
-![Create Lakehouse](../images/module06/createlakehouse.png)
-
-## 2. Add Lakehouse to EventStream
-
-Open the EventStream created in the first module. Click the plus symbol on the output of the EventStream to add a new destination. Select Lakehouse from the context menu, and in the side panel that opens, select the Lakehouse created above and create a new table called raw_stock_data. Ensure the input data format is Json; this should look similar to the image below:
-
-![Add Destination to EventStream](../images/module06/addeventstream.png)
-
-Once complete, we should have our EventStream publishing data to both the KQL Database (hot path) and our Lakehouse (cold path), and look similar to the image below:
-
-![Completed EventStream](../images/module06/completedeventstream.png)
-
-## 3. Import Notebooks
-
-Next, download the following notebooks and then import them into the Lakehouse. Note: if you have issues importing these notebooks, be sure you are downloading the raw notebook file, not the HTML page from GitHub that is displaying the notebook.
-
-To view the notebook, click on the notebook link below for each notebook. The notebook is presented in a readable format in GitHub -- click the download button near the upper right to download the notebook, and save the ipynb notebook file to a convenient location.  
+For this module, we'll use Lakehouse 4 - Data Wrangler. If you haven't already loaded the notebooks from the previous module, all of the notebooks are listed below.
 
 <!--
 * [Lakehouse 1 - Create Schema](<https://github.com/bhitney/fabricrealtimelab/raw/main/resources/module06/Lakehouse 1 - Create Schema.ipynb>)
@@ -94,143 +58,83 @@ These may also be downloaded in the following zip file:
 
 ![Download Notebook](../images/module06/downloadnotebook.png)
 
-From the data engineering persona home page, select Import notebook, and import each of the above notebooks into your workspace:
+From the data engineering persona home page, select *Import notebook*, and import each of the above notebooks into your workspace:
 
 ![Import Notebook](../images/module06/importnotebook.png)
 
-## 4. Create Schema
+## 2. Review the notebook
 
-Click on your workspace to view all items in your RealTimeWorkshop workspace and open the Lakehouse 1 notebook. If you have trouble finding items as your workspace grows, you can view only the notebooks by clicking the filter and selecting notebooks:
+Take a moment to scroll through the notebook. Several of the components should look familiar the notebooks used previously. Notice the following:
 
-![Filter Workspace Items](../images/module06/filterworkspace.png)
+1. Two tables in the Lakehouse are created: *stocks_minute_agg* and *stocks_hour_agg* ift they do not already exist.
+2. An 'anomaly' data frame is created to illustrate data cleansing.
+3. A merge function writes the data to the tables.
+4. The latest data written to the tables is queried. Notice that we are not using a watermark to keep track of what has been imported. Because we're aggregating to the minute or hour, we'll process all data from the most recent hour/minute.
+5. There are placeholders for our data wrangler code, which will be completed below. Example data wrangler code is commented-out for reference/troubleshooting.
 
-If there is no lakehouse associated with the notebook, click Add underneath Add Lakehouse, and add the Lakehouse created in step 1. *Important*: You will need to add the lakehouse to every imported notebook.
+## 3. Build cleansing routine
 
-![Add Lakehouse to Notebook](../images/module06/addlakehousetonotebook.png)
+Run all of the cells until the first cell that says "# add data wrangler here", running the cell immediately above that loads df_stocks from the table. Click in the "# add data wrangler here" cell to make it the active cell. From the top window, select Data, and click Open in Data Wrangler:
 
-With the notebook loaded and the lakehouse attached, notice the schema on the left. The raw_stock_data table was configured with our EventStream, and is the landing place for the data that is ingested from the Event Hub. This is our raw/bronze level data, as it represents data without any processing or validation.
+IMAGE OF DATA WRANGLER
 
-![Lakehouse Schema](../images/module06/lakehouseschema1.png)
+A list of all dataframes (both Pandas and Spark) will be listed. Data wrangler can work with both types of dataframes. For this first exercise, select *anomaly_df* to load the dataframe in data wrangler. Once loaded, the screen should look like:
 
-The lakehouse has two types of storage: managed tables and unmanaged files. As you might expect, tables are delta tables managed by the lakehouse engine; files are unstructured files where we might import data files, text files, and other binary assets. 
+IMAGE OF anomaly_df IN WRANGLER
 
-The next step is to run through this first notebook. You can either click 'Run all' from the left top tool bar, but is recommended you run each cell individually by clicking the play button on the left side of each cell to follow along with the process. The location of these buttons is shown by the arrows in the above image. 
+In data wrangler, we'll record a number of steps to process data. Once completed, the code that performs these steps will be added to our notebook where we can further refine as needed. For this first task and to get familiar with data wrangler, we'll preprocess the data by getting rid of invalid/null data, or where prices are zero. 
 
-Most of the code in our notebooks is written in Python, but notebooks support a variety of languages. Several cells of the notebook are defined functions, such as 'def create_dim_symbol()': these contain the code, but do not run until the function is called. You will also notice the cell that drops the tables is *frozen*; frozen cells will not run and cannot be altered until unfrozen. This is helpful for testing where we might want to occasionally run code when working with notebooks interactively. While similar to 'commenting out' sections of code, freezing cells is more powerful in that any contents of the cells are also preserved.
+To remove null/empty values:
+To remove zero-price values:
 
-When all cells have been run, refresh the schema by clicking the three dots (...) dots to the right of the Tables and clicking Refresh, as shown in the image below. You should see additional tables for our dimensional model:
 
-![Frozen Cell](../images/module06/frozencell.png)
+IMAGE OF STEPS
 
-With the schema in place, we're ready to look at our main notebook that will process the incremental load into the fact table.
+Notice that each step is recorded (and can be deleted/examined), and example code is shown. The data modification in data wrangler is shown using Pandas dataframes, but code will be written to process Spark dataframes once data wrangler is closed. Click *Add to notebook* to add the code to the notebook.
 
-## 5. Load Fact Table
+IMAGE OF DATA WRANGLER DONE
 
-With our schema ready, let's review the dimensional model for our data:
+The code will then be added to the cell and look similar to:
 
-```mermaid
-erDiagram
-    "FACT STOCK"||--o{ DATE:DateKey
-    "FACT STOCK" ||--o{ SYMBOL:Symbol_SK
-```
+IMAGE OF CODE IN CELL
 
-Our fact table contains the daily stock prices (the high, low, and closing price), while our dimensions are for our date and stock symbols (which might contain company details and other information). Although simple, conceptually this model represents a typical star schema that can be applied to larger datasets. 
+The function takes a dataframe, processes it, and returns a new dataframe with the name *_cleansed* added to the end of the dataframe. Even though this was built using the anomaly dataframe, we can pass in the df_stocks dataframe just the same. It is common to used a different name for the output dataframe (such as *df_stocks_cleansed*) to make the cell idempotent. Run the cell and observe the output has removed the rows:
 
-Load the Lakehouse 2 notebook. Similarly to the above step, attach the Lakehouse to the notebook. We recommend you run each cell individually, but you can also click Run All. Be sure the sourceTableName in the first cell matches the name of your table that contains the imported data from the Event Hub.
+ROWS REMOVED
 
-When you have finished running through the notebook, feel free to run it a few times and observe the behavior. There are a few key points to keep in mind: 
-* While this notebook can be run as a scheduled task, it's primarily designed to be used interactively. We could remove much of the display code and other artifacts to improve performance.
-* Take note of the symbol incremental load (dim_symbol_incremental_load). A business question that must be asked is, "Can we handle new stock symbols in the data feed?" In a real world scenario, this might be a common scenario, or it may not be possible depending on the data source. We made the decision here to support new symbols that might not exist, however, this takes processing time. As with all business problems, this is a tradeoff between performance and functionality, and will vary by business needs.
+Notice that the sample code that is commented out has been renamed and modified to use df_stocks. Do the same with your code: modify the call to pass in df_stocks instead, and rename the created dataframe to *df_stocks_cleansed*. This is a great benefit to data wrangler: it produces code that we can modify as needed. Run the new cell -- the output should be same dataframe passed in, because the data should be clean with no outliers. You don't have to rename the function, but it can be convenient to keep multiple data wrangler routines distinct. 
 
-To scheduled the notebook to run periodically, click on the Run tab, and click schedule. The notebook can be configured to run periodically (such as every 15 minutes):
 
-![Schedule Notebook](../images/module06/schedule.png)
+## 4. Build aggregation routine
 
-## 6. Build semantic model and simple report
+This step will be more involved because we'll build more steps in data wrangler.
 
-In this step, we'll create a new semantic model that we can use for reporting, and create a simple Power BI report.
+Load data wranger again, this time selecting the *df_stocks_cleansed* dataframe. Perform the following steps:
 
-Open the StocksLakehouse, and from the top nav bar, select New Semantic Model. Name the model StocksDimensionalModel and select the fact and two dimension tables, as show below:
+Step 1: Convert timestamp to timestamp type
 
-![New Semantic Model](../images/module06/newsemanticmodel.png)
+Step 2: Add new datestamp column
 
-When the semantic model opens, we need to define relationships between the fact and dimension tables. The easiest way to do this is to drag the Symbol_SK from the fact table to the Symbol_SK on the dim_symbol table, and ensure there is a 1:many relationship between the dim_symbol (1) and the fact table (many). Similarly, drag the PriceDateKey from the fact table to the DateKey column on the dim_date table:
+Step 3: Add new hour column
 
-![Semantic Model Relationships](../images/module06/relationships.png)
+Step 4: Add new minute column
 
-When complete, click the New Report button to create a new report. Similar to our reports created in earlier modules, add a line chart to our canvas, and configure it as follows:
+Step 5: Group by symbol, datestamp, hour, and minute
+    1. Add aggregations for minimum price, maximum price, and last price
 
-* X-axis: PriceDateKey (fact_stocks_daily_prices)
-* Y-axis: ClosePrice (fact_stocks_daily_prices)
-* Legend: Symbol (dim_symbol)
+You may keep the output the same *df_stocks_cleansed* or make a new dataframe based on preference. Even though we want individual steps to be idempotent, this may be applied to a series of like steps, as is the case here. Run the cell, and observe the output has changed considerably to aggregate the data from per-second to per-minute.
 
-![Simple Report](../images/module06/simplereport.png)
+## 5. Run the merge
 
-Of course, our report doesn't contain much data because the stock data is aggregated per day. If you'd like to add more data, complete the next step. Save the report with a name like 'DailyStockReport'.
+Run the next cell that calls the merge function, which writes the data into the table. You can query the table to verify rows are written, and even re-reun the entire notebook to continue ingesting data.
 
-## 7. Load additional data
+## 6. Additional steps
 
-This step is optional. 
-
-If you are completing this lab in a single day, the fact table will only have a single data point for each stock as the data is aggregated to high/low/close prices for each day. Additional data is available that can be imported; this allows for more interesting reports and analysis. (These same files are shared by the data science module.)
-
-To complete this step, load the Lakehouse 3 notebook. This notebook will download additional history data, and process it very similarly to the Lakehouse 2 notebook that loads the fact table. Run through the notebook -- notice the difference is that the data is being loaded from CSV files and then loaded into the fact table.
-
-![Report with Historical Data](../images/module06/reportwithhistorical.png)
-
-With more data to work with, what kind of interesting reports can be made?
-
-## 8. Additional challenge for the overachiever
-
-This step is optional.
-
-Have you completed both the Synapse Data Warehouse and Lakehouse (this) modules? If so, you have two dimensional models made with very different approaches, but yield the same results. At least, they _should_ yield the same results. How can you check?
-
-Fortunately, this is quite easy. The Lakehouse exposes a SQL Analytics endpoint that can be queried, so we can very easily join to Lakehouse tables as if they were in our Synapse Data Warehouse. Alternatively, we can join to the Synapse Data Warehouse from the Lakehouse.
-
-In this example, we'll use SQL from the Synapse Data Warehouse to compare results. 
-
-In our Synapse Data Warehouse, create a new SQL Query, and enter the following T-SQL. Note that the names of the Lakehouse may need to be modified slightly depending on how it was named, and the dates can be set automatically or specifically as needed:
-
-```sql
-declare @beginDate date = '2023-12-01'
-declare @endDate date = '2023-12-03'
-
--- comment these lines out to use hard-coded dates
-set @endDate = (SELECT coalesce(max(PriceDateKey),convert(Date, getdate())) FROM dbo.fact_Stocks_Daily_Prices)
-set @beginDate = DATEADD(day, -2, @endDate)
-
-print @beginDate
-print @endDate
-
-SELECT dwfact.PriceDateKey, 
-(SELECT Symbol FROM dim_Symbol WHERE Symbol_SK = dwfact.Symbol_SK) as Symbol,
-dwfact.MinPrice as dw_MinPrice, lhfact.MinPrice as lh_MinPrice,
-dwfact.MaxPrice as dw_MaxPrice, lhfact.MaxPrice as lh_MaxPrice,
-dwfact.ClosePrice as dw_ClosePrice, lhfact.ClosePrice as lh_ClosePrice
-FROM dbo.fact_Stocks_Daily_Prices dwfact
-INNER JOIN StocksLakehouse.dbo.fact_stocks_daily_prices lhfact
-ON dwfact.PriceDateKey = lhfact.PriceDateKey 
-AND (SELECT Symbol FROM dim_Symbol WHERE Symbol_SK = dwfact.Symbol_SK) = 
-(SELECT Symbol FROM StocksLakehouse.dbo.dim_symbol WHERE Symbol_SK = lhfact.Symbol_SK)
-WHERE dwfact.PriceDateKey >= @beginDate and 
-dwfact.PriceDateKey <= @endDate
-ORDER BY dwfact.PriceDateKey ASC, Symbol ASC
-```
-
-The query above will pull the min, max, and close price for each stock over the time period from both the Data Warehouse and Lakehouse, and place them side-by-side in the query results. The results should be identical for the Data Warehouse and Lakehouse. However, because the data for the Lakehouse may have been set up later, it is possible some values may not be equal if the max or min prices occured before data was being ingested into the Lakehouse.
-
-![Compare Data](../images/module06/comparedata.png)
-
-From the Lakehouse, the same query can be run. From within the Lakehouse, switch to the SQL analytics endpoint in the top right of the Lakehouse page. Using the same query, modify the data warehouse connection to be fully qualified. For example, instead of *from dim_symbol* change to match your data warehouse name, such as *from StocksDW.dbo.dim_symbol*. There are three locations where this will need to be changed: 
-
-![Comparing from the Lakehouse](../images/module06/lakehousecompareresults.png)
-
-Congratulations! You've not only compared the results, you've seen how easy it is to integrate both data warehouse and lakehouse artifacts. Notebooks can query the data warehouse from Spark, as well. Keep in mind: a lakehouse is read-only from a SQL analytics endpoint. A Synapse Data Warehouse is read-only from Spark. See [this decision guide](https://learn.microsoft.com/en-us/fabric/get-started/decision-guide-data-store) for more information.
+For an added challenge, create a new data wrangler step that further aggregates the data to per-hour precision. This can be done by loading *df_stocks_cleansed* into data wrangler, grouping by symbol, datestamp, and hour, and then creating new min/max/last based on the existing aggregations columns.
 
 ## :tada: Summary
 
-In this module, you implemented a lambda architecture to store data in the lakehouse from the Event Hub, and ran several notebooks to process the data into a dimensional model. You then created a semantic model for reporting, and used that model in a Power BI report.
+In this module, you leveraged data wrangler to quickly preprocess and transform raw data into silver-level tables suitable for use in data science and reporting. 
 
 ## References
 
@@ -240,8 +144,8 @@ In this module, you implemented a lambda architecture to store data in the lakeh
 
 ## :white_check_mark: Results
 
-- [x] Modified EventStream to ingest data to the lakehouse
-- [x] Ran several notebooks to create the dimensional model and process the data
-- [x] Created a semantic model and simple report
+- [x] Cleansed raw data
+- [x] Built aggregation routine in data wrangler
+- [x] Loaded new aggregation tables 
 
 [Continue >](./module07.md)

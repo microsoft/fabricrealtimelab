@@ -17,7 +17,7 @@ Completing [Module 05](../modules/module05a.md) is not required, but may help il
 
 This module is broken down into 2 sections:
 * [Module 06a - Building a data lakehouse](./module06a.md)
-* [Module 06b - Using data wrangler to add silver aggregation tables](./module06b.md)
+* [Module 06b - Using data wrangler to add an aggregation table](./module06b.md)
 
 ## :loudspeaker: Introduction
 
@@ -41,7 +41,7 @@ In a lakehouse medallion architure (with bronze, silver, gold layers) data is in
 
 ![Medallion Architecture](../images/module06/onelake-medallion-lakehouse-architecture-example.png)
 
-These layers are not intended to be a hard rule, but rather a guiding principle. Some architures may have 2 layers, others may have 4 or more. The layers are typically separated into different lakehouses. For the purposes of this lab, we'll be using the same lakehouse to store a all layers. Read more on implementing a [medallion architecture in Fabric here](https://learn.microsoft.com/en-us/fabric/onelake/onelake-medallion-lakehouse-architecture).
+These layers are not intended to be a hard rule, but rather a guiding principle. Some architures may have 2 layers, others may have 4 or more. The layers are typically separated into different lakehouses. For the purposes of this module, we'll be using the same lakehouse to store a all layers. Read more on implementing a [medallion architecture in Fabric here](https://learn.microsoft.com/en-us/fabric/onelake/onelake-medallion-lakehouse-architecture).
 
 ## Table of Contents
 
@@ -245,4 +245,4 @@ In this module, you implemented a lambda architecture to store data in the lakeh
 - [x] Ran several notebooks to create the dimensional model and process the data
 - [x] Created a semantic model and simple report
 
-[Continue >](./module07.md)
+[Continue >](./module06b.md)
