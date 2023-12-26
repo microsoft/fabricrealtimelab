@@ -19,7 +19,7 @@ The submodules contained within will explore certain aspects of the solution in 
 
 * 10a: [KQL Queryset Improvements](../modules/module10a.md)
 * 10b: [Additional Real-time Dashboard](../modules/module10b.md)
-* 10c: [Predicition vs Actual Reporting](../modules/module10c.md)
+* 10c: [Prediction vs Actual Reporting](../modules/module10c.md)
 
 
 
