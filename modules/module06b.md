@@ -1,4 +1,4 @@
-# Module 06 - Data Wrangler
+# Module 06b - Data Wrangler
 
 [< Previous Module](../modules/module06a.md) - **[Home](../README.md)** - [Next Module >](./module07a.md)
 
@@ -37,7 +37,8 @@ Our goal in this module is to build curated / silver data suitable for use in da
 3. [Build cleansing routine](#3-)
 4. [Build aggregation routine](#3-)
 5. [Run the merge](#3-)
-6. [Additional steps](#3-)
+6. [Modifying the data wrangler steps](#3-)
+7. [Additional steps](#3-)
 
 ## 1. Import Notebook
 
@@ -82,7 +83,7 @@ Run all of the cells until the first cell with the content "# add data wrangler 
 
 A list of all dataframes (both pandas and Spark) will be listed. Data wrangler can work with both types of dataframes. For this first exercise, select *anomaly_df* to load the dataframe in data wrangler. Once loaded, the screen should look like:
 
-![Anomly dataframe in data wrangler](../images/module06/datawrangler-main.png)
+![Anomaly dataframe in data wrangler](../images/module06/datawrangler-main.png)
 
 In data wrangler, we'll record a number of steps to process data. In the screenshot above, notice the data is visualized in the central column. Operations are in the top left, while an overview of each step is in the bottom left. Once completed, the code that performs these steps will be added to our notebook where we can further refine as needed. For this first task and to get familiar with data wrangler, we'll preprocess the data by getting rid of invalid/null data, or where prices are zero. 
 
@@ -144,19 +145,19 @@ This step will be more involved because we'll build more steps in data wrangler.
 
 Load data wranger again, this time selecting the *df_stocks_clean* dataframe. Perform the following steps:
 
-Step 1: Convert timestamp from string to timestamp type
+**Step 1: Convert timestamp from string to timestamp type**
 
 Click on the three dots in the corner of the *timestamp* column and select *Change column type*. For the *New type*, select *datetime64[ns]* and click *Apply*:
 
 ![Change timestamp type](../images/module06/datawrangler-changetimestamp.png)
 
-Step 2: Add new datestamp column
+**Step 2: Add new datestamp column**
 
 Select Operations > New column by example. Under *Target columns*, choose *timestamp*. Enter a *Derived column name* of *datestamp*. Do not yet click *Apply*; in the new *datestamp* column, enter an example value for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *2023-12-01*. This allows data wrangler to infer we are looking for the date without a time component; once the columns autofill, click *Apply*:
 
 ![Add datestamp](../images/module06/datawrangler-adddatestamp.png)
 
-Step 3: Add new hour column
+**Step 3: Add new hour column**
 
 Following the steps above, create another new column named *hour*, also using *timestamp* as a *Target columns*. In the new *hour* column, enter an hour for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *13*. This allows data wrangler to infer we are looking for the hour component, and should build code similar to:
 
@@ -172,9 +173,9 @@ def hour(timestamp):
     return f"{number1:01.0f}"
 ```
 
-Step 4: Add new minute column
+**Step 4: Add new minute column**
 
-Same as above, create a new *minute* column. In the new *minute* column, enter a minute for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *22*. The code should look similar to:
+Same as above, create a new *minute* column. In the new *minute* column, enter a minute for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *22*. The code generated should look similar to:
 
 ```python
 # Derive column 'minute' from column: 'timestamp'
@@ -188,30 +189,30 @@ def minute(timestamp):
     return f"{number1:01.0f}"
 ```
 
-Step 5: Group by symbol, datestamp, hour, and minute
+**Step 5: Group by symbol, datestamp, hour, and minute**
 
 Click Operations > Group by and aggregate. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. Click *Add aggregation*. Create three new aggregations: price - Maximum, price - Minimum, and price - Last value, which should look similar to the image below:
 
-![Final aggregation](../images/module06/datawrangler-aggregation.png)
+![Final aggregation](../images/module06/datawrangler-aggregate.png)
 
 Click *Apply* and add the code to the notebook. 
 
-Step 6: Review the code
+**Step 6: Review the code**
 
-In the cell that is added, in the last two lines of the cell, notice the dataframe returned is named *df_stocks_clean_1*. Because this is part of the same cleansing process, rename this *df_stocks_clean* (to overwrite itself), like below: 
+In the cell that is added, in the last two lines of the cell, notice the dataframe returned is named *df_stocks_clean_1*. Rename this *df_stocks_agg_minute*, like below: 
 
 ```python
 # old
 # df_stocks_clean_1 = clean_data(df_stocks_clean)
 # display(df_stocks_clean_1)
 
-df_stocks_clean = clean_data(df_stocks_clean)
-display(df_stocks_clean)
+df_stocks_agg_minute = clean_data(df_stocks_clean)
+display(df_stocks_agg_minute)
 ```
 
 ## 5. Run the merge
 
-Run the next cell that calls the merge function, which writes the data into the table. 
+Run the next cell that calls the merge function, which writes the data into the table:
 
 ```python
 # write the data to the stocks_minute_agg table
@@ -221,34 +222,87 @@ merge_minute_agg(df_stocks_clean)
 
 You can query the table to verify rows are written, and even re-reun the entire notebook to continue ingesting data.
 
-## 6. Additional steps
+## 6. Modifying the data wrangler steps
 
-For an added challenge, create a new data wrangler step that further aggregates the data to per-hour precision. This can be done by loading the existing *df_stocks_cleansed* into data wrangler, grouping by symbol, datestamp, and hour, and then creating new min/max/last based on the existing aggregations columns, which would look like:
+By now, hopefully you'll agree how useful data wrangler can be. The code generated follows the exact steps executed in the tool, and is either generated for Spark or pandas dataframes and should work across virtually any scenario. Most importantly, the code generated is there as a template for us to modify if we'd like. Sometimes, the code may not be exactly what we have in mind or we might know a more optimal method.
+
+For example, consider the code that generates the datestamp:
+
+```python
+ # Derive column 'datestamp' from column: 'timestamp'
+    
+    # Transform based on the following examples:
+    #    timestamp                  Output
+    # 1: 2023-12-01T13:22:00.938 => "2023-12-01"
+    udf_fn = F.udf(lambda v : v.strftime("%Y-%m-%d"), T.StringType())
+    df_stocks_clean = df_stocks_clean.withColumn("datestamp", udf_fn(F.col("timestamp")))
+```
+
+This code creates a user-defined function that takes a timestamp, and returns a string in the format *%Y-%m-%d*. If we'd like a native datetime value, we could accomplish this using the pyspark sql method *to_date()* in a single line like this:
+
+```python
+df_stocks_clean = df_stocks_clean.withColumn("datestamp", to_date(F.col("timestamp")))
+```
+
+As another example, the data wrangler code generate below creates the hour column:
+
+```python
+# Derive column 'hour' from column: 'timestamp'
+    
+    def hour(timestamp):
+        """
+        Transform based on the following examples:
+           timestamp                  Output
+        1: 2023-12-01T13:22:00.938 => "13"
+        """
+        number1 = timestamp.hour
+        return f"{number1:01.0f}"
+    
+    udf_fn = F.udf(lambda v : hour(v), T.StringType())
+    df_stocks_clean = df_stocks_clean.withColumn("hour", udf_fn(F.col("timestamp")))
+```
+
+The code creates a user-defined function that expects a timestamp, extracts the timestamp.hour, and returns a formatted number as a string. Since we're only interested in the hour as an integer, we could reduce the code to:
+
+```python
+df_stocks_clean = df_stocks_clean.withColumn("hour", date_format(F.col("timestamp"), "H"))
+```
+
+Feel empowered to adapt the code to suit your needs.
+
+## 7. Additional steps
+
+For an added challenge, create a new data wrangler step that further aggregates the data to per-hour precision. This can be done by loading the existing *df_stocks_agg_minute* into data wrangler, grouping by symbol, datestamp, and hour, and then creating new min/max/last based on the existing aggregations columns, which would look like:
 
 ![Hour aggregation](../images/module06/datawrangler-houragg.png)
 
-Example code has been commented out in the notebook -- in the code completed, we changed the alias' of the columns to keep the same names, and also named the return dataframe *df_stocks_clean_hour* as shown in the code snippet below:
+Example code is shown below. In addition to renaming the function, the alias' of the columns have also been changed to keep the column names the same. Because we are aggregating data that has already been aggregating, data wrangler is naming the columns like price_max_max, price_min_min; it's important to modify the aliases to keep the names the same.
+
+Finally, we also named the return dataframe *df_stocks_agg_hour* as shown in the code snippet below:
 
 ```python
 # Code generated by Data Wrangler for PySpark DataFrame
 
 from pyspark.sql import functions as F
 
-def clean_data(df_stocks_clean):
+def aggregate_data_minute(df_stocks_agg_minute):
     # Performed 3 aggregations grouped on columns: 'symbol', 'datestamp', 'hour'
-    df_stocks_clean = df_stocks_clean.groupBy('symbol', 'datestamp', 'hour').agg(F.max('price_max').alias('price_max'), F.min('price_min').alias('price_min'), F.last('price_last').alias('price_last'))
-    df_stocks_clean = df_stocks_clean.dropna()
-    df_stocks_clean = df_stocks_clean.sort(df_stocks_clean['symbol'].asc(), df_stocks_clean['datestamp'].asc(), df_stocks_clean['hour'].asc())
-    return df_stocks_clean
+    df_stocks_agg_minute = df_stocks_agg_minute.groupBy('symbol', 'datestamp', 'hour').agg(
+        F.max('price_max').alias('price_max'), 
+        F.min('price_min').alias('price_min'), 
+        F.last('price_last').alias('price_last'))
+    df_stocks_agg_minute = df_stocks_agg_minute.dropna()
+    df_stocks_agg_minute = df_stocks_agg_minute.sort(df_stocks_agg_minute['symbol'].asc(), df_stocks_agg_minute['datestamp'].asc(), df_stocks_agg_minute['hour'].asc())
+    return df_stocks_agg_minute
 
-df_stocks_clean_hour = clean_data(df_stocks_clean)
-display(df_stocks_clean_hour)
+df_stocks_agg_hour = aggregate_data_minute(df_stocks_agg_minute)
+display(df_stocks_agg_hour)
 ```
 
-The code to merge can be completed as:
+The code to merge can be completed as shown below, which is commented-out in the notebook.
 
 ```python
-merge_hour_agg(df_stocks_clean_hour)
+merge_hour_agg(df_stocks_agg_hour)
 ```
 
 ## :tada: Summary
