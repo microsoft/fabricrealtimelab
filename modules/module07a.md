@@ -28,7 +28,7 @@ In this module, AbboCost would like to explore predictive analytics help inform 
 
 ## :bulb: About Notebooks
 
-Most of this lab will be done within a Jupyter Notebook, an industry standard way of doing exploratory data analyis, building models, and visualizing datasets, and processing data. A notebook itself is separated into indiviual sections called cells which contain code or text documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is generally the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
+Most of this lab will be done within a Jupyter notebook, an industry standard way of doing exploratory data analyis, building models, and visualizing datasets, and processing data. A notebook itself is separated into indiviual sections called cells which contain code or text documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is generally the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
 
 ## :crystal_ball: About Prophet
 
@@ -40,14 +40,14 @@ Finally, Prophet has built-in validation. In developing most models, we'd typica
 
 ## Table of Contents
 
-1. [Download the Notebook](#1-download-the-notebook)
-2. [Prepare the Environment](#2-prepare-the-environment)
-3. [Import the Notebook](#3-import-the-notebook)
-4. [Explore the Notebook](#4-explore-the-notebook)
+1. [Download the notebook](#1-download-the-notebook)
+2. [Prepare the environment](#2-prepare-the-environment)
+3. [Import the notebook](#3-import-the-notebook)
+4. [Explore the notebook](#4-explore-the-notebook)
 5. [Run the notebook](#5-run-the-notebook)
 6. [Examine the model and runs](#6-examine-the-model-and-runs)
 
-## 1. Download the Notebook
+## 1. Download the notebook
 
 Notebook files are JSON documents with a .ipynb extension (short for Interactive Python Notebook). To view the notebook, click on the notebook link below. The notebook is presented in a readable format in GitHub -- click the download button near the upper right to download the notebook, and save the ipynb notebook file to a convenient location. There are three notebooks for this module. 
 
@@ -57,17 +57,17 @@ Notebook files are JSON documents with a .ipynb extension (short for Interactive
 
 ![Download Notebook](../images/module07/downloadnotebook.png)
 
-## 2. Prepare the Environment
+## 2. Prepare the environment
 
 For most tasks within data science, we'll need to persist data within a Lakehouse. If you've completed the Lakehouse module, you already have a Lakehouse and can skip this step. Alternatively, if you have a Lakehouse in an existing Fabric environment, you can skip this step.
 
-Within your Fabric workspace, select New > Lakehouse, and create a new lakehouse named StocksLakehouse. 
+Within your Fabric workspace, select *New* > *Lakehouse*, and create a new lakehouse named *StocksLakehouse*. 
 
 ![New Lakehouse](../images/module07/newlakehouse.png)
 
-## 3. Import the Notebook
+## 3. Import the notebook
 
-Switch to the Data Science persona using the persona switcher in the bottom left. On the Data Science homepage, click Import Notebook, and import the three notebooks listed above. Once the file is imported successfully, a notification should appear allowing you to switch directly to the workspace listing all of the assets.
+Switch to the Data Science persona using the persona switcher in the bottom left. On the Data Science homepage, click *Import notebook*, and import the three notebooks listed above. Once the file is imported successfully, a notification should appear allowing you to switch directly to the workspace listing all of the assets.
 
 ![New Lakehouse](../images/module07/importnotebook.png)
 
@@ -75,19 +75,19 @@ Once imported, the notebook should be visible on the workspace:
 
 ![Workspace](../images/module07/workspacelist.png)
 
-Click the DS 1 - Build Model notebook to open. It should appear like the image below:
+Click the *DS 1 - Build Model* notebook to open. It should appear like the image below:
 
 ![Notebook](../images/module07/defaultnotebook.png)
 
-Once loaded, click Add Lakehouse to the left of the notebook, select Existing Lakehouse, and select the StocksLakehoues you created earlier and click Add. This action adds the Lakehouse to the context of the existing notebook and makes it the default lakehouse. This should look similar to the image below:
+Once loaded, click *Add Lakehouse* to the left of the notebook, select *Existing Lakehouse*, and select the *StocksLakehouse* you created earlier and click *Add*. This action adds the lakehouse to the context of the existing notebook and makes it the default lakehouse. This should look similar to the image below:
 
 ![Notebook with lakehouse](../images/module07/notebookwithlakehouse.png)
 
-If this is a new lakehouse, there should be no tables or files, but if you're continuing from another module that used a lakehouse, you may have other tables or files.
+If this is a new lakehouse, there should be no tables or files, but if you're continuing from another module that used a lakehouse, you may see other tables or files.
 
-## 4. Explore the Notebook
+## 4. Explore the notebook
 
-The DS 1 notebook is documented throughout the notebook, but in short, the notebook carries out the following tasks:
+The *DS 1* notebook is documented throughout the notebook, but in short, the notebook carries out the following tasks:
 
 * Downloads historical data to analyze in CSV format
 * Allows us to configure a stock to analyze (such as WHO or IDGD)
@@ -106,7 +106,7 @@ The routine that generates the stock data is largely random, but there are some 
 
 ## 5. Run the notebook
 
-You can either run each cell manually as you follow along with the notebook, or click 'run all' in the top toolbar and follow along as the work progresses. The notebook will take roughly 15-20 minutes to execute -- some steps, like training the model and cross validation, will take the longest.
+You can either run each cell manually as you follow along with the notebook, or click *Run all* in the top toolbar and follow along as the work progresses. The notebook will take roughly 15-20 minutes to execute -- some steps, like training the model and cross validation, will take the longest.
 
 ![Run cells](../images/module07/runcell.png)
 
@@ -118,7 +118,7 @@ Experiments and runs can be viewed in the workspace resource list. An experiment
 
 ![Model in Workspace resources](../images/module07/resourceswithmodel.png)
 
-Metadata, in our case, includes input parameters we may tune for our model, as well as metrics on the model's accuracy, such as root mean square error (RMSE). RMSE represents the average error -- a zero would be a perfect fit between model and actual data, while higher numbers show an increase error. While lower numbers are better, what is "good" is subjective based on the scenario. 
+Metadata, in our case, includes input parameters we may tune for our model, as well as metrics on the model's accuracy, such as root mean square error (RMSE). RMSE represents the average error -- a zero would be a perfect fit between model and actual data, while higher numbers show an increase error. While lower numbers are better, a "good" number is subjective based on the scenario. 
 
 ![Model details](../images/module07/modeldetails.png)
 
