@@ -29,14 +29,16 @@ In this module, you'll create a simple report that shows predicted vs actual val
 
 ## 1. Mashing up the data
 
-Creating a visual report that shows predicted vs actual is a bit more complicated than it might first appear. While the predicitions table has all of the predicitions made to date, the actual data exists in these two places:
+Creating a visual report that shows predicted vs actual is a bit more complicated than it might first appear if not for the additional 'silver' tables to assist with aggregation. While the predicitions table has all of the predicitions made to date, the actual data exists in these places:
 
 * (Bronze) raw_stocks_data: the raw, per second feed of every stock symbol
+* (Silver) stocks_minute_agg: per-minute aggregation of the high/low/close prices
+* (Silver) stocks_hour_agg: per-hour aggregation of the high/low/close prices
 * (Gold) fact_stocks_daily_prices: a daily look at the high/low/close prices
 
-The problem with the fact table, despite being highly curated data, is the data is a little *too curated* to evaluate the model performance, as it only contains summarized daily data. The raw_stocks_data is *not curated enough* -- containing data points for every second is too much data. 
+The fact table is a bit *too-curated* with daily views -- there isn't enough detail to see how the model performs throughout the day. The bronze raw table has all of the data, but it isn't curated enough. The aggregated silver-level tables can accomplish this perfectly.
 
-There are two ways to accomplish this task. One method is to build additional curated tables that store the data at the needed depth. This is an ideal approach, and indeed, is one of the reasons medallion architecture is so useful: it offers the flexibility to model the data in many different ways to suit changing busines requirements. In this approach, the data is cleansed and summarized into the silver level, which could then be summarized for our fact tables at the gold level:
+With a medallion archicture, we can extend the concepts learned in Module 06, and this is one of the reasons medallion architecture is so useful: it offers the flexibility to model the data in many different ways to suit changing busines requirements. In this approach, the data is cleansed and summarized into the silver level, which could then be summarized for our fact tables at the gold level:
 
 ```mermaid
 flowchart LR
@@ -46,21 +48,19 @@ flowchart LR
     D --> E[(Gold / modeled)]
 ```
 
-However, for data exploration purposes, an interim approach to support diagnostic or limited-use visualizations is to build views of the data that do the aggregation, and leverage query caching in the semantic model for performance. Because predicitions are refreshed intermittently (for example, daily), the semantic model can also be updated daily to reflect any changes. The SQL analytics endpoint in our lakehouse allows us to create views, so we can create the views for our ad-hoc queries until the architecture is can support the queries natively.
+To support this report, we'll leverage the prediction and minute (or hour) aggregation tables. To enhance performance, we'll create views using the SQL analytics endpoint. This view will be represented in an semantic model, which will have a custom refresh schedule for better performance. 
 
 ## 2. Build the lakehouse views
 
-To build a view that shows predicitions and actual data, we need both the predicted price (which has 1 minute precision) and stock price (which has 1 second precision). One minute precision is certainly preferred for our reporting, and we can refine this further to 5 or 10 minute windows.
+To build a view that shows predicitions and actual data, we'll combine the *stock_predicitions* table and the *stocks_minute_agg* table, as they both have the same precision (1 minute). 
 
 In the stocks lakehouse, switch to the SQL analytics endpoint and create a new SQL query:
 
 ![Create View](../images/module10/module10c/createview.png)
 
-Copy the following SQL code and run:
+Before creating the view, let's do a little data exploration. Without the aggregation tables, we would need to join the predicitions table with the *raw_stock_data* table like the query below. Copy and run the following:
 
 ```sql
-CREATE VIEW [dbo].[vwPredictionsWithActual] AS
-(
 select sp.symbol, yhat, predict_time, avg(raw.price) as avgprice, 
 min(raw.price) as minprice, max(raw.price) as maxprice
 from stock_predictions sp
@@ -70,23 +70,48 @@ on cast(sp.predict_time as date) = cast(raw.timestamp as date)
     and datepart(n, raw.timestamp) = datepart(n, sp.predict_time)
     and sp.symbol = raw.symbol
 group by sp.symbol, yhat, predict_time
+```
+
+This query is incredibly expensive to run because it has to aggregate a great deal of data. It may run quickly if the amount of data is small, but as the data size grows, this query can take several minutes. Rewriting the query to take advantage of the silver aggregate tables would look like:
+
+```sql
+select sp.symbol, yhat, predict_time, sma.LastPrice, 
+sma.MinPrice, sma.MaxPrice
+from stock_predictions sp
+inner join stocks_minute_agg sma
+on cast(sp.predict_time as date) = sma.Datestamp 
+    and sma.Hour = datepart(hh, sp.predict_time)
+    and sma.Minute = datepart(n, sp.predict_time)
+    and sp.symbol = sma.Symbol
+```
+
+The amount of time this query takes to execute is considerably less. To turn this into a view, change the query to the T-SQL code below and run:
+
+```sql
+CREATE VIEW [dbo].[vwPredictionsWithActual] AS
+(
+select sp.symbol, yhat, predict_time, sma.LastPrice, 
+sma.MinPrice, sma.MaxPrice
+from stock_predictions sp
+inner join stocks_minute_agg sma
+on cast(sp.predict_time as date) = sma.Datestamp 
+    and sma.Hour = datepart(hh, sp.predict_time)
+    and sma.Minute = datepart(n, sp.predict_time)
+    and sp.symbol = sma.Symbol
 )
 GO
 ```
-
-This view is using the predicitions table, then joining it to the raw_stock_data table and down-sampling the data by matching the date (yyyy-mm-dd) and HH:mm. This ignores the second component, so the stock price is aggregated to min, max, and avg over that 1 minute timespan.
-
-However, this query is incredibly expensive. In the next step, we'll add this to a semantic model and configure query caching to improve performance.
+With the view created, we can build a semantic model. 
 
 ## 3. Build a semantic model
 
-Switch to the model tab and create New semantic model, adding the vwPredictionsWithActual view created above, and give it a name like StocksLakehouse_PredicitionsWithActual_Model.
+Switch to the model tab and create New semantic model, adding the *vwPredictionsWithActual* view created above, and give it a name like StocksLakehouse_PredicitionsWithActual_Model.
 
 ![New Semantic Model](../images/module10/module10c/newsemanticmodel.png)
 
 ## 4. Alter the model settings
 
-Switch to the workspace items view, filter or find the semantic model, and click the three ellipsis next to the StocksLakehouse_PredicitionsWithActual_Model semantic model and select more settings. (Keep this context menu in mind -- you will revisit this in a moment.)
+Switch to the workspace items view, filter or find the semantic model, and click the three ellipsis next to the *StocksLakehouse_PredicitionsWithActual_Model* semantic model and select more settings. (Keep this context menu in mind -- you will revisit this in a moment.)
 
 ![Settings](../images/module10/module10c/settings.png)
 
@@ -94,11 +119,11 @@ Under the Query Caching, select On and click Apply. Under Refresh, turn off "Kee
 
 ![Settings](../images/module10/module10c/querycaching.png)
 
-Ideally, the model refresh would occur just after the predicitions are generated.
+Ideally, the model refresh would occur just after the predicitions are generated. This an example of how we can tune performance for expensive queries, particularly when there is no change to underlying data.
 
 ## 5. Create a new report 
 
-Using the same context menu as above, select Create report to load the semantic model into a new report.
+Using the same context menu as above, select *Create report* to load the semantic model into a new report.
 
 In the report, we'll create one or more line charts to display the predicted vs actual data. There are a number of ways to do this (with slicers, filters, etc.) but to start with, pick a stock like BCUZ (or another stock where you have created predicitions) and add a line chart visual.
 
@@ -106,7 +131,7 @@ In the report, we'll create one or more line charts to display the predicted vs 
 
 Configure the line chart as follows:
 * X-Axis: Timestamp
-* Y-Axis: Price
+* Y-Axis: Last Price
 * Secondary y-axis: Predicted Price
 * Visual Filter: Symbol BCUZ
 
@@ -119,8 +144,7 @@ Colors and labels/column names may be customized to suit your preference. Set th
 With the initial report created, we can consider several next steps:
 
 1. Enhancing the report with slicers and other elements.
-2. Building a data layer to aggregate the data, to improve performance of the view
-3. Evaluate performance of the queries using [Query Insights](https://learn.microsoft.com/en-us/fabric/data-warehouse/query-insights)
+2. Evaluate performance of the queries using [Query Insights](https://learn.microsoft.com/en-us/fabric/data-warehouse/query-insights)
 
 ## :books: Resources
 
