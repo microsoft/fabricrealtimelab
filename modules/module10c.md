@@ -17,7 +17,7 @@
 
 ## :loudspeaker: Introduction
 
-In this module, you'll create a simple report that shows predicted vs actual values for diagnostic purposes. To do so, we'll leverage the lakehouse and predicitions table, while also creating a semantic model to take advantage of query caching and creating views in the lakehouse.
+In this module, you'll create a simple report that shows predicted vs actual values for diagnostic purposes. To do so, we'll leverage the lakehouse and predicitions table, while also creating a semantic model to take advantage of query caching and creating views in the lakehouse. This requires the completion of Module 6 (Lakehouse) and Module 7 (Data Science), as we'll be leveraging the aggregation tables and predicition tables created in those modules.
 
 ## Table of Contents
 
@@ -29,7 +29,7 @@ In this module, you'll create a simple report that shows predicted vs actual val
 
 ## 1. Mashing up the data
 
-Creating a visual report that shows predicted vs actual is a bit more complicated than it might first appear if not for the additional 'silver' tables to assist with aggregation. While the predicitions table has all of the predicitions made to date, the actual data exists in these places:
+Creating a visual report that shows predicted vs actual is a bit more complicated than it might first appear if not for the additional 'silver' tables to assist with aggregation. While the predicitions table has all of the predicitions made to date, the stock price data exists in these locations:
 
 * (Bronze) raw_stocks_data: the raw, per second feed of every stock symbol
 * (Silver) stocks_minute_agg: per-minute aggregation of the high/low/close prices
@@ -72,7 +72,7 @@ on cast(sp.predict_time as date) = cast(raw.timestamp as date)
 group by sp.symbol, yhat, predict_time
 ```
 
-This query is incredibly expensive to run because it has to aggregate a great deal of data. It may run quickly if the amount of data is small, but as the data size grows, this query can take several minutes. Rewriting the query to take advantage of the silver aggregate tables would look like:
+This query is incredibly expensive to run because it has to aggregate a great deal of data. It may run quickly if the amount of data is small, but as the data size grows, this query can take several minutes. Rewriting the query to take advantage of the silver aggregate tables would look like the following query. Run the following:
 
 ```sql
 select sp.symbol, yhat, predict_time, sma.LastPrice, 
