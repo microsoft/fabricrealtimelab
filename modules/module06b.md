@@ -8,7 +8,7 @@
 
 ## :thinking: Prerequisites
 
-- [x] Completed [Module 06a - Data Lakehouse](../modules/module06a.md)
+- [x] Completed [Module 06a - Data lakehouse](../modules/module06a.md)
 
 This module is broken down into 2 sections:
 * [Module 06a - Building a data lakehouse](./module06a.md)
@@ -42,7 +42,7 @@ Our goal in this module is to build curated / silver data suitable for use in da
 
 ## 1. Import Notebook
 
-For this module, we'll use Lakehouse 4 - Data Wrangler. If you haven't already loaded the notebooks from the previous module, all of the notebooks are listed below.
+For this module, we'll use the *Lakehouse 4 - Data Wrangler* notebook. If you haven't already loaded the notebooks from the previous module, all of the notebooks are listed below.
 
 <!--
 * [Lakehouse 1 - Create Schema](<https://github.com/bhitney/fabricrealtimelab/raw/main/resources/module06/Lakehouse 1 - Create Schema.ipynb>)
@@ -69,7 +69,7 @@ From the data engineering persona home page, select *Import notebook*, and impor
 
 Take a moment to scroll through the notebook. Be sure to add the default lakehouse if it is not already added. Several of the components should look familiar to the notebooks used previously. Notice the following:
 
-1. Two tables in the Lakehouse are created: *stocks_minute_agg* and *stocks_hour_agg* if they do not already exist.
+1. Two tables in the lakehouse are created: *stocks_minute_agg* and *stocks_hour_agg* if they do not already exist.
 2. An 'anomaly' data frame is created to illustrate data cleansing.
 3. A merge function writes the data to the tables.
 4. The latest data written to the tables is queried. Notice that we are not using a watermark to keep track of what has been imported. Because we're aggregating to the minute or hour, we'll process all data from the most recent hour/minute.
@@ -77,7 +77,7 @@ Take a moment to scroll through the notebook. Be sure to add the default lakehou
 
 ## 3. Build cleansing routine
 
-Run all of the cells until the first cell with the content "# add data wrangler here", running the cell immediately above that loads *df_stocks* from the table. Click in the "# add data wrangler here" cell to make it the active cell. From the top window, select Data, and click *Transform DataFrame in Data Wrangler*:
+Run all of the cells until the first cell with the content "# add data wrangler here", running the cell immediately above that loads *df_stocks* from the table. Click in the "# add data wrangler here" cell to make it the active cell. From the top window, select the *Data* tab, and click *Transform DataFrame in Data Wrangler*:
 
 ![Start Data Wrangler](../images/module06/datawrangler-load.png)
 
@@ -89,13 +89,13 @@ In data wrangler, we'll record a number of steps to process data. In the screens
 
 To remove null/empty values:
 
-Click Operations > Find and replace > Drop missing values. Select the *symbol* and *price* columns and click *Apply*. Notice the rows that match are highlighted in red in the middle window (in the screenshot below). Click *Apply*.
+*Click Operations* > *Find and replace* > *Drop missing values*. Select the *symbol* and *price* columns and click *Apply*. Notice the rows that match are highlighted in red in the middle window (in the screenshot below). Click *Apply*.
 
 ![Drop missing values](../images/module06/datawrangler-dropmissing.png)
 
 To remove zero-price values:
 
-Click Operations > Sort and filter > Filter. Uncheck *Keep matching rows*, select *price*, and set the condition to *equal* to *0*. Notice the rows with zero are dropped.
+Click *Operations* > *Sort and filter* > *Filter*. Uncheck *Keep matching rows*, select *price*, and set the condition to *equal* to *0*. Notice the rows with zero are dropped.
 
 ![Drop zero price](../images/module06/datawrangler-dropzero.png)
 
@@ -153,7 +153,7 @@ Click on the three dots in the corner of the *timestamp* column and select *Chan
 
 **Step 2: Add new datestamp column**
 
-Select Operations > New column by example. Under *Target columns*, choose *timestamp*. Enter a *Derived column name* of *datestamp*. Do not yet click *Apply*; in the new *datestamp* column, enter an example value for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *2023-12-01*. This allows data wrangler to infer we are looking for the date without a time component; once the columns autofill, click *Apply*:
+Select *Operations* > *New column by example*. Under *Target columns*, choose *timestamp*. Enter a *Derived column name* of *datestamp*. Do not yet click *Apply*; in the new *datestamp* column, enter an example value for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *2023-12-01*. This allows data wrangler to infer we are looking for the date without a time component; once the columns autofill, click *Apply*:
 
 ![Add datestamp](../images/module06/datawrangler-adddatestamp.png)
 
@@ -191,7 +191,7 @@ def minute(timestamp):
 
 **Step 5: Group by symbol, datestamp, hour, and minute**
 
-Click Operations > Group by and aggregate. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. Click *Add aggregation*. Create three new aggregations: price - Maximum, price - Minimum, and price - Last value, which should look similar to the image below:
+Click *Operations* > *Group by and aggregate*. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. Click *Add aggregation*. Create three new aggregations: price - Maximum, price - Minimum, and price - Last value, which should look similar to the image below:
 
 ![Final aggregation](../images/module06/datawrangler-aggregate.png)
 
@@ -268,7 +268,7 @@ The code creates a user-defined function that expects a timestamp, extracts the 
 df_stocks_clean = df_stocks_clean.withColumn("hour", date_format(F.col("timestamp"), "H"))
 ```
 
-Feel empowered to adapt the code to suit your needs.
+Always keep in mind you can adapt the code to suit your needs.
 
 ## 7. Additional steps
 
