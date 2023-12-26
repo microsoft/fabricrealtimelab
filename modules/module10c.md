@@ -17,7 +17,7 @@
 
 ## :loudspeaker: Introduction
 
-In this module, you'll create a simple report that shows predicted vs actual values for diagnostic purposes. To do so, we'll leverage the lakehouse and predicitions table, while also creating a semantic model to take advantage of query caching and creating views in the lakehouse. This requires the completion of Module 6 (Lakehouse) and Module 7 (Data Science), as we'll be leveraging the aggregation tables and predicition tables created in those modules.
+In this module, you'll create a simple report that shows predicted vs actual values for diagnostic purposes. To do so, we'll leverage the lakehouse and predictions table, while also creating a semantic model to take advantage of query caching and creating views in the lakehouse. This requires the completion of Module 6 (Lakehouse) and Module 7 (Data Science), as we'll be leveraging the aggregation tables and predicition tables created in those modules.
 
 ## Table of Contents
 
@@ -29,7 +29,7 @@ In this module, you'll create a simple report that shows predicted vs actual val
 
 ## 1. Mashing up the data
 
-Creating a visual report that shows predicted vs actual is a bit more complicated than it might first appear if not for the additional 'silver' tables to assist with aggregation. While the predicitions table has all of the predicitions made to date, the stock price data exists in these locations:
+Creating a visual report that shows predicted vs actual is a bit more complicated than it might first appear if not for the additional 'silver' tables to assist with aggregation. While the predictions table has all of the predictions made to date, the stock price data exists in these locations:
 
 * (Bronze) raw_stocks_data: the raw, per second feed of every stock symbol
 * (Silver) stocks_minute_agg: per-minute aggregation of the high/low/close prices
@@ -52,18 +52,18 @@ To support this report, we'll leverage the prediction and minute (or hour) aggre
 
 ## 2. Build the lakehouse views
 
-To build a view that shows predicitions and actual data, we'll combine the *stock_predicitions* table and the *stocks_minute_agg* table, as they both have the same precision (1 minute). 
+To build a view that shows predictions and actual data, we'll combine the *stocks_prediction* table and the *stocks_minute_agg* table, as they both have the same precision (1 minute). 
 
 In the stocks lakehouse, switch to the SQL analytics endpoint and create a new SQL query:
 
 ![Create View](../images/module10/module10c/createview.png)
 
-Before creating the view, let's do a little data exploration. Without the aggregation tables, we would need to join the predicitions table with the *raw_stock_data* table like the query below. Copy and run the following:
+Before creating the view, let's do a little data exploration. Without the aggregation tables, we would need to join the predictions table with the *raw_stock_data* table like the query below. Copy and run the following:
 
 ```sql
 select sp.symbol, yhat, predict_time, avg(raw.price) as avgprice, 
 min(raw.price) as minprice, max(raw.price) as maxprice
-from stock_predictions sp
+from stocks_prediction sp
 inner join raw_stock_data raw
 on cast(sp.predict_time as date) = cast(raw.timestamp as date)
     and datepart(hh, raw.timestamp) = datepart(hh, sp.predict_time)
@@ -77,7 +77,7 @@ This query is incredibly expensive to run because it has to aggregate a great de
 ```sql
 select sp.symbol, yhat, predict_time, sma.LastPrice, 
 sma.MinPrice, sma.MaxPrice
-from stock_predictions sp
+from stocks_prediction sp
 inner join stocks_minute_agg sma
 on cast(sp.predict_time as date) = sma.Datestamp 
     and sma.Hour = datepart(hh, sp.predict_time)
@@ -92,7 +92,7 @@ CREATE VIEW [dbo].[vwPredictionsWithActual] AS
 (
 select sp.symbol, yhat, predict_time, sma.LastPrice, 
 sma.MinPrice, sma.MaxPrice
-from stock_predictions sp
+from stocks_prediction sp
 inner join stocks_minute_agg sma
 on cast(sp.predict_time as date) = sma.Datestamp 
     and sma.Hour = datepart(hh, sp.predict_time)
@@ -105,13 +105,13 @@ With the view created, we can build a semantic model.
 
 ## 3. Build a semantic model
 
-Switch to the model tab and create New semantic model, adding the *vwPredictionsWithActual* view created above, and give it a name like StocksLakehouse_PredicitionsWithActual_Model.
+Switch to the model tab and create New semantic model, adding the *vwPredictionsWithActual* view created above, and give it a name like StocksLakehouse_PredictionsWithActual_Model.
 
 ![New Semantic Model](../images/module10/module10c/newsemanticmodel.png)
 
 ## 4. Alter the model settings
 
-Switch to the workspace items view, filter or find the semantic model, and click the three ellipsis next to the *StocksLakehouse_PredicitionsWithActual_Model* semantic model and select more settings. (Keep this context menu in mind -- you will revisit this in a moment.)
+Switch to the workspace items view, filter or find the semantic model, and click the three ellipsis next to the *StocksLakehouse_PredictionsWithActual_Model* semantic model and select more settings. (Keep this context menu in mind -- you will revisit this in a moment.)
 
 ![Settings](../images/module10/module10c/settings.png)
 
@@ -119,13 +119,13 @@ Under the Query Caching, select On and click Apply. Under Refresh, turn off "Kee
 
 ![Settings](../images/module10/module10c/querycaching.png)
 
-Ideally, the model refresh would occur just after the predicitions are generated. This an example of how we can tune performance for expensive queries, particularly when there is no change to underlying data.
+Ideally, the model refresh would occur just after the predictions are generated. This an example of how we can tune performance for expensive queries, particularly when there is no change to underlying data.
 
 ## 5. Create a new report 
 
 Using the same context menu as above, select *Create report* to load the semantic model into a new report.
 
-In the report, we'll create one or more line charts to display the predicted vs actual data. There are a number of ways to do this (with slicers, filters, etc.) but to start with, pick a stock like BCUZ (or another stock where you have created predicitions) and add a line chart visual.
+In the report, we'll create one or more line charts to display the predicted vs actual data. There are a number of ways to do this (with slicers, filters, etc.) but to start with, pick a stock like BCUZ (or another stock where you have created predictions) and add a line chart visual.
 
 ![Report - First Visual](../images/module10/module10c/report1.png)
 

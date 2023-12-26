@@ -33,7 +33,7 @@ In this module, we'll build a notebook that queries MLflow for available models,
 
 ## Table of Contents
 
-1. [Open and explore the Notebook](#1-open-and-explore-the-notebook)
+1. [Open and explore the notebook](#1-open-and-explore-the-notebook)
 2. [Run the notebook](#2-run-the-notebook)
 3. [Build a semantic model](#3-build-a-semantic-model)
 4. [Build a simple report in Power BI Desktop](#4-build-a-simple-report-in-power-bi-desktop)
@@ -41,32 +41,32 @@ In this module, we'll build a notebook that queries MLflow for available models,
 
 ## 1. Open and explore the notebook
 
-Open the DS 2 - Predict Stock Prices notebook. For reference, the three notebooks used throughout this module are listed below. More details on importing these are in module 07a.
+Open the *DS 2 - Predict Stock Prices* notebook. For reference, the three notebooks used throughout this module are listed below. More details on importing these are in module 07a.
 
 * [Download the DS 1 - Build Model Notebook](<../resources/module07/DS 1 - Build Model.ipynb>)
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
 * [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
 
-Take a few moments to explore the DS 2 notebook, and be sure to add the same default lakehouse to the notebook similar to the steps in module 07a. Many of the elements in this notebook should look familiar to DS 1. 
+Take a few moments to explore the *DS 2* notebook, and be sure to add the same default lakehouse to the notebook similar to the steps in module 07a. Many of the elements in this notebook should look familiar to *DS 1*. 
 
-Notice that much of the notebook has been broken out into function definitions, such as "def write_predicitions," which help encapsulate logic into smaller steps. Notebooks can include other libraries (as you've seen already at the top of most notebooks), and can also execute other notebooks. The notebook completes these tasks at a high level:
+Notice that much of the notebook has been broken out into function definitions, such as *def write_predictions*, which help encapsulate logic into smaller steps. Notebooks can include other libraries (as you've seen already at the top of most notebooks), and can also execute other notebooks. This notebook completes these tasks at a high level:
 
 * Creates the stock predictions table in the lakehouse, if it doesn't exist
 * Gets a list of all stock symbols 
-* Creates a predicition list by examining available ML models in MLflow
+* Creates a prediction list by examining available ML models in MLflow
 * Loops through the available ML models:
-    * Generates predicitions
-    * Stores predicitions in the lakehouse
+    * Generates predictions
+    * Stores predictions in the lakehouse
 
 ## 2. Run the notebook
 
-You can either run each cell manually as you follow along with the notebook, or click 'run all' in the top toolbar and follow along as the work progresses. The cells at the bottom of the notebook that delete the predictions and query the prediction data are *frozen* -- that is, they will not run and are there for testing purposes; you can use them for deleting rows or examining the table. To use them, you'll need to unfreeze the cells first, but be sure to freeze them (or comment them out) because if the entire notebook is run, these cells will be run if left unfrozen.
+You can either run each cell manually as you follow along with the notebook, or click *Run all* in the top toolbar and follow along as the work progresses. The cells at the bottom of the notebook that delete the predictions and query the prediction data are *frozen* -- that is, they will not run and are there for testing purposes; you can use them for deleting rows or examining the table. To use them, you'll need to unfreeze the cells first, but be sure to freeze them (or comment them out) because if the entire notebook is run, these cells will be run if left unfrozen.
 
 ![Run cells](../images/module07/runcell2.png)
 
 For the rest of this step, follow along with documentation in the notebook for an explanation of each cell. The key areas to examine closely include the interaction with MLflow (to find the ML models), and how the data is written to the lakehouse using a merge statement.
 
-For additional exploration, return to the previous section and generate ML models for other stock symbols. Notice how this notebook should find those new ML models and generate predicitions. If new ML models are created where an existing stock exists, a new version will be created.
+For additional exploration, return to the previous section and generate ML models for other stock symbols. Notice how this notebook should find those new ML models and generate predictions. If new ML models are created where an existing stock exists, a new version of the model will be created.
 
 Once the notebook has been run, you are ready to move to the next step. 
 
@@ -78,31 +78,31 @@ In this step, we'll build a semantic model (formerly called Power BI datasets) t
 > In order to disambiguate the term 'model,' we'll do our best to always qualify the type of model we're referring to. Because this is a machine learning module, we use the term 'model' frequently to refer to a machine learning model (or ML model), which is different from a semantic model.
 
 To create a semantic model, open the lakehouse. You can build a new semantic model by either method:
-* From the lakehouse mode, select New Semantic Model
-* From the SQL analytics endpoint mode, select the Reporting tab, and select New Semantic Model
+* From the lakehouse mode, select *New semantic model* from the top toolbar
+* From the SQL analytics endpoint mode, select the *Reporting* tab, and select *New semantic model*
 
 ![Create Semantic Model](../images/module07/createsemanticmodel.png)
 
-Name the model StocksLakehousePredicitions. If you completed the Lakehouse module and have the dim_symbols dimension, add both the dim_symbols and the stocks_predicitions tables to the semantic model. Otherwise, add only the stock_predicitions table.
+Name the model *StocksLakehousePredictions*. If you completed the lakehouse module and have the *dim_symbols* dimension table, add both the *dim_symbols* and the *stocks_prediction* tables to the semantic model. Otherwise, add only the *stocks_prediction* table.
 
-When the model appears, if you have the dim_symbols table, create a relationship between the stock_predicitions symbol column (many) to the dim_symbol symbol column (one), to create a 1:many relationship between these two entities. This can be done by drag/dropping the columns, or using the Manage Relationships button in the top navbar. If you don't have the dim_symbol table, that's ok -- just use the single stock_predicitions table. The model should look similar to:
+When the model appears, if you have the *dim_symbols* table, create a relationship between the *stocks_prediction* symbol column (many) to the *dim_symbol* symbol column (one), to create a 1:many relationship between these two entities. This can be done by drag/dropping the columns, or using the *Manage Relationships* button in the top navbar. If you don't have the *dim_symbol* table, that's ok -- just use the single *stocks_prediction* table. The model should look similar to:
 
-![Predicitions Semantic Model](../images/module07/stockpredicitionsmodel.png)
+![Predictions Semantic Model](../images/module07/stockpredictionsmodel.png)
 
 ## 4. Build a simple report in Power BI Desktop
 
-[Download Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) and install. We'll use Power BI Desktop for the richer integration experience and ability to bring in multiple data sources. If you are unable to run Power BI Desktop on your machine, and no lab environment is available to run Power BI Desktop, you can make due by creating some elements of the report in the Power BI service. Instead of bringing in multiple datasets as outlined in these steps, instead focus on bringing only the single semantic model of the stock prediction data (created above) into the report; to do this, from the semantic model page, click the create report button to create a new report based on this model. 
+[Download Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) and install. We'll use Power BI Desktop for the richer integration experience and ability to bring in multiple data sources. If you are unable to run Power BI Desktop on your machine, and no lab environment is available to run Power BI Desktop, you can make due by creating some elements of the report in the Power BI service. Instead of bringing in multiple datasets as outlined in these steps, instead focus on bringing only the single semantic model of the stock prediction data (created above) into the report; to do this, from the semantic model page, click the *Create report* button to create a new report based on this model. 
 
-Launch Power BI Desktop and create a new report. On the Home ribbon, click the OneLake data hub and first bring in the KQL StockHistory table; after this is done, repeat this with the StocksLakehousePredicitions semantic model: 
+Launch Power BI Desktop and create a new report. On the *Home* ribbon, click the *OneLake data hub* and first bring in the KQL *StockHistory* table; after this is done, repeat this with the *StocksLakehousePredictions* semantic model: 
 
 ![Add KQL from OneLake data hub](../images/module07/pbid-addkql.png)
 
-Select the Modeling tab, and click on Manage relationships. Configure a many-to-many relationship between the StockHistory symbol and the stock_predicitions symbol. Set the cross filter direction to both, and be sure the cardinality is set to many-to-many:
+Select the *Modeling* tab, and click on *Manage relationships*. Configure a many-to-many relationship between the *StockHistory* symbol and the *stocks_prediction* symbol. Set the cross filter direction to *Both*, and be sure the cardinality is set to *Many-to-many*:
 
 ![PBID Manage Relationships](../images/module07/pbid-manytomany.png)
 
 > :bulb: **Many to Many Relationships:**
-> Using many-to-many relationships is fairly rare in visuals because data sources are typically normalized for performance and data integrity. However, they are more commonly used in situations where we are mashing up hot-path and cold-path data, as the data is received from different data sources and is often not normalized. This is one of those cases.
+> Using many-to-many relationships is fairly rare in visuals because data sources are typically normalized for performance and data integrity. However, they are more commonly used in situations where we are mashing up like data from different data sources. This is one of those cases.
 
 Next, add 3 line charts to your report: 2 across the top row, and 1 across the bottom row. Configure them as follows:
 
@@ -115,19 +115,19 @@ Top right chart: StockHistory (KQL)
 * X-axis: Timestamp
 * Y-axix: Price
 * Label: 
-    * Without dim_symbol table: None (will show overall market)
-    * With dim_symbol table: Market from dim_symbol (will show the NYSE/NASDAQ markets)
+    * Without *dim_symbol* table: None (will show overall market)
+    * With *dim_symbol* table: *Market* from *dim_symbol* (will show the NYSE/NASDAQ markets)
 
-Bottom chart: Predicition
+Bottom chart: Prediction
 * X-axis: Timestamp
 * Y-axis: yhat
 * Label: Symbol
 
 On each visual, configure the filter to only show data as follows:
 
-* For the top left StockHistory / real-time chart, set the timestamp to relative time within the last 15 minutes.
-* For the top right StockHistory / market chart, set the timestamp to relative time within the last 4 hours (as shown in the screenshot below)
-* For the bottom stock_predicitions chart, set the predict_time to a relative date in the next 3 days, including today.
+* For the top left StockHistory / real-time chart, set the *timestamp* to *Relative time* within the last 15 minutes.
+* For the top right StockHistory / market chart, set the *timestamp* to *Relative time* within the last 4 hours (as shown in the screenshot below)
+* For the bottom stocks_prediction chart, set the *predict_time* to a *Relative date* in the next 3 days, including today.
 
 ![Time Filters](../images/module07/pbid-timefilter.png)
 
@@ -135,13 +135,13 @@ Once complete, your report should look similar to the image below, showing the t
 
 ![Initial Report](../images/module07/pbid-initialreportview.png)
 
-Note: if you do not have the dim_symbol table available, the top-right market chart will simply show the overall market.
+Note: if you do not have the *dim_symbol* table available, the top-right market chart will simply show the overall market.
 
-Next, right click the predicted_price table and select New Measure. Measures are formulas written in the Data Analysis Expressions (DAX) language; for this DAX formula, enter *currdate = NOW()* as shown below:
+Next, right click the *predicted_price* table and select *New measure*. Measures are formulas written in the Data Analysis Expressions (DAX) language; for this DAX formula, enter *currdate = NOW()* as shown below:
 
 ![Create Measure](../images/module07/pbid-createmeasure.png)
 
-With the prediction chart selected, navigate to the additional visualizaton options (the magnifying glass/chart icon) and add a new  X-Axis Constant Line. Use the formula button (fx) to choose a field, and select the currdate measure, as shown in the image below. Enable the Shade area to before, and configure the transparency and colors to your preference.
+With the prediction chart selected, navigate to the additional visualizaton options (the magnifying glass/chart icon) and add a new *X-Axis Constant Line*. Use the formula button (fx) to choose a field, and select the *currdate* measure, as shown in the image below. Enable the *Shade area* to *Before*, and configure the transparency and colors to your preference.
 
 ![Add X-Axis Constant Line](../images/module07/pbid-addcurrdatetovisual.png)
 
@@ -149,13 +149,13 @@ You can also add other features, like solid veritcal lines. When complete, your 
 
 ![X-Axis Constant Line](../images/module07/pbid-withline.png)
 
-With the relationships in place, all visual should cross filter, so when selecting either a symbol on a chart, or market, all elements should react accordingly. In the image below, we selected the IDGD stock from the real-time chart, and it updated the prediction chart to show only the selected symbol:
+With the relationships in place, all visual should cross filter, so when selecting either a symbol on a chart, or market, all elements should react accordingly. In the image below, the IDGD stock is selected on the real-time chart, and it updated the prediction chart to show only the selected symbol, as well as the market the stock is in:
 
 ![Cross Filtering](../images/module07/pbid-crossfilter.png)
 
 ## 5. Publish the report
 
-On the Power BI Desktop Home tab, you can publish the report to the Power BI service by clicking the publish button. You may also publish the report to a dashboard, change the refresh interval, and make additional modifications for end-users.
+On the Power BI Desktop Home tab, you can publish the report to the Power BI service by clicking the *Publish* button. You may also publish the report to a dashboard, change the refresh interval, and make additional modifications for end-users.
 
 ## :thinking: Additional Learning
 

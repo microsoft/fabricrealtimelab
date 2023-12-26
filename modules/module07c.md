@@ -19,11 +19,11 @@ This module is broken down into 3 sections:
 
 ## :loudspeaker: Introduction
 
-The first two sections in this module approach data science in a traditional approach. The first section covered the development of the model (exploration, feature engineering, tuning, etc.), building, and then deploying the model. The second section covered the consumption of the model -- essentially, operationlizing the model, which is typically a separate process and may even be done by different teams.
+The first two sections in this module are common approaches to data science solutions. The first section covered the development of the model (exploration, feature engineering, tuning, etc.), building, and then deploying the model. The second section covered the consumption of the model -- essentially, operationalizing the model, which is typically a separate process and may even be done by different teams.
 
 However, in this specific scenario, there is little benefit to creating the model and generating predictions separately. This is because the model we developed is time-based univariate: the predictions the model generates, for a specific time, will not change without retraining the model. 
 
-Most ML models are multivariate: for example, consider a travel time estimator that calculates travel time between two locations. Such a model could have dozens of input variables, but two major variables would certainly include the time of day and weather conditions. Because the weather is changing frequently, we'd pass this data into the model to generate new travel time predicitions (inputs: time of day and weather, output: travel time).
+Most ML models are multivariate: for example, consider a travel time estimator that calculates travel time between two locations. Such a model could have dozens of input variables, but two major variables would certainly include the time of day and weather conditions. Because the weather is changing frequently, we'd pass this data into the model to generate new travel time predictions (inputs: time of day and weather, output: travel time).
 
 In this case, we should generate our predictions immediately after creating the model; if we want to generate new predictions, we should consider retraining the ML model with the latest available data for improved accuracy. For practical purposes, then, this section shows how we could implement the ML model building and forecasting in a single step. Of course, we could have a separate process for each stock -- but for simplicity, all of the stocks will share the same basic model parameters. (And, in theory, we could store and retrieve model parameters in MLflow.)
 
@@ -43,11 +43,11 @@ The benefit of this approach is time: the model can be loaded (as we've done in 
 
 While this sounds promising, there are several drawbacks to warm-starting, and this method is fairly complex to orchestrate. Because Prophet is able to train a model very quickly (indeed, 3 minutes is not long as model training goes), we're better off training the model from scratch than attempting to warm-start.
 
-In this section, we'll rework both the first two notebooks into one simple process, which can be easily scheduled to be run as frequently as needed.
+In this section, we'll rework both the first two notebooks into one single process, which can be easily scheduled to be run as frequently as needed.
 
 ## 2. Open and explore the notebook
 
-Open the DS 3 - Build and Predict notebook. For reference, the three notebooks used throughout this module are listed below. More details on importing these are in module 07a.
+Open the *DS 3 - Build and Predict* notebook. For reference, the three notebooks used throughout this module are listed below. More details on importing these are in module 07a.
 
 * [Download the DS 1 - Build Model Notebook](<../resources/module07/DS 1 - Build Model.ipynb>)
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
@@ -56,12 +56,12 @@ Open the DS 3 - Build and Predict notebook. For reference, the three notebooks u
 Take some time exploring the notebook, and notice a few key things:
 
 * There is no logging to or using MLflow. Data scientists can still use MLflow for developing models, logging metrics, and collaborating. 
-* The ML models are built, then predicitions are made immediately and saved to the predictions table. There is no persistence of the model.
+* The ML models are built, then predictions are made immediately and saved to the predictions table. There is no persistence of the model.
 * There is no cross validation or other steps performed in 07a. While these steps are useful for the data scientist, it's not needed here.
 
 ## 3. Run the notebook
 
-Run this notebook either entirely or step-by-step. You may wish to alter the way symbols are loaded to reduce run time. The *get_symbols* method in the notebook has 3 options for how symbols are loaded:
+Run this notebook either entirely or step-by-step. You may wish to alter the way symbols are loaded to reduce run time (models will be built for all of the specified stocks). The *get_symbols* method in the notebook has 3 options for how symbols are loaded:
 
 * They can be hard-coded in an array, specifying the symbol or symbols. For example, to manually specify all symbols, we can use the following code:
 
@@ -102,13 +102,13 @@ If you are running this in a time constrained lab environment, you may wish to s
 
 ## 4. Examine the results
 
-Use the last cell of the notebook (frozen by default) to query the stock predictions table to verify results are being written to the table. If you reload the report created in the previous section, you should see considerably more data in the reports.
+Use the last cell of the notebook (frozen by default) to query the *stocks_prediction* table to verify results are being written to the table. If you reload the report created in the previous section, you should see considerably more data in the reports.
 
 ## 5. Additional Challenges
 
-This notebook can be scheduled as needed (perhaps once per evening or weekly). Also, instead of loading data from the CSV files, the data should be loaded from the raw_stock_data table. 
+This notebook can be scheduled as needed (perhaps once per evening or weekly). Also, instead of loading data from the CSV files, the data should be loaded from the *raw_stock_data* or *stocks_minute_agg* table. 
 
-For even more, if you completed the Lakehouse module, check out the [Predicition vs Actual Reporting](../modules/module10c.md) bonus module.
+For even more explorstion, if you completed the lakehouse module, check out the [Prediction vs Actual Reporting](../modules/module10c.md) bonus module.
 
 ## :tada: Summary
 
