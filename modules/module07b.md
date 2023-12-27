@@ -93,11 +93,13 @@ When the model appears, if you have the *dim_symbols* table, create a relationsh
 
 [Download Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) and install. We'll use Power BI Desktop for the richer integration experience and ability to bring in multiple data sources. If you are unable to run Power BI Desktop on your machine, and no lab environment is available to run Power BI Desktop, you can make due by creating some elements of the report in the Power BI service. Instead of bringing in multiple datasets as outlined in these steps, instead focus on bringing only the single semantic model of the stock prediction data (created above) into the report; to do this, from the semantic model page, click the *Create report* button to create a new report based on this model. 
 
-Launch Power BI Desktop and create a new report. On the *Home* ribbon, click the *OneLake data hub* and first bring in the KQL *StockHistory* table; after this is done, repeat this with the *StocksLakehousePredictions* semantic model: 
+Launch Power BI Desktop and create a new report. On the *Home* ribbon, click the *OneLake data hub* and first bring in the KQL *StockDB* *StockHistory* table and then the *StocksLakehousePredictions* semantic model: 
 
 ![Add KQL from OneLake data hub](../images/module07/pbid-addkql.png)
 
-Select the *Modeling* tab, and click on *Manage relationships*. Configure a many-to-many relationship between the *StockHistory* symbol and the *stocks_prediction* symbol. Set the cross filter direction to *Both*, and be sure the cardinality is set to *Many-to-many*:
+When adding the *StockHistory* table from the KQL database, be sure to select DirectQuery (and not Import) on the Connection Settings page. When adding the *StocksLakehousePredictions* semantic model, be sure to select all of the tables in the model. 
+
+Select the *Modeling* tab, and click on *Manage relationships*. Create a new many-to-many relationship between the *StockHistory* symbol and the *stocks_prediction* Symbol. Set the cross filter direction to *Both*, and be sure the cardinality is set to *Many-to-many*:
 
 ![PBID Manage Relationships](../images/module07/pbid-manytomany.png)
 
@@ -109,19 +111,19 @@ Next, add 3 line charts to your report: 2 across the top row, and 1 across the b
 Top left chart: StockHistory (KQL)
 * X-axis: Timestamp
 * Y-axis: Price
-* Label: Symbol
+* Legend: Symbol
 
 Top right chart: StockHistory (KQL)
 * X-axis: Timestamp
 * Y-axix: Price
-* Label: 
+* Legend: 
     * Without *dim_symbol* table: None (will show overall market)
     * With *dim_symbol* table: *Market* from *dim_symbol* (will show the NYSE/NASDAQ markets)
 
 Bottom chart: Prediction
 * X-axis: Timestamp
 * Y-axis: yhat
-* Label: Symbol
+* Legend: Symbol
 
 On each visual, configure the filter to only show data as follows:
 
@@ -135,17 +137,17 @@ Once complete, your report should look similar to the image below, showing the t
 
 ![Initial Report](../images/module07/pbid-initialreportview.png)
 
-Note: if you do not have the *dim_symbol* table available, the top-right market chart will simply show the overall market.
+Let's review what we are looking at in the screenshot above. The top left chart shows the stock prices in real time (and will ultimately update every second or so). The upper right shows the prices grouped by market, and the bottom chart shows future predictions. Note: if you do not have the *dim_symbol* table available, the top-right market chart will simply show the overall market.
 
 Next, right click the *predicted_price* table and select *New measure*. Measures are formulas written in the Data Analysis Expressions (DAX) language; for this DAX formula, enter *currdate = NOW()* as shown below:
 
 ![Create Measure](../images/module07/pbid-createmeasure.png)
 
-With the prediction chart selected, navigate to the additional visualizaton options (the magnifying glass/chart icon) and add a new *X-Axis Constant Line*. Use the formula button (fx) to choose a field, and select the *currdate* measure, as shown in the image below. Enable the *Shade area* to *Before*, and configure the transparency and colors to your preference.
+With the prediction chart selected, navigate to the additional visualizaton options (the magnifying glass/chart icon) and add a new *X-Axis Constant Line*. Under *Value*, use the formula button (fx) to choose a field, and select the *currdate* measure, as shown in the image below. Enable the *Shade area* to *Before*, and configure the transparency and colors to your preference.
 
 ![Add X-Axis Constant Line](../images/module07/pbid-addcurrdatetovisual.png)
 
-You can also add other features, like solid veritcal lines. When complete, your chart should look similar to the image below, where the dashed line on the predictions chart shows the current time, the past is shaded slightly, and lines appear for 12 hour block:
+You can also add other features, like solid veritcal lines (modifying the visual's gridlines). When complete, your chart should look similar to the image below, where the dashed line on the predictions chart shows the current time, the past is shaded slightly, and lines appear for 12 hour block:
 
 ![X-Axis Constant Line](../images/module07/pbid-withline.png)
 
@@ -153,9 +155,11 @@ With the relationships in place, all visual should cross filter, so when selecti
 
 ![Cross Filtering](../images/module07/pbid-crossfilter.png)
 
+The last thing we can do is clean up the names, titles, and so on to add a finishing touch.
+
 ## 5. Publish the report
 
-On the Power BI Desktop Home tab, you can publish the report to the Power BI service by clicking the *Publish* button. You may also publish the report to a dashboard, change the refresh interval, and make additional modifications for end-users.
+On the Power BI Desktop Home tab, you can publish the report to the Power BI service by clicking the *Publish* button. You may also publish the report to a dashboard, change the refresh interval, and make additional modifications for end-users. 
 
 ## :thinking: Additional Learning
 
@@ -166,7 +170,7 @@ On the Power BI Desktop Home tab, you can publish the report to the Power BI ser
 
 ## :tada: Summary
 
-In this module, you followed up on the creation of the model by consuming the model, generating predictions, and storing those predictions in the lakehouse. You then created a report in Power BI Desktop.
+In this module, you followed up on the creation of the ML model by consuming the ML model, generating predictions, and storing those predictions in the lakehouse. You then created a report in Power BI Desktop that shows the current stock prices with predicted values.
 
 ## :white_check_mark: Results
 
