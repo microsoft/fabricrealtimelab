@@ -19,13 +19,13 @@ This module is broken down into 3 sections:
 
 ## :loudspeaker: Introduction
 
-The first two sections in this module are common approaches to data science solutions. The first section covered the development of the model (exploration, feature engineering, tuning, etc.), building, and then deploying the model. The second section covered the consumption of the model -- essentially, operationalizing the model, which is typically a separate process and may even be done by different teams.
+The first two sections in this module are common approaches to developing a data science solution. The first section covered the development of the model (exploration, feature engineering, tuning, etc.), building, and then deploying the model. The second section covered the consumption of the model -- essentially, operationalizing the model, which is typically a separate process and may even be done by different teams.
 
-However, in this specific scenario, there is little benefit to creating the model and generating predictions separately. This is because the model we developed is time-based univariate: the predictions the model generates, for a specific time, will not change without retraining the model. 
+However, in this specific scenario, there is little benefit to creating the model and generating predictions separately. This is because the model we developed is time-based univariate: the predictions the model generates will not change without retraining the model. 
 
 Most ML models are multivariate: for example, consider a travel time estimator that calculates travel time between two locations. Such a model could have dozens of input variables, but two major variables would certainly include the time of day and weather conditions. Because the weather is changing frequently, we'd pass this data into the model to generate new travel time predictions (inputs: time of day and weather, output: travel time).
 
-In this case, we should generate our predictions immediately after creating the model; if we want to generate new predictions, we should consider retraining the ML model with the latest available data for improved accuracy. For practical purposes, then, this section shows how we could implement the ML model building and forecasting in a single step. Of course, we could have a separate process for each stock -- but for simplicity, all of the stocks will share the same basic model parameters. (And, in theory, we could store and retrieve model parameters in MLflow.)
+This being the case, we should generate our predictions immediately after creating the model; if we want to generate new predictions, we should consider retraining the ML model with the latest available data for improved accuracy. For practical purposes, then, this section shows how we could implement the ML model building and forecasting in a single step. Of course, we could have a separate process for each stock -- but for simplicity, all of the stocks will share the same basic model parameters. (And, in theory, we could store and retrieve model parameters in MLflow, allowing data scientists to develop the model parameters, as done in 07a, whenever new predicitions are needed.)
 
 ## Table of Contents
 
@@ -41,7 +41,7 @@ Recently, Prophet incorporated the ability to warm-start the model generation. R
 
 The benefit of this approach is time: the model can be loaded (as we've done in the first two sections of this module), and the model is then refit with all the data currently available. Refitting the model in this way is faster than fitting the model from scratch. When testing this approach, this yields about a 60% time savings on the default spark cluster (about 3 minutes to ~1.4 minutes). 
 
-While this sounds promising, there are several drawbacks to warm-starting, and this method is fairly complex to orchestrate. Because Prophet is able to train a model very quickly (indeed, 3 minutes is not long as model training goes), we're better off training the model from scratch than attempting to warm-start.
+While this sounds promising, there are several drawbacks to warm-starting, and this method is fairly complex to orchestrate. Because Prophet is able to train a model very quickly (indeed, a few minutes is not long as model training goes), we're better off training the model from scratch than attempting to warm-start.
 
 In this section, we'll rework both the first two notebooks into one single process, which can be easily scheduled to be run as frequently as needed.
 
