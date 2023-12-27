@@ -249,17 +249,17 @@ As another example, the data wrangler code generate below creates the hour colum
 ```python
 # Derive column 'hour' from column: 'timestamp'
     
-    def hour(timestamp):
-        """
-        Transform based on the following examples:
-           timestamp                  Output
-        1: 2023-12-01T13:22:00.938 => "13"
-        """
-        number1 = timestamp.hour
-        return f"{number1:01.0f}"
-    
-    udf_fn = F.udf(lambda v : hour(v), T.StringType())
-    df_stocks_clean = df_stocks_clean.withColumn("hour", udf_fn(F.col("timestamp")))
+def hour(timestamp):
+    """
+    Transform based on the following examples:
+        timestamp                  Output
+    1: 2023-12-01T13:22:00.938 => "13"
+    """
+    number1 = timestamp.hour
+    return f"{number1:01.0f}"
+
+udf_fn = F.udf(lambda v : hour(v), T.StringType())
+df_stocks_clean = df_stocks_clean.withColumn("hour", udf_fn(F.col("timestamp")))
 ```
 
 The code creates a user-defined function that expects a timestamp, extracts the timestamp.hour, and returns a formatted number as a string. Since we're only interested in the hour as an integer, we could reduce the code to:
