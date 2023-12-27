@@ -74,3 +74,4 @@ One very common use case when ingesting data is to handle "slowly changing dimen
 
 * [Data Warehousing in Fabric](https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing)
 
+[Continue >](./module06a.md)

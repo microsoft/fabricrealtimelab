@@ -2,15 +2,17 @@
 
 Welcome to the Microsoft Fabric Real-time Analytics end-to-end workshop!
 
-Analytics on real-time data presents unique challenges compared to traditional batch and near real-time scenarios. With real-time analytics, potentially large volumes of data need continuous ingestion, transformation, and visualization. 
+In this workshop, we'll start by quickly generating real-time data and understanding how that data can be processed and visualized in Microsoft Fabric. With the initial reporting in place, multiple modules are available that explore data warehousing, data lakehouse architecture, data activator, data science, and of course, real-time analytics. The modules are designed to be cohesive but flexible -- they all involve the same core scenario, but have limited dependencies so you can consume the modules that make the most sense for you.
 
-In Microsoft Fabric, Real-Time Analytics is a fully managed big data analytics platform optimized for streaming, and time-series data. It utilizes a query language and engine with exceptional performance for searching structured, semi-structured, and unstructured data. Real-Time Analytics is fully integrated with the entire suite of Fabric products, for both data loading, data transformation, and advanced visualization scenarios.
+Analytics on real-time data presents unique challenges compared to traditional batch and near real-time scenarios. With real-time analytics, potentially large volumes of data need continuous ingestion, transformation, and visualization.
 
-An example of a real-time analytics architecture in Microsoft Fabric is illustrated below. 
+An example of a real-time analytics architecture in Microsoft Fabric is illustrated below. The app deployed in the beginning of this workshop (either as a docker container or running in Jupyter notebook) will publish events to our Fabric environment. The data is ingested into a KQL database for real-time reporting in Power BI. 
 
 ![Data Lakehouse with Azure Synapse Analytics](./images/readme/ArchitectureSlide1.png)
 
-In this workshop, participants will get hands-on with a ficticious financial company "AbboCost." AbboCost would like to set up a stock monitoring platform to monitor price fluctuations and report on historical data. Throughout the workshop, we'll look at how every aspect of Microsoft Fabric can be incorporated as part of a larger solution -- by having everything in an integrated solution, we'll be able to quickly and securely integrate data, build reports, create data warehouses and lakehouses, forecast using ML models, and so on.
+## About the scenario
+
+In this workshop, participants will get hands-on with a ficticious financial company "AbboCost." AbboCost would like to set up a stock monitoring platform to monitor price fluctuations and report on historical data. Throughout the workshop, we'll look at how every aspect of Microsoft Fabric can be incorporated as part of a larger solution -- by having everything in an integrated solution, we'll be able to quickly and securely integrate data, build reports, create data warehouses and lakehouses, forecast using ML models, and more.
 
 ## :thinking: Prerequisites
 
@@ -33,15 +35,15 @@ Additional modules for end-to-end solution:
 
 4. [Data Activator](./modules/module04.md)
 5. [Data Warehousing: Synapse Data Warehouse and Data Pipelines](./modules/module05a.md)
-6. [Data Lakehouse: Fabric Lakehouse and Notebooks](./modules/module06.md)
-7. [Data Science: Using the Lakehouse and Notebooks](./modules/module07.md)
+6. [Data Lakehouse: Fabric Lakehouse, Notebooks, and Data Wrangler](./modules/module06a.md)
+7. [Data Science: Using the Lakehouse and Notebooks to Forecast](./modules/module07a.md)
 
 Continued Learning & Additional Modules
 
 10. [(Optional) Advanced KQL, Dashboards, Troubleshooting](./modules/module10.md)
    * 10a: [KQL Queryset Improvements](./modules/module10a.md)
    * 10b: [Additional Real-time Dashboard](./modules/module10b.md)
-
+   * 10c: [Predicted vs Actual Reporting](./modules/module10c.md)
 
 <div align="right"><a href="#fabric-real-time-workshop">↥ back to top</a></div>
 

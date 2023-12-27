@@ -277,3 +277,5 @@ Second, the pipeline can be run throughout day and supports incremental loading,
 ## :thinking: Additional Learning
 
 * [Data Warehousing in Fabric](https://learn.microsoft.com/en-us/fabric/data-warehouse/data-warehousing)
+
+[Continue >](./module05c.md)

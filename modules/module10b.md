@@ -1,6 +1,6 @@
 # Module 10b - Additional Real-time Dashboard
 
-[< Previous Module](../modules/module010a.md) - **[Home](../README.md)** 
+[< Previous Module](../modules/module10a.md) - **[Home](../README.md)** - [Next Module >](./module10c.md)
 
 ## :stopwatch: Estimated Duration
 
