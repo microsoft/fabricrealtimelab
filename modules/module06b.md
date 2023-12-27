@@ -22,7 +22,7 @@ A traditional medallion architecture may look similar to:
 
 ```mermaid
 flowchart LR
-    A[Event Hub] --> B{EventStream}
+    A[Event Hub] --> B{Eventstream}
     B --> C[(Bronze / raw)]
     C --> D[(Silver / curated)]
     D --> E[(Gold / modeled)]
