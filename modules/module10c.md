@@ -111,15 +111,17 @@ Switch to the *Model* tab (at the bottom of the screen), and then the *Reporting
 
 ## 4. Alter the model settings
 
+Although the query should perform just fine for even heavy use, this step is an example of how we can tune the semantic model to cache results for improved performance.
+
 Switch to the workspace items view, filter or find the semantic model, and click the three ellipsis next to the *StocksLakehouse_PredictionsWithActual_Model* semantic model and select more settings. (Keep this context menu in mind -- you will revisit this in a moment.)
 
 ![Settings](../images/module10/module10c/settings.png)
 
-Under the Query Caching, select On and click Apply. Under Refresh, turn off "Keep your Direct Lake data up to date" and instead, define a daily refresh schedule using the options presented. Click Apply.
+Under the *Query Caching*, select *On* and click *Apply*. Under *Refresh*, turn off *Keep your Direct Lake data up to date* and instead, define a daily refresh schedule using the options presented. Click *Apply*.
 
 ![Settings](../images/module10/module10c/querycaching.png)
 
-Ideally, the model refresh would occur just after the predictions are generated and periodically throughout the day. This an example of how we can tune performance for expensive queries, particularly when there is infrequent updates to underlying data.
+Ideally, the model refresh would occur just after the predictions are generated and periodically throughout the day. This an example of how we can tune performance for expensive queries, particularly in cases when there are infrequent updates to underlying data.
 
 ## 5. Create a new report 
 
@@ -148,7 +150,7 @@ If you prefer more of a 'dashboard' style that shows multiple stocks, you can co
 
 With the initial report created, we can consider several next steps:
 
-1. Enhancing the report with slicers and other elements.
+1. Enhancing the report with slicers, market filters, and other elements.
 2. Evaluate performance of the queries using [Query Insights](https://learn.microsoft.com/en-us/fabric/data-warehouse/query-insights)
 
 ## :books: Resources

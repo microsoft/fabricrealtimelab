@@ -34,11 +34,11 @@ Our goal in this module is to build curated / silver data suitable for use in da
 
 1. [Import Notebook](#1-import-notebook)
 2. [Review the notebook](#2-review-the-notebook-)
-3. [Build cleansing routine](#3-)
-4. [Build aggregation routine](#3-)
-5. [Run the merge](#3-)
-6. [Modifying the data wrangler steps](#3-)
-7. [Additional steps](#3-)
+3. [Build cleansing routine](#3-build-cleansing-routine)
+4. [Build aggregation routine](#4-build-aggregtion-routine)
+5. [Run the merge](#5-run-the-merge)
+6. [Modifying the data wrangler steps](#6-modifying-the-data-wrangler-steps)
+7. [Additional steps](#7-additional-steps)
 
 ## 1. Import Notebook
 
