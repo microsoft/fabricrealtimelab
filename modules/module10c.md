@@ -36,7 +36,7 @@ Creating a visual report that shows predicted vs actual is a bit more complicate
 * (Silver) stocks_hour_agg: per-hour aggregation of the high/low/close prices
 * (Gold) fact_stocks_daily_prices: a daily look at the high/low/close prices
 
-The fact table is a bit *too-curated* with daily views -- there isn't enough detail to see how the model performs throughout the day. The bronze raw table has all of the data, but it isn't curated enough. The aggregated silver-level tables can accomplish this perfectly.
+The fact table is a bit *too-curated* with daily views -- there isn't enough detail to see how the model performs throughout the day. The bronze raw table has all of the data, but it isn't curated enough -- while we could use this table (as you'll see below), it would be extremely slow do so. The aggregated silver-level tables can accomplish this perfectly.
 
 With a medallion archicture, we can extend the concepts learned in Module 06, and this is one of the reasons medallion architecture is so useful: it offers the flexibility to model the data in many different ways to suit changing busines requirements. In this approach, the data is cleansed and summarized into the silver level, which could then be summarized for our fact tables at the gold level:
 
@@ -48,7 +48,7 @@ flowchart LR
     D --> E[(Gold / modeled)]
 ```
 
-To support this report, we'll leverage the prediction and minute (or hour) aggregation tables. To enhance performance, we'll create views using the SQL analytics endpoint. This view will be represented in an semantic model, which will have a custom refresh schedule for better performance. 
+To support this report, we'll leverage the prediction and minute aggregation tables. To enhance performance, we'll create views in the lakehouse using the SQL analytics endpoint. This view will be represented in a semantic model, which will have a custom refresh schedule for better performance. While the performance of these queries should be excellent, modifying how semantic models can be refreshed is a useful technique.
 
 ## 2. Build the lakehouse views
 
@@ -61,43 +61,43 @@ In the stocks lakehouse, switch to the SQL analytics endpoint and create a new S
 Before creating the view, let's do a little data exploration. Without the aggregation tables, we would need to join the predictions table with the *raw_stock_data* table like the query below. Copy and run the following:
 
 ```sql
-select sp.symbol, yhat, predict_time, avg(raw.price) as avgprice, 
+select sp.Symbol, yhat, Predict_time, avg(raw.price) as avgprice, 
 min(raw.price) as minprice, max(raw.price) as maxprice
 from stocks_prediction sp
 inner join raw_stock_data raw
-on cast(sp.predict_time as date) = cast(raw.timestamp as date)
-    and datepart(hh, raw.timestamp) = datepart(hh, sp.predict_time)
-    and datepart(n, raw.timestamp) = datepart(n, sp.predict_time)
-    and sp.symbol = raw.symbol
-group by sp.symbol, yhat, predict_time
+on cast(sp.Predict_time as date) = cast(raw.timestamp as date)
+    and datepart(hh, raw.timestamp) = datepart(hh, sp.Predict_time)
+    and datepart(n, raw.timestamp) = datepart(n, sp.Predict_time)
+    and sp.Symbol = raw.symbol
+group by sp.Symbol, yhat, Predict_time
 ```
 
-This query is incredibly expensive to run because it has to aggregate a great deal of data. It may run quickly if the amount of data is small, but as the data size grows, this query can take several minutes. Rewriting the query to take advantage of the silver aggregate tables would look like the following query. Run the following:
+This query is incredibly expensive to run (over 1 minute on our relatively small dataset) because it has to aggregate a great deal of data. It may run quickly if the amount of data is small, but as the data size grows, this query can take several minutes. Rewriting the query to take advantage of the silver aggregate tables would look like the following query. Run the following:
 
 ```sql
-select sp.symbol, yhat, predict_time, sma.LastPrice, 
+select sp.Symbol, yhat, Predict_time, sma.LastPrice, 
 sma.MinPrice, sma.MaxPrice
 from stocks_prediction sp
 inner join stocks_minute_agg sma
-on cast(sp.predict_time as date) = sma.Datestamp 
-    and sma.Hour = datepart(hh, sp.predict_time)
-    and sma.Minute = datepart(n, sp.predict_time)
-    and sp.symbol = sma.Symbol
+on cast(sp.Predict_time as date) = sma.Datestamp 
+    and sma.Hour = datepart(hh, sp.Predict_time)
+    and sma.Minute = datepart(n, sp.Predict_time)
+    and sma.Symbol = sp.Symbol
 ```
 
-The amount of time this query takes to execute is considerably less. To turn this into a view, change the query to the T-SQL code below and run:
+The amount of time this query takes to execute is considerably less (on our test system, about 3 seconds). To turn this into a view, change the query to the T-SQL code below and run:
 
 ```sql
 CREATE VIEW [dbo].[vwPredictionsWithActual] AS
 (
-select sp.symbol, yhat, predict_time, sma.LastPrice, 
+select sp.Symbol, yhat, Predict_time, sma.LastPrice, 
 sma.MinPrice, sma.MaxPrice
 from stocks_prediction sp
 inner join stocks_minute_agg sma
-on cast(sp.predict_time as date) = sma.Datestamp 
-    and sma.Hour = datepart(hh, sp.predict_time)
-    and sma.Minute = datepart(n, sp.predict_time)
-    and sp.symbol = sma.Symbol
+on cast(sp.Predict_time as date) = sma.Datestamp 
+    and sma.Hour = datepart(hh, sp.Predict_time)
+    and sma.Minute = datepart(n, sp.Predict_time)
+    and sma.Symbol = sp.Symbol
 )
 GO
 ```
@@ -105,7 +105,7 @@ With the view created, we can build a semantic model.
 
 ## 3. Build a semantic model
 
-Switch to the model tab and create New semantic model, adding the *vwPredictionsWithActual* view created above, and give it a name like StocksLakehouse_PredictionsWithActual_Model.
+Switch to the *Model* tab (at the bottom of the screen), and then the *Reporting* tab near the top. Click *New semantic model*, adding the *vwPredictionsWithActual* view created above, and give it a name like StocksLakehouse_PredictionsWithActual_Model.
 
 ![New Semantic Model](../images/module10/module10c/newsemanticmodel.png)
 
@@ -119,23 +119,28 @@ Under the Query Caching, select On and click Apply. Under Refresh, turn off "Kee
 
 ![Settings](../images/module10/module10c/querycaching.png)
 
-Ideally, the model refresh would occur just after the predictions are generated. This an example of how we can tune performance for expensive queries, particularly when there is no change to underlying data.
+Ideally, the model refresh would occur just after the predictions are generated and periodically throughout the day. This an example of how we can tune performance for expensive queries, particularly when there is infrequent updates to underlying data.
 
 ## 5. Create a new report 
 
 Using the same context menu as above, select *Create report* to load the semantic model into a new report.
 
-In the report, we'll create one or more line charts to display the predicted vs actual data. There are a number of ways to do this (with slicers, filters, etc.) but to start with, pick a stock like BCUZ (or another stock where you have created predictions) and add a line chart visual.
+In the report, we'll create a line chart to display the predicted vs actual data. To get started, add a line chart to the canvas and configure it as follows:
+
+* X-Axis: Predit_time
+* Y-Axis: LastPrice
+* Secondary y-axis: yhat
+* Filter on Predict_time to within the last 7 days
+
+Add a slicer to the canvas to the side of the report, and drag and drop the column *Symbol* to the slicer. Configure the slicer, under the slicer settings, to use the style *Tile*. When complete, the report should look similar to:
 
 ![Report - First Visual](../images/module10/module10c/report1.png)
 
-Configure the line chart as follows:
-* X-Axis: Timestamp
-* Y-Axis: Last Price
-* Secondary y-axis: Predicted Price
-* Visual Filter: Symbol BCUZ
+Colors and labels/column names may be customized to suit your preference. The slicer should allow the chart to be customized per stock, and when completed look similar to:
 
-Colors and labels/column names may be customized to suit your preference. Set the chart title to "BCUZ Predicted vs Actual". When you are satisified with the appearance, copy this line chart three times to create a 2x2 layout, and change the symbol filter on each one to a different stock. The final result should look similar to the image below:
+![Report - Completed](../images/module10/module10c/report1-finished.png)
+
+If you prefer more of a 'dashboard' style that shows multiple stocks, you can configure multiple charts on the same canvas. Each chart can be configured to filter a different stock, such as:
 
 ![Commpleted Report](../images/module10/module10c/report2.png)
 
