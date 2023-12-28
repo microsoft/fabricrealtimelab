@@ -54,7 +54,7 @@ In our ETL (extract, transform, and load) process, we'll extract all data that h
 
 This module is broken down into 3 submodules:
 * [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
-* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module5b.md)
+* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module05b.md)
 * [Module 05c - Semantic Modeling and reporting](./module05c.md)
 
 ## Table of Contents
@@ -66,11 +66,15 @@ This module is broken down into 3 submodules:
 
 ## 1. Create a Synapse Data Warehouse in the Fabric workspace
 
-To get started, we'll first create the Synapse Data Warehouse in our workspace. From the workspace, switch to the Data Warehouse persona (in the bottom left) and click the Warehouse button to create a new Synapse Data Warehouse. Name the warehouse StocksDW (or another name, if you prefer):
+To get started, we'll first create the Synapse Data Warehouse in our workspace. There are two ways to do this: from the workspace, switch to the Data Warehouse persona (in the bottom left), and select the Warehouse button to create a new Synapse Data Warehouse.
+
+![Create Data Warehouse](../images/module05/createwarehouse-persona.png)
+
+Or, from any persona, when on the *Home* page to view all items in the workspace, click *New* to add a new item, and select *Warehouse* to create a new Synapse Data Warehouse.
 
 ![Create Data Warehouse](../images/module05/createwarehouse.png)
 
-Once created, you'll see the warehouse is largely empty. Create New SQL query at the top of the window. We'll start building our schema in the next step:
+Name the warehouse StocksDW (or another name, if you prefer). Once created, you'll see the warehouse is largely empty. Create New SQL query at the top of the window. We'll start building our schema in the next step:
 
 ![Empty Warehouse](../images/module05/emptywarehouse.png)
 
