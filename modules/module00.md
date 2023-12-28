@@ -6,9 +6,6 @@
 
 30 minutes
 
-
-[test](https://github.com/bhitney/fabricrealtimelab/raw/main/files/resources.zip)
-
 ## :thinking: Prerequisites
 
 * Access to a Microsoft Fabric environment, or ability to create a Microsoft Fabric trial.
@@ -34,9 +31,18 @@ We'll begin by creating our Fabric workspace, and then deploy the app using one 
 
 ## Table of Contents
 
-1. [Create Fabric Capacity and Workspace](#1-create-fabric-capacity-and-workspace)
-2. [Option 1 - Deploy and run the app via Jupyter notebook](#2-option-1---deploy-the-app-via-jupyter-notebook)
-3. [Option 2 - Deploy the app via Azure Container Instance](#3-option-2---deploy-the-app-via-azure-container-instance)
+1. [Download resource files](#1-download-resource-files)
+2. [Create Fabric Capacity and Workspace](#2-create-fabric-capacity-and-workspace)
+3. [Option 1 - Deploy and run the app via Jupyter notebook](#3-option-1---deploy-the-app-via-jupyter-notebook)
+4. [Option 2 - Deploy the app via Azure Container Instance](#4-option-2---deploy-the-app-via-azure-container-instance)
+
+## 1. Download resource files
+
+Throughout this lab, there are several Jupyter notebooks, SQL scripts, and other assets you will need. These will be listed within each module, but you may prefer to download all resources in the *resources.zip* file below. This zip file contains all of the assets within this repo's */resources* folder. All assets are located in a subfolder with their module number.
+
+Extract this zip file to a convenient location, and use these files instead of manually downloading throughout every module.
+
+[All Workshop Resources (resources.zip)](https://github.com/bhitney/fabricrealtimelab/raw/main/files/resources.zip)
 
 ## 1. Create Fabric Capacity and Workspace
 
