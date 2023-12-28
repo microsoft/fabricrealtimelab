@@ -40,11 +40,11 @@ We'll begin by creating our Fabric workspace, and then deploy the app using one 
 
 Throughout this lab, there are several Jupyter notebooks, SQL scripts, and other assets you will need. These will be listed within each module, but you may prefer to download all resources in the *resources.zip* file below. This zip file contains all of the assets within this repo's */resources* folder. All assets are located in a subfolder with their module number.
 
-Extract this zip file to a convenient location, and use these files instead of manually downloading throughout every module.
+Extract this zip file to a convenient location, and use these files instead of manually downloading each asset individually.
 
-[All Workshop Resources (resources.zip)](https://github.com/bhitney/fabricrealtimelab/raw/main/files/resources.zip)
+[All Workshop Resources (resources.zip)](https://github.com/microsoft/fabricrealtimelab/raw/main/files/resources.zip)
 
-## 1. Create Fabric Capacity and Workspace
+## 2. Create Fabric Capacity and Workspace
 
 Microsoft Fabric is deployed to an Azure Active Directory tenant. Within each Fabric tenant, Fabric capacities can be created to group resources for various purposes -- this might be done organizationally (sales, marketing, development), geographically, or other logical grouping. 
 
@@ -71,7 +71,7 @@ Be sure to assign the workspace to the capacity created above. To do this, expan
 
 ![Fabric Advanced Settings](../images/module00/createworkspacesettings.png)
 
-## 2. Option 1 - Deploy the app via Jupyter Notebook
+## 3. Option 1 - Deploy the app via Jupyter Notebook
 
 This option deploys as a Jupyter notebook, generating our stock prices and publishing to an Eventstream within Fabric.
 
@@ -105,7 +105,7 @@ This option deploys as a Jupyter notebook, generating our stock prices and publi
 
 With this step completed, we're ready to move on -- you can skip Option 2.
 
-## 3. Option 2 - Deploy the app via Azure Container Instance
+## 4. Option 2 - Deploy the app via Azure Container Instance
 
 This option deploys the stock generator app to an Azure Container Instance using an ARM template. The app will generate stock data that publishes the data to an Azure Event Hub, which is also configured during the deployment of the ARM template. 
 

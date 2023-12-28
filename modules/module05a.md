@@ -84,8 +84,8 @@ Name the warehouse *StocksDW* (or another name, if you prefer, but be sure to re
 
 If you prefer, you can create separate SQL queries for each of these SQL scripts, or you can re-use the same query editor. If you prefer to create separate queries, you can rename them by right-clicking on the query name, and they will be stored in your data warehouse for later use. 
 
-All of these queries can be found in the *resources > module05* folder, or can be downloaded in the following zip file:
-[All SQL Queries](../resources/module05/scripts/sqlscripts.zip)
+All of these queries can be found in the *resources > module05* folder of this repo, and can be downloaded in the following zip file:
+[All Workshop Resources (resources.zip)](https://github.com/microsoft/fabricrealtimelab/raw/main/files/resources.zip)
 
 Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- *stg* and *ETL*; schemas help group workloads by type or function. The *stg* schema is for staging, and contains intermediate tables for the ETL process. The *ETL* schema contains mostly queries used for data movement, as well as a single table for state.  
 
