@@ -72,5 +72,4 @@ With the above steps completed, we have created a KQL database, and configured t
 - [x] Created the KQL Database
 - [x] Completed the ingestion process from the Eventstream to the KQL database
 
-
 [Continue >](./module02.md)
