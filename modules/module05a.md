@@ -14,7 +14,7 @@
 - [x] Completed [Module 02](../modules/module02.md)
 - [x] Completed [Module 03](../modules/module03.md)
 
-## :book: Modules
+## :book: Sections
 
 This module is broken down into 3 sections:
 
@@ -34,7 +34,7 @@ The data from our sample app currently streams at the rate of 1 request per seco
 
 ```mermaid
 erDiagram
-    "Stock Price Fact"||--o{ "Date Dimension":DateKey
+    "Stock Price Fact" }o--|| "Date Dimension":DateKey
     "Stock Price Fact" {
         int Symbol_SK
         date DateKey
@@ -48,7 +48,7 @@ erDiagram
         int Year
         string MonthName
     }
-    "Stock Price Fact" ||--o{ "Symbol Dimension":Symbol_SK
+    "Stock Price Fact" }o--|| "Symbol Dimension":Symbol_SK
     "Symbol Dimension" {
         int Symbol_SK
         string Symbol

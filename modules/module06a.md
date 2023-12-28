@@ -15,9 +15,12 @@
 
 Completing [Module 05](../modules/module05a.md) is not required, but may help illustrate the different ways to implement a star schema.
 
+## :book: Sections
+
 This module is broken down into 2 sections:
+
 * [Module 06a - Building a data lakehouse](./module06a.md)
-* [Module 06b - Using data wrangler to add an aggregation table](./module06b.md)
+* [Module 06b - Using data wrangler to add aggregation tables](./module06b.md)
 
 ## :loudspeaker: Introduction
 
@@ -36,7 +39,7 @@ If you completed module 05 (data warehouse), this dimensional model will look fa
 
 ```mermaid
 erDiagram
-    "Stock Price Fact"||--o{ "Date Dimension":DateKey
+    "Stock Price Fact" }o--|| "Date Dimension":DateKey
     "Stock Price Fact" {
         int Symbol_SK
         date DateKey
@@ -55,7 +58,7 @@ erDiagram
         string QuarterName
         int Year
     }
-    "Stock Price Fact" ||--o{ "Symbol Dimension":Symbol_SK
+    "Stock Price Fact" }o--|| "Symbol Dimension":Symbol_SK
     "Symbol Dimension" {
         int Symbol_SK
         string Symbol
@@ -160,15 +163,7 @@ With the schema in place, we're ready to look at our main notebook that will pro
 
 ## 5. Load fact table
 
-With our schema ready, let's review the dimensional model for our data:
-
-```mermaid
-erDiagram
-    "FACT STOCK"||--o{ DATE:DateKey
-    "FACT STOCK" ||--o{ SYMBOL:Symbol_SK
-```
-
-Our fact table contains the daily stock prices (the high, low, and closing price), while our dimensions are for our date and stock symbols (which might contain company details and other information). Although simple, conceptually this model represents a typical star schema that can be applied to larger datasets. 
+Our fact table contains the daily stock prices (the high, low, and closing price), while our dimensions are for our date and stock symbols (which might contain company details and other information). Although simple, conceptually this model represents a  star schema that can be applied to larger datasets. 
 
 Load the *Lakehouse 2* notebook. Similarly to the above step, attach the Lakehouse to the notebook. We recommend you run each cell individually, but you can also click Run All. Be sure the *sourceTableName* in the first cell matches the name of your table that contains the imported data from the Event Hub.
 

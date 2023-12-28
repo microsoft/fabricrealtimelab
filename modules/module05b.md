@@ -11,7 +11,7 @@
 
 - [x] Completed [Module 05a](../modules/module05a.md)
 
-## :book: Modules
+## :book: Sections
 
 This module is broken down into 3 sections:
 
