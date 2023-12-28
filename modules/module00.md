@@ -6,6 +6,12 @@
 
 30 minutes
 
+[All SQL Queries](../resources/module05/scripts/sqlscripts.zip)
+
+[test](./raw/main/resources/module05/scripts/sqlscripts.zip)
+[test](../raw/main/resources/module05/scripts/sqlscripts.zip)
+[test](/raw/main/resources/module05/scripts/sqlscripts.zip)
+
 ## :thinking: Prerequisites
 
 * Access to a Microsoft Fabric environment, or ability to create a Microsoft Fabric trial.
