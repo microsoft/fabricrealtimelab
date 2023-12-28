@@ -21,7 +21,7 @@ In order to follow along with the workshop exercises, we need to provision a set
 * Option 1 - Deploy the app via Jupyter notebook
 * Option 2 - Deploy the app via Azure Container Instance
 
-Both options yield the same results and is simply a matter of preference. For those using a Fabric free trial, we recommend using the Jupyter notebook (option 1) as it keeps the costs at zero, and gets you a bit more hands on with Fabric. The notebook must be kept running for the data to be generated. For those who have an existing environment (not a trial, and/or in a large organization) you may wish to go the container route (option 2) because running the script inside a container is more efficient than using a Spark cluster that the Jupyter notebook will use. (The pay-as-you-go cost for running the container and event hub is roughly $1.70/day.) When deploying via a container, the container starts automatically and begins creating data immediately.
+Both options yield the same data and is simply a matter of preference. For those using a Fabric free trial, we recommend using the Jupyter notebook (option 1) as it keeps the costs at zero and is 100% within the Fabric portal. The notebook must be kept running for the data to be generated. For those who have an existing environment (not a trial, and/or in a large organization) you may wish to go the container route (option 2) because running the script inside a container is more efficient than using a Spark cluster that the Jupyter notebook will use. (The pay-as-you-go cost for running the container and event hub is roughly $1.70/day.) When deploying via a container, the container starts automatically and begins creating data immediately. Finally, if you anticipate diving deeply into the lakehouse and data science modules, you may wish to go with the container (option 2) to help avoid resource contention when running multiple notebooks. See the [additional learning section](#thinking-additional-learning) for articles that discuss sizing and cluster configuration.
 
 You always have the option to revisit this option later, should you wish to make a change.
 
@@ -150,6 +150,11 @@ To auto-deploy the resources, use these steps below.
 8. On the Azure Event Hubs configuration page, add a new connection and using the values from EventHub you noted earlier, specifying the $Default consumer group: 
 
 ![Configure Event Hub](../images/module00/eventstream-hubconnection.png)
+
+## :thinking: Additional Learning
+
+* [Spark Concurrency in Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/data-engineering/spark-job-concurrency-and-queueing)
+* [Advancing Analytics - Fabric Notebook Concurrency Explained](https://www.advancinganalytics.co.uk/blog/2023/12/13/fabric-notebook-concurrency-explained)
 
 ## :tada: Summary
 
