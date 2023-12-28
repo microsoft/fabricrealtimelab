@@ -23,7 +23,7 @@ We'll also create views to support the pipeline by making it easier to load data
 
 This module is broken down into 3 submodules:
 * [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
-* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module5b.md)
+* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module05b.md)
 * [Module 05c - Semantic Modeling and reporting](./module05c.md)
 
 ## Table of Contents

@@ -30,9 +30,9 @@ erDiagram
     "Stock Price Fact" {
         int Symbol_SK
         date DateKey
-        decimal MinPrice
-        decimal MaxPrice
-        decimal ClosePrice
+        float MinPrice
+        float MaxPrice
+        float ClosePrice
     }
     "Date Dimension" {
         date DateKey
@@ -70,11 +70,11 @@ To get started, we'll first create the Synapse Data Warehouse in our workspace. 
 
 ![Create Data Warehouse](../images/module05/createwarehouse-persona.png)
 
-Or, from any persona, when on the *Home* page to view all items in the workspace, click *New* to add a new item, and select *Warehouse* to create a new Synapse Data Warehouse.
+Or, from the workspace home page, click *New* to add a new item, and select *Warehouse* to create a new Synapse Data Warehouse.
 
 ![Create Data Warehouse](../images/module05/createwarehouse.png)
 
-Name the warehouse StocksDW (or another name, if you prefer). Once created, you'll see the warehouse is largely empty. Create New SQL query at the top of the window. We'll start building our schema in the next step:
+Name the warehouse StocksDW (or another name, if you prefer). Once created, you'll see the warehouse is largely empty. Click *New SQL query* at the top of the window. We'll start building our schema in the next step:
 
 ![Empty Warehouse](../images/module05/emptywarehouse.png)
 
@@ -82,7 +82,7 @@ Name the warehouse StocksDW (or another name, if you prefer). Once created, you'
 
 If you prefer, you can create separate SQL queries for each of these SQL scripts, or you can re-use the same query editor.
 
-All of these queries can be downloaded using these links:
+All of these queries can be found in the resources > module05 folder, or can be downloaded in the following zip file:
 [All SQL Queries](./module05/scripts/sqlscripts.zip)
 
 Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- stg and ETL; schemas help group workloads by type or function. Note that the begin date for the waterwark is arbitrarily chosen as some previous date (12/31/2022), ensuring all data is captured.
