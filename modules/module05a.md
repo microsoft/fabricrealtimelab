@@ -185,7 +185,9 @@ Add a Copy Data activity within the ForEach. On this activity:
 
 This should look similar to:
 
-[Copy KQL Query](../images/module05/pipeline-copykql-stockprices.png)
+![Copy KQL Query](../images/module05/pipeline-copykql-stockprices.png)
+
+You can click the *Preview* button next to the query to verify data is returned. A window will open where you can specify a watermark -- enter a recent date such as *2023-12-01*.
 
 Switch to the *Destination* tab on the copy activity.
 
