@@ -83,7 +83,7 @@ Name the warehouse StocksDW (or another name, if you prefer). Once created, you'
 If you prefer, you can create separate SQL queries for each of these SQL scripts, or you can re-use the same query editor.
 
 All of these queries can be found in the resources > module05 folder, or can be downloaded in the following zip file:
-[All SQL Queries](./module05/scripts/sqlscripts.zip)
+[All SQL Queries](./resources/module05/scripts/sqlscripts.zip)
 
 Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- stg and ETL; schemas help group workloads by type or function. Note that the begin date for the waterwark is arbitrarily chosen as some previous date (12/31/2022), ensuring all data is captured.
 
