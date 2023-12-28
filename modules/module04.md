@@ -15,11 +15,17 @@
 
 ## :loudspeaker: Introduction
 
-This is an optional module.
+Data Activator is an observability tool for automatically monitoring and taking actions when certain conditions (or patterns) are detected in a datastream. Common use cases include monitoring IoT devices, sales data, performance counters, and system health.
 
-Data Activator is an observability tool for automatically monitoring and taking actions when certain conditions (or patterns) are detected in a data stream. While there are countless use cases, common use cases include monitoring IoT devices, sales data, performance counters, and system health.
+In this module, we'll start by linking the Power BI report monitoring the stock price created in [Module 03](../modules/module03.md) to Data Activator. Additional sub-modules will be added over time for additional scenarios, such as monitoring the Eventstream directly. In this configuration, data flows through the system like this:
 
-In this module, we'll start by linking the Power BI report monitoring the stock price created in [Module 03](../modules/module03.md) to Data Activator. Additional sub-modules will be added over time for additional scenarios.
+```mermaid
+flowchart LR
+    A[Event Hub] --> B{Eventstream}
+    B --> C[(KQL DB)]
+    C --> D[PBI Report]
+    D --> E{Data Activator}
+```
 
 Learn more about Data Activator on the [Microsoft Learn Data Activator](https://learn.microsoft.com/en-us/fabric/data-activator/data-activator-introduction) page. 
 
@@ -130,6 +136,11 @@ Notice that on each trigger page, information about when and which symbol create
 ## 7. Optional: Configure a new Reflex for Percent Changed
 
 (Optional) Using steps similar to above, configure a new Data Activator Reflex (or, a new object can be added to this Reflex) that monitors the the Percentage Difference visual. Be sure to change its window to 5 minutes to ensure all events are routed into Data Activator.
+
+## :thinking: Additional Learning
+
+* [Microsoft Learn - Data Activator](https://learn.microsoft.com/en-us/fabric/data-activator/data-activator-introduction)
+* [Data Activator roadmap](https://learn.microsoft.com/en-us/fabric/release-plan/data-activator)
 
 ## :tada: Summary
 

@@ -12,7 +12,10 @@
 - [x] Completed Module 07a
 - [x] Completed Module 07b
 
+## :book: Sections
+
 This module is broken down into 3 sections:
+
 * [Module 07a - Building and storing an ML model](./module07a.md)
 * [Module 07b - Using models, saving to the lakehouse, building a report](./module07b.md)
 * [Module 07c - Solution in practice](./module07c.md)

@@ -15,7 +15,7 @@
 
 ## :loudspeaker: Introduction
 
-In this module, we explore the original KQL query used to retrieve stock data. While simple and fast, there are potential issues that can be solved a number of ways, so we'll explore a few of those ideas here.
+In this module, we explore the original KQL query used to retrieve stock data. While simple and fast, there are limitations that can be addressed a number of ways, so we'll explore a few of those ideas here.
 
 ## Table of Contents
 

@@ -23,29 +23,35 @@ With the data loaded in the database and our inital KQL Queryset complete, we ca
 
 ## 1. Configure Refresh Rate
 
-Our Power BI tenant needs to be configured to allow for real time updating. To configure this setting, navigate to the Power BI admin portal by clicking on the settings icon in the upper right of the Fabric portal. 
+Our Power BI tenant needs to be configured to allow for real time updating. To configure this setting, navigate to the Power BI admin portal by clicking on the *Settings* icon in the upper right of the Fabric portal. 
 
 ![Power BI Admin Portal](../images/module03/pbiadminportal.png)
 
-Under capacity settings, select Fabric capacity and select the capacity name configured earlier.
+Select *Capacity settings* on the left, and select the Fabric capacity that matches your current environment: this will be *Trial* if using a trial environment, or the capacity name configured earlier if using a new Fabric capacity. If you are using your organization's capacity, you may not have sufficient permissions to modify these settings, which means some functinoality will be limited if the organization has limited the max refresh rate.
 
 ![Power BI Capacity Settings](../images/module03/fabriccapacitysettings.png)
 
-On the following screen, scroll down to the Power BI workloads section, and under Datasets, configure Automatic page refresh to on, with a minimum refresh interval of 1 second. Click Apply. Note: depending on your administrative permissions, this setting may not be available.
+On the following screen, scroll down to the *Power BI workloads* section, and under *Semantic Models* (recently renamed from *Datasets*), configure *Automatic page refresh* to *On*, with a minimum refresh interval of 1 second. Click *Apply*. Note: depending on your administrative permissions, this setting may not be available. Note that this change may take several minutes to complete.
+
+> :bulb: **Did you know?**
+> Power BI Datasets have recently been renamed to Semantic Models. In some cases, labels may not have been updated. The terms can be used interchangeably. Read more about this change [on the Power BI Blog](https://powerbi.microsoft.com/en-us/blog/datasets-renamed-to-semantic-models/).
 
 ![Power BI Refresh Interval](../images/module03/pbiautorefresh.png)
 
 ## 2. Create a basic Power BI report
 
-From the StockByTime queryset in the Fabric portal, click the Build Power BI report button above the query window.
+From the *StockByTime* Queryset in the Fabric portal, click the *Build Power BI report* button above the query window.
 
 ![Create Power BI Report](../images/module03/buildpbireport.png)
 
 On the report page that opens, we can configure our initial chart. Add a line chart to the design surface, and configure the report as follows:
 
-* Legend: Stock Symbol
+* Legend: Symbol
 * X-axis: Timestamp
-* Y-axis: Stock Price
+* Y-axis: Price
+
+> :bulb: **Sum, or average?**
+> You may notice the default aggregation is *sum*, such as *Sum of price*. In the event there are multiple prices for a given symbol at the same point in time, this aggregation sets the behavior. *Sum* would, of course, add all prices, whereas *avg* would take the mean for all prices for that symbol at that point in time. However, in theory, we should only have a single price for a symbol at a given point in time, so there should be no visible difference. Average would be more visually correct for our purposes. 
 
 ![Configure Initial Report](../images/module03/pbiinitialreport.png)
 
@@ -69,13 +75,13 @@ Similarly, configure the visual filter to show data only for the last minute. Wh
 
 ## 4. Configure the report to auto-refresh
 
-Deselect the chart. On the Visualizations settings, configure page fresh to automatically refresh every second.
+Deselect the chart. On the *Visualizations* settings, enable *Page refresh* to automatically refresh every second.
 
 ![Configure Report Refresh](../images/module03/pbipagerefresh.png)
 
 ## :tada: Summary
 
-In this module, you modified the Power BI admin settings to allow for frequent page refreshes. Next, you created a Power BI report that leveraged the KQL queryset created in the previous module. The line charts filtered the data for the last minute, and the page was configured to update every 1 second.
+In this module, you modified the Power BI admin settings to allow for frequent page refreshes. Next, you created a Power BI report that leveraged the KQL Queryset created in the previous module. The line charts were configured to filtered the data for the last minute, and the page was configured to update every 1 second.
 
 ## :white_check_mark: Results
 

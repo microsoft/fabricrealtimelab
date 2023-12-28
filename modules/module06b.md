@@ -10,9 +10,12 @@
 
 - [x] Completed [Module 06a - Data lakehouse](../modules/module06a.md)
 
+## :book: Sections
+
 This module is broken down into 2 sections:
+
 * [Module 06a - Building a data lakehouse](./module06a.md)
-* [Module 06b - Using data wrangler to add an aggregation table](./module06b.md)
+* [Module 06b - Using data wrangler to add aggregation tables](./module06b.md)
 
 ## :loudspeaker: Introduction
 
@@ -22,7 +25,7 @@ A traditional medallion architecture may look similar to:
 
 ```mermaid
 flowchart LR
-    A[Event Hub] --> B{EventStream}
+    A[Event Hub] --> B{Eventstream}
     B --> C[(Bronze / raw)]
     C --> D[(Silver / curated)]
     D --> E[(Gold / modeled)]

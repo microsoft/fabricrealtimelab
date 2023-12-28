@@ -42,7 +42,7 @@ With a medallion archicture, we can extend the concepts learned in Module 06, an
 
 ```mermaid
 flowchart LR
-    A[Event Hub] --> B{EventStream}
+    A[Event Hub] --> B{Eventstream}
     B --> C[(Bronze / raw)]
     C --> D[(Silver / curated)]
     D --> E[(Gold / modeled)]

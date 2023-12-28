@@ -15,22 +15,58 @@
 
 Completing [Module 05](../modules/module05a.md) is not required, but may help illustrate the different ways to implement a star schema.
 
+## :book: Sections
+
 This module is broken down into 2 sections:
+
 * [Module 06a - Building a data lakehouse](./module06a.md)
-* [Module 06b - Using data wrangler to add an aggregation table](./module06b.md)
+* [Module 06b - Using data wrangler to add aggregation tables](./module06b.md)
 
 ## :loudspeaker: Introduction
 
-In this module, we'll build a Lakehouse architecture to ingest and store our stock data into a traditional star schema using fact and dimension tables. If you've completed the Data Warehouse module, this module is similar in result, but different in approach by using Notebooks within a lakehouse.
+In this module, we'll build a lakehouse architecture to ingest and store our stock data into a traditional star schema using fact and dimension tables. If you've completed the Data Warehouse module, this module is similar in result, but different in approach by using Notebooks within a lakehouse. (Note: it is also possible to use pipelines to orchestrate activities, but this solution will be done completely within notebooks.)
 
-From an architecture perspective, we'll look to implement a lambda architecture by splitting hot path and cold path data from the EventStream. Hot path will continue to the KQL database as already configured, and cold path will be added to write this raw data to our lakehouse. Our event structure will resemble the following:
+From an architecture perspective, we'll look to implement a lambda architecture by splitting hot path and cold path data from the Eventstream. Hot path will continue to the KQL database as already configured, and cold path will be added to write this raw data to our lakehouse. Our event structure will resemble the following:
 
 ```mermaid
 flowchart LR
-    A[Event Hub] --> B{EventStream}
+    A[Event Hub] --> B{Eventstream}
     B --> C[(KQL DB)]
     B --> D[(Lakehouse Tables)]
 ```
+
+If you completed module 05 (data warehouse), this dimensional model will look familiar:
+
+```mermaid
+erDiagram
+    "Stock Price Fact" }o--|| "Date Dimension":DateKey
+    "Stock Price Fact" {
+        int Symbol_SK
+        date DateKey
+        float MinPrice
+        float MaxPrice
+        float ClosePrice
+    }
+    "Date Dimension" {
+        date DateKey
+        int DayNum
+        int DayOfWeekNum
+        string DayOfWeekName
+        int MonthNum
+        string MonthName
+        int QuarterNum
+        string QuarterName
+        int Year
+    }
+    "Stock Price Fact" }o--|| "Symbol Dimension":Symbol_SK
+    "Symbol Dimension" {
+        int Symbol_SK
+        string Symbol
+        string Name
+        string Market
+    }
+```
+
 ## :bulb: About Notebooks
 
 Most of this lab will be done within a Jupyter Notebook, an industry standard way of doing exploratory data analyis, building models, and visualizing datasets, and processing data. A notebook itself is separated into indiviual sections called cells which contain code or text documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is generally the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
@@ -46,7 +82,7 @@ These layers are not intended to be a hard rule, but rather a guiding principle.
 ## Table of Contents
 
 1. [Create the lakehouse](#1-create-the-lakehouse)
-2. [Add lakehouse to EventStream](#2-add-lakehouse-to-eventstream)
+2. [Add lakehouse to Eventstream](#2-add-lakehouse-to-eventstream)
 3. [Import notebooks](#3-import-notebooks)
 4. [Create schema](#4-create-schema)
 5. [Load fact table](#5-load-fact-table)
@@ -62,15 +98,15 @@ Within your Fabric workspace, switch to the data engineering persona (bottom lef
 
 ![Create Lakehouse](../images/module06/createlakehouse.png)
 
-## 2. Add lakehouse to EventStream
+## 2. Add lakehouse to Eventstream
 
-Open the EventStream created in the first module. Click the plus symbol on the output of the EventStream to add a new destination. Select *Lakehouse* from the context menu, and in the side panel that opens, select the lakehouse created above and create a new table called *raw_stock_data*. Ensure the input data format is *Json*; this should look similar to the image below:
+Open the Eventstream created in the first module. Click the plus symbol on the output of the Eventstream to add a new destination. Select *Lakehouse* from the context menu, and in the side panel that opens, select the lakehouse created above and create a new table called *raw_stock_data*. Ensure the input data format is *Json*; this should look similar to the image below:
 
-![Add Destination to EventStream](../images/module06/addeventstream.png)
+![Add Destination to Eventstream](../images/module06/addeventstream.png)
 
-Once complete, we should have our EventStream publishing data to both the KQL Database (hot path) and our lakehouse (cold path); this should look similar to the image below:
+Once complete, we should have our Eventstream publishing data to both the KQL Database (hot path) and our lakehouse (cold path); this should look similar to the image below:
 
-![Completed EventStream](../images/module06/completedeventstream.png)
+![Completed Eventstream](../images/module06/completedeventstream.png)
 
 ## 3. Import notebooks
 
@@ -109,7 +145,7 @@ If there is no lakehouse associated with the notebook, click *Add* underneath th
 
 ![Add Lakehouse to Notebook](../images/module06/addlakehousetonotebook.png)
 
-With the notebook loaded and the lakehouse attached, notice the schema on the left. The *raw_stock_data* table was configured with our EventStream, and is the landing place for the data that is ingested from the Event Hub. This is our raw/bronze level data, as it represents data without any processing or validation.
+With the notebook loaded and the lakehouse attached, notice the schema on the left. The *raw_stock_data* table was configured with our Eventstream, and is the landing place for the data that is ingested from the Event Hub. This is our raw/bronze level data, as it represents data without any processing or validation.
 
 ![Lakehouse Schema](../images/module06/lakehouseschema1.png)
 
@@ -127,15 +163,7 @@ With the schema in place, we're ready to look at our main notebook that will pro
 
 ## 5. Load fact table
 
-With our schema ready, let's review the dimensional model for our data:
-
-```mermaid
-erDiagram
-    "FACT STOCK"||--o{ DATE:DateKey
-    "FACT STOCK" ||--o{ SYMBOL:Symbol_SK
-```
-
-Our fact table contains the daily stock prices (the high, low, and closing price), while our dimensions are for our date and stock symbols (which might contain company details and other information). Although simple, conceptually this model represents a typical star schema that can be applied to larger datasets. 
+Our fact table contains the daily stock prices (the high, low, and closing price), while our dimensions are for our date and stock symbols (which might contain company details and other information). Although simple, conceptually this model represents a  star schema that can be applied to larger datasets. 
 
 Load the *Lakehouse 2* notebook. Similarly to the above step, attach the Lakehouse to the notebook. We recommend you run each cell individually, but you can also click Run All. Be sure the *sourceTableName* in the first cell matches the name of your table that contains the imported data from the Event Hub.
 
@@ -232,7 +260,7 @@ Congratulations! You've not only compared the results, you've seen how easy it i
 
 ## :tada: Summary
 
-In this module, you implemented a lambda architecture to store data in the lakehouse from the EventStream, and ran several notebooks to process the data into a dimensional model. You then created a semantic model for reporting, and used that model in a Power BI report.
+In this module, you implemented a lambda architecture to store data in the lakehouse from the Eventstream, and ran several notebooks to process the data into a dimensional model. You then created a semantic model for reporting, and used that model in a Power BI report.
 
 ## References
 
@@ -242,7 +270,7 @@ In this module, you implemented a lambda architecture to store data in the lakeh
 
 ## :white_check_mark: Results
 
-- [x] Modified EventStream to ingest data to the lakehouse
+- [x] Modified Eventstream to ingest data to the lakehouse
 - [x] Ran several notebooks to create the dimensional model and process the data
 - [x] Created a semantic model and simple report
 

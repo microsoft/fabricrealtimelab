@@ -11,13 +11,21 @@
 
 - [x] Completed [Module 05a](../modules/module05a.md)
 
+## :book: Sections
+
+This module is broken down into 3 sections:
+
+* [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
+* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module05b.md)
+* [Module 05c - Semantic Modeling and reporting](./module05c.md)
+
 ## :loudspeaker: Introduction
 
 With the completion of Module 05a, we have the plumbing in place to ingest data from the KQL database into our data warehouse. The next step is to prep the dimension tables. 
 
 For the date dimension, we'll load this during this module with values for the foreseeable future. 
 
-For the symbol dimension, we'll run that during the pipeline -- this way, if new stocks are added at some point, they will get added to the Symbol dimension table during the execution of the pipeline.
+For the symbol dimension, we'll incrementally load that during the pipeline -- this way, if new stocks are added at some point, they will get added to the Symbol dimension table during the execution of the pipeline.
 
 We'll also create views to support the pipeline by making it easier to load data from the staging table by aggregating the min, max, and closing price of the stock.
 
@@ -30,10 +38,9 @@ We'll also create views to support the pipeline by making it easier to load data
 5. [Add activity to load symbols](#5-add-activity-to-load-symbols)
 6. [Create the procedure to load daily prices](#6-create-the-procedure-to-load-daily-prices)
 
-
 ## 1. Create the dimension and fact tables
 
-In our data warehouse, run the following SQL to create our fact and dimension tables. As in the previous step, you can run this ad-hoc or create a SQL query to save the query for future use.
+In our data warehouse, run the following SQL to create the fact and dimension tables. As in the previous step, you can run this ad-hoc or create a SQL query to save the query for future use.
 
 ```sql
 -- Dimensions and Facts (dbo)
@@ -106,9 +113,9 @@ Exec ETL.sp_Dim_Date_Load
 
 ## 3. Create the procedure to load the Symbol dimension
 
-Similar to the date dimension, each stock symbol corresponds to a row in the Symbols dimension table. This table would hold details of the stock, such as company name, or the market the stock is listed with.
+Similar to the date dimension, each stock symbol corresponds to a row in the Symbols dimension table. This table holds details of the stock, such as company name, and the market the stock is listed with.
 
-Run the script below -- this will create the procedure that will load the stock symbol dimension. We'll execute this with the pipeline to handle any new stocks that might enter the feed.
+Run the script below -- this will create the procedure that will load the stock symbol dimension. We'll execute this in the pipeline to handle any new stocks that might enter the feed.
 
 ```sql
 CREATE PROC [ETL].[sp_Dim_Symbol_Load]
@@ -146,7 +153,7 @@ GO
 
 ## 4. Create the views
 
-Next, we'll create the views that support the aggregation of the data during the load. When the pipeline runs, it copies the data from the KQL database into our staging table, where we'll collapse all of the data for each stock into a min, max, and closing price for each day. 
+Next, we'll create the views that support the aggregation of the data during the load. When the pipeline runs, data is copied from the KQL database into our staging table, where we'll aggregate all of the data for each stock into a min, max, and closing price for each day. 
 
 ```sql
 CREATE VIEW [stg].[vw_StocksDailyPrices] 
@@ -185,17 +192,17 @@ GO
 
 ## 5. Add activity to load symbols
 
-In the pipeline, add a new Stored Procedure activity that executes the procedure that loads the stock symbols. This should be connected to the success output of the foreach activity (not within the foreach activity).
+In the pipeline, add a new Stored Procedure activity named *Populate Symbols Dimension* that executes the procedure that loads the stock symbols. This should be connected to the success output of the foreach activity (not within the foreach activity), as shown below.
 
 * Name: Populate Symbols Dimension
 * Settings: 
- * Stored procedure name: ETL.sp_Dim_Symbol_Load.sql
+ * Stored procedure name: [ETL].[sp_Dim_Symbol_Load]
 
 ![Load Symbols in Pipeline](../images/module05/pipeline-loadsymbol.png)
 
 ## 6. Create the procedure to load daily prices
 
-Next, run the script below to create the procedure that builds the fact table. This procedure rebuilds the fact table to account for incremental data flowing into the table throughout the day. If the pipeline is running throughout the day, the values will be updated to reflect any changes in the min, max, and closing price.
+Next, run the script below to create the procedure that builds the fact table. This procedure merges data from staging into the fact table. If the pipeline is running throughout the day, the values will be updated to reflect any changes in the min, max, and closing price. (Note: currently, Fabric data warehouse does not yet support the T-SQL merge statement; because of this, data will be updated and then inserted as needed.)
 
 ```sql
 CREATE PROCEDURE [ETL].[sp_Fact_Stocks_Daily_Prices_Load]
@@ -243,29 +250,31 @@ GO
 
 ## 2. Add activity to the pipeline to load daily stock prices
 
-Add a stored procedure activity to the pipeline named Populate Fact Stocks Daily Prices that loads the stocks prices from staging into the fact table. Connect the success output of the Populate Symbols Dimension to the new Populate Fact Stocks Daily Prices activity.
+Add another Stored Procedure activity to the pipeline named *Populate Fact Stocks Daily Prices* that loads the stocks prices from staging into the fact table. Connect the success output of the *Populate Symbols Dimension* to the new *Populate Fact Stocks Daily Prices* activity.
+
+* Name: Populate Fact Stocks Daily Prices
+* Settings: 
+ * Stored procedure name: [ETL].[sp_Fact_Stocks_Daily_Prices_Load]
 
 ![Load prices](../images/module05/pipeline-loadprices.png)
 
 ## 3. Run the pipeline
 
-Our pipeline should be complete! The framework is modular and can be adapted to support other activities in the future, but for now, our basic warehouse is ready.
-
-Run the pipeline by clicking the Run button, and verify the pipeline runs and fact and dimension tables are being loaded. 
+Our pipeline should be complete! Run the pipeline by clicking the *Run* button, and verify the pipeline runs and fact and dimension tables are being loaded. 
 
 ![Run all](../images/module05/pipeline-runall.png)
 
 ## 4. Schedule the pipeline
 
-Next, schedule the pipeline to run periodically. This will vary by business case, but this could be run frequently (every few minutes) or once or twice per day. To schedule the pipeline, click the Schedule button (next to the Run button) and set up a recurring schedule, such as hourly or every few minutes:
+Next, schedule the pipeline to run periodically. This will vary by business case, but this could be run frequently (every few minutes) or once or twice per day. To schedule the pipeline, click the *Schedule* button (next to the *Run* button) and set up a recurring schedule, such as hourly or every few minutes:
 
 ![Schedule Pipeline](../images/module05/pipeline-schedule.png)
 
 ## :tada: Summary
 
-In this second part of module 05, we completed our pipeline by adding the fact and dimension tables, and added the key components to the pipeline to transform the daily into the desired daily aggregates. There are two key considerations:
+In this second part of module 05, we completed our pipeline by adding the fact and dimension tables, and added the key components to the pipeline to transform the per-second data into the desired daily aggregates. There are two key considerations:
 
-First, the framework is modular to support additional ingestion tasks as needed with minimal rework. This is done via the Get Watermark Lookup that uses a table to keep track of what tables to ingest, and the current watermark of each table.
+First, the framework is modular to support additional ingestion tasks as needed with minimal rework. This is done via the *Get Watermark* Lookup that uses a table to keep track of what tables to ingest, and the current watermark of each table.
 
 Second, the pipeline can be run throughout day and supports incremental loading, while keeping processing minimal. 
 
