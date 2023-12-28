@@ -21,6 +21,11 @@ For the symbol dimension, we'll run that during the pipeline -- this way, if new
 
 We'll also create views to support the pipeline by making it easier to load data from the staging table by aggregating the min, max, and closing price of the stock.
 
+This module is broken down into 3 submodules:
+* [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
+* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module5b.md)
+* [Module 05c - Semantic Modeling and reporting](./module05c.md)
+
 ## Table of Contents
 
 1. [Create the dimension and fact tables](#1-create-the-dimension-and-fact-tables)

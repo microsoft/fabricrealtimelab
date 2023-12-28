@@ -16,20 +16,46 @@
 
 ## :loudspeaker: Introduction
 
-In this module, you will build a Synapse Data Warehouse inside Microsoft Fabric to aggregate data from the KQL database. In Microsoft Fabric, there are two primary ways to building a data warehouse: a lakehouse, which is the topic of the next module, and a data warehouse, the focus of this module.
+In this module, you will build a Synapse Data Warehouse inside Microsoft Fabric to aggregate data from the KQL database. In Microsoft Fabric, there are two primary ways to building a data warehouse: using a Synapse Data Warehouse, the focus of this module, and a lakehouse, the topic of the next module.
 
-A Synapse Data Warehouse stores its data in OneLake in Delta/Parquet similar to Lakehouse tables. However, only a Synapse Data Warehouse offers read/write on the T-SQL endpoint. If you are migrating a data warehouse or more familiar with T-SQL development, using a Synapse Data Warehouse is a logical choice. 
+A Synapse Data Warehouse stores its data in OneLake in Delta/Parquet format similar to lakehouse tables. However, only a Synapse Data Warehouse offers read/write on the T-SQL endpoint. If you are migrating a data warehouse or more familiar with T-SQL development, using a Synapse Data Warehouse is a logical choice. 
 
-Whether you choose a lakehouse or warehouse, the end goals are similar: to have highly curated data to support the business analytics requirements. Often, this is done in a star-schema with dimension and fact tables. These tables serve as a single source of truth for the business. 
+Whether you choose a lakehouse or Synapse Data Warehouse, the end goals are similar: to have highly curated data to support the business analytics requirements. Often, this is done in a star-schema with dimension and fact tables. These tables serve as a single source of truth for the business. 
 
-The data from our sample app currently streams at the rate of 1 request per second per stock symbol, resulting in 86,400 values for each stock per day. For the purposes of our warehouse, we'll collapse that to daily values including a daily high, daily low, and closing price of each stock. This reduces the rowcount from nearly 700,000 to 8. 
+The data from our sample app currently streams at the rate of 1 request per second per stock symbol, resulting in 86,400 values for each stock per day. For the purposes of our warehouse, we'll collapse that to daily values including a daily high, daily low, and closing price of each stock. This reduces the rowcount from nearly 700,000 to 8. Our data model will look like this:
 
-In this ETL (extract, transform, and load) process, we'll extract all data that hasn't yet been imported, as determined by the current watermark into a staging table. This data will then be summarized, and then placed in the dimension/fact tables. Note that while we are importing only one table (stock prices), the framework we are building supports ingestion for multiple tables. 
+```mermaid
+erDiagram
+    "Stock Price Fact"||--o{ "Date Dimension":DateKey
+    "Stock Price Fact" {
+        int Symbol_SK
+        date DateKey
+        decimal MinPrice
+        decimal MaxPrice
+        decimal ClosePrice
+    }
+    "Date Dimension" {
+        date DateKey
+        int DayNum
+        int DayOfWeekNum
+        int Year
+        etc etc
+    }
+    "Stock Price Fact" ||--o{ "Symbol Dimension":Symbol_SK
+    "Symbol Dimension" {
+        int Symbol_SK
+        string Symbol
+        string Name
+        string Market
+    }
+```
 
-This module is broken down into 3 submodules.
-* [Module 05a - Setting up the Warehouse and Pipeline]
-* [Module 05b - Building the dimension and fact tables, completing the pipeline]
-* [Module 05c - Semantic Modeling and reporting]
+In our ETL (extract, transform, and load) process, we'll extract all data that hasn't yet been imported, as determined by the current watermark into a staging table. This data will then be summarized, and then placed in the dimension/fact tables. Note that while we are importing only one table (stock prices), the framework we are building supports ingestion for multiple tables. 
+
+This module is broken down into 3 submodules:
+* [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
+* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module5b.md)
+* [Module 05c - Semantic Modeling and reporting](./module05c.md)
 
 ## Table of Contents
 

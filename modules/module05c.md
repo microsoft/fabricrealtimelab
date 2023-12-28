@@ -18,6 +18,11 @@ With the completion of Module 05a and Module 05b, our warehouse and ingestion pr
 
 One final step is to operationalize the data by creating a semantic model and viewing the data in Power BI. (Naturally, we don't have a lot of data yet in the warehouse to make these reports too interesting.)
 
+This module is broken down into 3 submodules:
+* [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
+* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module5b.md)
+* [Module 05c - Semantic Modeling and reporting](./module05c.md)
+
 ## Table of Contents
 
 1. [Create a semantic model](#1-create-a-semantic-model)
