@@ -200,7 +200,7 @@ In the pipeline, add a new Stored Procedure activity that executes the procedure
 
 ## 6. Create the procedure to load daily prices
 
-Next, run the script below to create the procedure that builds the fact table. This procedure rebuilds the fact table to account for incremental data flowing into the table throughout the day. If the pipeline is running throughout the day, the values will be updated to reflect any changes in the min, max, and closing price.
+Next, run the script below to create the procedure that builds the fact table. This procedure merges data from staging into the fact table. If the pipeline is running throughout the day, the values will be updated to reflect any changes in the min, max, and closing price. (Note: currently, Fabric data warehouse does not yet support the merge statement; because of this, data will be updated and then inserted as needed.)
 
 ```sql
 CREATE PROCEDURE [ETL].[sp_Fact_Stocks_Daily_Prices_Load]
