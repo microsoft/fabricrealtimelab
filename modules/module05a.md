@@ -169,11 +169,11 @@ This should look similar to the image below:
 Add a Copy Data activity within the ForEach. On this activity:
 
 * Name: Copy KQL
-* Source: Select the KQL database and table holding the incoming stock data
-* Query: Use the following query to get the data from the KQL table. Note: Verify the table name (in this case, StockHistory) matches the name of your table in your KQL database.
+* Source: Select the KQL database holding the incoming stock data (StockDB)
+* Query: Use the following query to get the data from the KQL table. Note: Verify the table name (in this case, StockPrice) matches the name of your table in your KQL database.
 
 ```text
-@concat('StockHistory  
+@concat('StockPrice  
     | where todatetime(timestamp) >= todatetime(''', item().WaterMark,''') 
     | order by timestamp asc
     | extend datestamp = substring(timestamp,0,10) 
@@ -182,6 +182,12 @@ Add a Copy Data activity within the ForEach. On this activity:
     | where not(isnull(price))
     ' )
 ```
+
+This should look similar to:
+
+[Copy KQL Query](../images/module05/pipeline-copykql-stockprices.png)
+
+Switch to the *Destination* tab on the copy activity.
 
 * Destination: On the destination tab, set the destination to the StocksDW warehouse, and select the stg.StocksPrices table. Under the Advanced section, enter the following SQL script to truncate the table before loading the staging table:
 
