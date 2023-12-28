@@ -6,10 +6,8 @@
 
 30 minutes
 
-[All SQL Queries](../resources/module05/scripts/sqlscripts.zip)
 
-
-[test](https://github.com/bhitney/fabricrealtimelab/raw/main/resources/module05/scripts/sqlscripts.zip)
+[test](https://github.com/bhitney/fabricrealtimelab/raw/main/files/resources.zip)
 
 ## :thinking: Prerequisites
 
