@@ -66,7 +66,7 @@ This module is broken down into 3 submodules:
 
 ## 1. Create a Synapse Data Warehouse in the Fabric workspace
 
-To get started, we'll first create the Synapse Data Warehouse in our workspace. There are two ways to do this: from the workspace, switch to the Data Warehouse persona (in the bottom left), and select the Warehouse button to create a new Synapse Data Warehouse.
+To get started, we'll first create the Synapse Data Warehouse in our workspace. There are two ways to do this: from the workspace, switch to the Data Warehouse persona (in the bottom left), and select the *Warehouse* button to create a new Synapse Data Warehouse.
 
 ![Create Data Warehouse](../images/module05/createwarehouse-persona.png)
 
@@ -74,18 +74,20 @@ Or, from the workspace home page, click *New* to add a new item, and select *War
 
 ![Create Data Warehouse](../images/module05/createwarehouse.png)
 
-Name the warehouse StocksDW (or another name, if you prefer). Once created, you'll see the warehouse is largely empty. Click *New SQL query* at the top of the window. We'll start building our schema in the next step:
+Name the warehouse *StocksDW* (or another name, if you prefer, but be sure to remember the names of your assets). Once created, you'll see the warehouse is largely empty. Click *New SQL query* at the top of the window. We'll start building our schema in the next step:
 
 ![Empty Warehouse](../images/module05/emptywarehouse.png)
 
 ## 2. Create the schema for stocks and metadata
 
-If you prefer, you can create separate SQL queries for each of these SQL scripts, or you can re-use the same query editor.
+If you prefer, you can create separate SQL queries for each of these SQL scripts, or you can re-use the same query editor. If you prefer to create separate queries, you can rename them by right-clicking on the query name, and they will be stored in your data warehouse for later use. 
 
-All of these queries can be found in the resources > module05 folder, or can be downloaded in the following zip file:
+All of these queries can be found in the *resources > module05* folder, or can be downloaded in the following zip file:
 [All SQL Queries](../resources/module05/scripts/sqlscripts.zip)
 
-Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- stg and ETL; schemas help group workloads by type or function. Note that the begin date for the waterwark is arbitrarily chosen as some previous date (12/31/2022), ensuring all data is captured.
+Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- *stg* and *ETL*; schemas help group workloads by type or function. The *stg* schema is for staging, and contains intermediate tables for the ETL process. The *ETL* schema contains mostly queries used for data movement, as well as a single table for state.  
+
+Note that the begin date for the waterwark is arbitrarily chosen as some previous date (12/31/2022), ensuring all data is captured -- this date will be updated on each successful run. 
 
 ```sql
 -- STAGING TABLES
@@ -140,11 +142,11 @@ This should look similar to:
 
 ## 2. Create pipeline 
 
-From the workspace (or from within the Data Factory persona), create a new pipeline named PL_Refresh_DWH. 
+From the workspace (or from within the Data Factory persona), create a new pipeline named *PL_Refresh_DWH*. 
 
 ![Create Pipeline](../images/module05/createpipeline.png)
 
-Create a lookup activity on the pipeline named Get WaterMark. On the settings tab, select the data warehouse as the data store type, and specify the StocksDW data warehouse. Specify a query using the SQL statement below, and ensure First row only is unchecked.
+Create a lookup activity on the pipeline named *Get WaterMark*. On the settings tab, select the data warehouse as the data store type, and specify the *StocksDW* data warehouse. Specify a query using the SQL statement below, and ensure *First row only* is *unchecked*.
 
 ```sql
 SELECT * FROM [ETL].[IngestSourceInfo] WHERE IsActiveFlag = 'Y'
@@ -156,11 +158,13 @@ This should look similar to:
 
 ## 3. Add ForEach activity
 
-Add a ForEach activity to the pipeline. Connect the On Success event on the Lookup activity to the ForEach by dragging from the On Success checkbox on the right side of the activity to the ForEach activity. On the settings tab of the ForEach, set the Items to:
+Add a ForEach activity to the pipeline. Connect the *On Success* event on the Lookup activity to the ForEach by dragging from the *On Success* checkbox on the right side of the activity to the ForEach activity. On the settings tab of the ForEach, set the *Items* to:
 
 ```text
 @activity('Get WaterMark').output.value
 ```
+
+This step gets the watermark for all tables we'd like to copy. While we are creating this for a single table, we'd like to make it flexible to be adapted to multiple tables in the future with minimal rework.
 
 This should look similar to the image below:
 
@@ -187,25 +191,27 @@ This should look similar to:
 
 ![Copy KQL Query](../images/module05/pipeline-copykql-stockprices.png)
 
-You can click the *Preview* button next to the query to verify data is returned. A window will open where you can specify a watermark -- enter a recent date such as *2023-12-01*.
+You can click the *Preview data* button next to the query to verify data is returned. A window will open where you can specify a watermark -- enter a recent date such as *2023-12-01*.
 
 Switch to the *Destination* tab on the copy activity.
 
-* Destination: On the destination tab, set the destination to the StocksDW warehouse, and select the stg.StocksPrices table. Under the Advanced section, enter the following SQL script to truncate the table before loading the staging table:
+* Destination: On the destination tab, set the destination to the *StocksDW* warehouse, and select the *stg.StocksPrices* table. Under the *Advanced* section, enter the following SQL script to truncate the table before loading the staging table:
 
 ```sql
 delete stg.StocksPrices
 ```
 
+This step first truncates old data from the staging table, and then copies the data from the KQL table, selecting data from the last watermark and inserting it into the staging table. Using a watermark is important to avoid processing the entire table; additionally, KQL queries have a maximum rowcount of 500,000 rows. Given the current rate of data ingested, this equates to about 3/4 of one day. 
+
 ![Copy KQL](../images/module05/pipeline-copykql.png)
 
-Next, add a Lookup Activity to the ForEach activity named Get New Watermark. On the Settings tab, select the data warehouse and use the following query:
+Next, add a Lookup Activity to the ForEach activity named *Get New Watermark*. On the Settings tab, select the data warehouse and use the following query:
 
 ```sql
 @concat('Select Max(timestamp) as WaterMark from stg.', item().ObjectName)
 ```
 
-Add a new Stored Procedure activity after the Get New Watermark activity, with the name Update WaterMark. Configure the activity as follows:
+Add a new Stored Procedure activity after the *Get New Watermark* activity, with the name *Update WaterMark*. Configure the activity as follows:
 
 * Name: Update WaterMark
 * Source: StocksDW
@@ -220,7 +226,7 @@ The pipeline should now look similar to:
 
 ## 4. Test the Pipeline
 
-While we aren't quite done, we have enough to test to make sure things are working as expected. From the Home tab in the pipeline, select Run. This initial run will take a few moments, and will copy the data into the staging table. 
+While we aren't quite done, we have enough to test to make sure things are working as expected. From the Home tab in the pipeline, select *Run*. The pipeline will first validate to find any configuration errors. This initial run will take a few moments, and will copy the data into the staging table. 
 
 From the pipeline, we should see the following output:
 
