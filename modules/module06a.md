@@ -21,7 +21,7 @@ This module is broken down into 2 sections:
 
 ## :loudspeaker: Introduction
 
-In this module, we'll build a Lakehouse architecture to ingest and store our stock data into a traditional star schema using fact and dimension tables. If you've completed the Data Warehouse module, this module is similar in result, but different in approach by using Notebooks within a lakehouse.
+In this module, we'll build a lakehouse architecture to ingest and store our stock data into a traditional star schema using fact and dimension tables. If you've completed the Data Warehouse module, this module is similar in result, but different in approach by using Notebooks within a lakehouse. (Note: it is also possible to use pipelines to orchestrate activities, but this solution will be done completely within notebooks.)
 
 From an architecture perspective, we'll look to implement a lambda architecture by splitting hot path and cold path data from the Eventstream. Hot path will continue to the KQL database as already configured, and cold path will be added to write this raw data to our lakehouse. Our event structure will resemble the following:
 
@@ -31,6 +31,39 @@ flowchart LR
     B --> C[(KQL DB)]
     B --> D[(Lakehouse Tables)]
 ```
+
+If you completed module 05 (data warehouse), this dimensional model will look familiar:
+
+```mermaid
+erDiagram
+    "Stock Price Fact"||--o{ "Date Dimension":DateKey
+    "Stock Price Fact" {
+        int Symbol_SK
+        date DateKey
+        float MinPrice
+        float MaxPrice
+        float ClosePrice
+    }
+    "Date Dimension" {
+        date DateKey
+        int DayNum
+        int DayOfWeekNum
+        string DayOfWeekName
+        int MonthNum
+        string MonthName
+        int QuarterNum
+        string QuarterName
+        int Year
+    }
+    "Stock Price Fact" ||--o{ "Symbol Dimension":Symbol_SK
+    "Symbol Dimension" {
+        int Symbol_SK
+        string Symbol
+        string Name
+        string Market
+    }
+```
+
 ## :bulb: About Notebooks
 
 Most of this lab will be done within a Jupyter Notebook, an industry standard way of doing exploratory data analyis, building models, and visualizing datasets, and processing data. A notebook itself is separated into indiviual sections called cells which contain code or text documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is generally the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 

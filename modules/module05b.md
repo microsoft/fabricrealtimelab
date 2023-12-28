@@ -11,6 +11,14 @@
 
 - [x] Completed [Module 05a](../modules/module05a.md)
 
+## :book: Modules
+
+This module is broken down into 3 sections:
+
+* [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
+* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module05b.md)
+* [Module 05c - Semantic Modeling and reporting](./module05c.md)
+
 ## :loudspeaker: Introduction
 
 With the completion of Module 05a, we have the plumbing in place to ingest data from the KQL database into our data warehouse. The next step is to prep the dimension tables. 
@@ -20,11 +28,6 @@ For the date dimension, we'll load this during this module with values for the f
 For the symbol dimension, we'll incrementally load that during the pipeline -- this way, if new stocks are added at some point, they will get added to the Symbol dimension table during the execution of the pipeline.
 
 We'll also create views to support the pipeline by making it easier to load data from the staging table by aggregating the min, max, and closing price of the stock.
-
-This module is broken down into 3 submodules:
-* [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
-* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module05b.md)
-* [Module 05c - Semantic Modeling and reporting](./module05c.md)
 
 ## Table of Contents
 

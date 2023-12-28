@@ -12,16 +12,19 @@
 - [x] Completed [Module 05a](../modules/module05a.md)
 - [x] Completed [Module 05b](../modules/module05b.md)
 
+## :book: Modules
+
+This module is broken down into 3 sections:
+
+* [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
+* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module05b.md)
+* [Module 05c - Semantic Modeling and reporting](./module05c.md)
+
 ## :loudspeaker: Introduction
 
 With the completion of Module 05a and Module 05b, our warehouse and ingestion process is complete.
 
 One final step is to operationalize the data by creating a semantic model and viewing the data in Power BI. (Naturally, we don't have a lot of data yet in the warehouse to make these reports too interesting. However, if you're planning on doing the lakehouse module, we include an optional notebook that will download and incorporate additional historic information to make these reports more interesting.)
-
-This module is broken down into 3 submodules:
-* [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
-* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module05b.md)
-* [Module 05c - Semantic Modeling and reporting](./module05c.md)
 
 ## Table of Contents
 

@@ -14,6 +14,14 @@
 - [x] Completed [Module 02](../modules/module02.md)
 - [x] Completed [Module 03](../modules/module03.md)
 
+## :book: Modules
+
+This module is broken down into 3 sections:
+
+* [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
+* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module05b.md)
+* [Module 05c - Semantic Modeling and reporting](./module05c.md)
+
 ## :loudspeaker: Introduction
 
 In this module, you will build a Synapse Data Warehouse inside Microsoft Fabric to aggregate data from the KQL database. In Microsoft Fabric, there are two primary ways to building a data warehouse: using a Synapse Data Warehouse, the focus of this module, and a lakehouse, the topic of the next module.
@@ -36,10 +44,9 @@ erDiagram
     }
     "Date Dimension" {
         date DateKey
-        int DayNum
-        int DayOfWeekNum
+        int DayOfMonth
         int Year
-        etc etc
+        string MonthName
     }
     "Stock Price Fact" ||--o{ "Symbol Dimension":Symbol_SK
     "Symbol Dimension" {
@@ -51,11 +58,6 @@ erDiagram
 ```
 
 In our ETL (extract, transform, and load) process, we'll extract all data that hasn't yet been imported, as determined by the current watermark into a staging table. This data will then be summarized, and then placed in the dimension/fact tables. Note that while we are importing only one table (stock prices), the framework we are building supports ingestion for multiple tables. 
-
-This module is broken down into 3 submodules:
-* [Module 05a - Setting up the Warehouse and Pipeline](./module05a.md)
-* [Module 05b - Building the dimension and fact tables, completing the pipeline](./module05b.md)
-* [Module 05c - Semantic Modeling and reporting](./module05c.md)
 
 ## Table of Contents
 
