@@ -43,6 +43,8 @@ We'll also create views to support the pipeline by making it easier to load data
 In our data warehouse, run the following SQL to create the fact and dimension tables. As in the previous step, you can run this ad-hoc or create a SQL query to save the query for future use.
 
 ```sql
+/* 2 - Create Dimension and Fact tables.sql */
+
 -- Dimensions and Facts (dbo)
 CREATE TABLE dbo.fact_Stocks_Daily_Prices
 (
@@ -78,6 +80,8 @@ GO
 The date dimension is differentiated in that it can be loaded once with all of the values we'd need. Run the following script, which creates a procedure to populate the date dimension table with a large range of values. 
 
 ```sql
+/* 3 - Load Dimension tables.sql */
+
 CREATE PROC [ETL].[sp_Dim_Date_Load]
 @BeginDate DATE  = NULL
 ,@EndDate DATE = NULL
@@ -108,6 +112,7 @@ GO
 From a new query window, execute the above procedure by running the following script:
 
 ```sql
+/* 3 - Load Dimension tables.sql */
 Exec ETL.sp_Dim_Date_Load
 ```
 
@@ -118,6 +123,8 @@ Similar to the date dimension, each stock symbol corresponds to a row in the Sym
 Run the script below -- this will create the procedure that will load the stock symbol dimension. We'll execute this in the pipeline to handle any new stocks that might enter the feed.
 
 ```sql
+/* 3 - Load Dimension tables.sql */
+
 CREATE PROC [ETL].[sp_Dim_Symbol_Load]
 AS
 BEGIN
@@ -156,6 +163,8 @@ GO
 Next, we'll create the views that support the aggregation of the data during the load. When the pipeline runs, data is copied from the KQL database into our staging table, where we'll aggregate all of the data for each stock into a min, max, and closing price for each day. 
 
 ```sql
+/* 4 - Create Staging Views.sql */
+
 CREATE VIEW [stg].[vw_StocksDailyPrices] 
 AS 
 SELECT 
@@ -205,6 +214,8 @@ In the pipeline, add a new Stored Procedure activity named *Populate Symbols Dim
 Next, run the script below to create the procedure that builds the fact table. This procedure merges data from staging into the fact table. If the pipeline is running throughout the day, the values will be updated to reflect any changes in the min, max, and closing price. (Note: currently, Fabric data warehouse does not yet support the T-SQL merge statement; because of this, data will be updated and then inserted as needed.)
 
 ```sql
+/* 5 - ETL.sp_Fact_Stocks_Daily_Prices_Load.sql */
+
 CREATE PROCEDURE [ETL].[sp_Fact_Stocks_Daily_Prices_Load]
 AS
 BEGIN

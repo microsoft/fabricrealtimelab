@@ -82,16 +82,34 @@ Name the warehouse *StocksDW* (or another name, if you prefer, but be sure to re
 
 ## 2. Create the schema for stocks and metadata
 
-If you prefer, you can create separate SQL queries for each of these SQL scripts, or you can re-use the same query editor. If you prefer to create separate queries, you can rename them by right-clicking on the query name, and they will be stored in your data warehouse for later use. 
+You can create separate SQL queries for each of these SQL scripts below, or you can re-use the same query editor. If you prefer to create separate queries, you can rename them by right-clicking on the query name, and they will be stored in your data warehouse for later use. 
 
 All of these queries can be found in the *resources > module05* folder of this repo, and can be downloaded in the following zip file:
 [All Workshop Resources (resources.zip)](https://github.com/microsoft/fabricrealtimelab/raw/main/files/resources.zip)
+
+Individually, you can download these queries using these links:
+
+[Create Dimension and Fact tables](<../resources/module05/scripts/Create Dimension and Fact tables.sql>)
+[Create stocks and metadata tables](<../resources/module05/scripts/Create stocks and metadata tables.sql>)
+[Create Views](<../resources/module05/scripts/Create Views.sql>)
+[ETL.sp_Dim_Date_Load](../resources/module05/scripts/ETL.sp_Dim_Date_Load.sql)
+[ETL.sp_Dim_Symbol_Load](../resources/module05/scripts/ETL.sp_Dim_Symbol_Load.sql)
+[ETL.sp_Fact_Stocks_Daily_Prices_Load](../resources/module05/scripts/ETL.sp_Fact_Stocks_Daily_Prices_Load.sql)
+[ETL.sp_IngestSourceInfo_Updat](../resources/module05/scripts/ETL.sp_IngestSourceInfo_Update.sql)
+
+[1 - Create Staging and ETL.sql](<../resources/module05/scripts/1 - Create Staging and ETL.sql>)
+[2 - Create Dimension and Fact tables.sql](<../resources/module05/scripts/2 - Create Dimension and Fact tables.sql>)
+[3 - Load Dimension tables.sql](<../resources/module05/scripts/3 - Load Dimension tables.sql>)
+[4 - Create Staging Views.sql](<../resources/module05/scripts/4 - Create Staging Views.sql>)
+[5 - ETL.sp_Fact_Stocks_Daily_Prices_Load.sql](<../resources/module05/scripts/5 - ETL.sp_Fact_Stocks_Daily_Prices_Load.sql>)
 
 Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- *stg* and *ETL*; schemas help group workloads by type or function. The *stg* schema is for staging, and contains intermediate tables for the ETL process. The *ETL* schema contains mostly queries used for data movement, as well as a single table for state.  
 
 Note that the begin date for the waterwark is arbitrarily chosen as some previous date (12/31/2022), ensuring all data is captured -- this date will be updated on each successful run. 
 
 ```sql
+/* 1 - Create Staging and ETL.sql */
+
 -- STAGING TABLES
 CREATE SCHEMA stg
 GO
@@ -119,9 +137,11 @@ INSERT [ETL].[IngestSourceInfo]
 SELECT 'StocksPrices', '12/31/2022 23:59:59', 'Y'
 ```
 
-The sp_IngestSourceInfo_Update procedure updates the watermark; this ensures we are keeping track of which records have already been imported:
+The *sp_IngestSourceInfo_Update* procedure updates the watermark; this ensures we are keeping track of which records have already been imported:
 
 ```sql
+/* 1 - Create Staging and ETL.sql */
+
 CREATE PROC [ETL].[sp_IngestSourceInfo_Update]
 @ObjectName VARCHAR(50)
 ,@WaterMark DATETIME2(6)
@@ -148,7 +168,7 @@ From the workspace (or from within the Data Factory persona), create a new pipel
 
 ![Create Pipeline](../images/module05/createpipeline.png)
 
-Create a lookup activity on the pipeline named *Get WaterMark*. On the settings tab, select the data warehouse as the data store type, and specify the *StocksDW* data warehouse. Specify a query using the SQL statement below, and ensure *First row only* is *unchecked*.
+Create a *Lookup* activity on the pipeline named *Get WaterMark*. On the settings tab, select the data warehouse as the data store type, and specify the *StocksDW* data warehouse. Specify a *Query* using the SQL statement below, and ensure *First row only* is *unchecked*.
 
 ```sql
 SELECT * FROM [ETL].[IngestSourceInfo] WHERE IsActiveFlag = 'Y'
@@ -160,7 +180,7 @@ This should look similar to:
 
 ## 3. Add ForEach activity
 
-Add a ForEach activity to the pipeline. Connect the *On Success* event on the Lookup activity to the ForEach by dragging from the *On Success* checkbox on the right side of the activity to the ForEach activity. On the settings tab of the ForEach, set the *Items* to:
+Add a *ForEach* activity to the pipeline. Connect the *On Success* event on the *Lookup* activity to the *ForEach* by dragging from the *On Success* checkbox on the right side of the activity to the *ForEach* activity. On the settings tab of the *ForEach*, set the *Items* to:
 
 ```text
 @activity('Get WaterMark').output.value
@@ -172,7 +192,7 @@ This should look similar to the image below:
 
 ![ForEach Added](../images/module05/pipeline-foreach.png)
 
-Add a Copy Data activity within the ForEach. On this activity:
+Add a *Copy Data* activity within the *ForEach*. On this activity:
 
 * Name: Copy KQL
 * Source: Select the KQL database holding the incoming stock data (StockDB)

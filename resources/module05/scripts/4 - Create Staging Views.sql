@@ -1,4 +1,5 @@
-/**************************************/
+/* 4 - Create Staging Views.sql */
+
 CREATE VIEW [stg].[vw_StocksDailyPrices] 
 AS 
 SELECT 
