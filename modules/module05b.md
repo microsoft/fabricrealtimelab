@@ -87,8 +87,8 @@ CREATE PROC [ETL].[sp_Dim_Date_Load]
 ,@EndDate DATE = NULL
 AS
 BEGIN
-SELECT @BeginDate  = ISNULL(@BeginDate, DATEADD ( DAY , 1 , EOMONTH ( GETDATE ( ) , - 2 ) ))
-SELECT @EndDate = ISNULL(@EndDate,EOMONTH ( GETDATE ( ) , 1 ))
+SELECT @BeginDate  = ISNULL(@BeginDate, DATEADD(DAY, 1, EOMONTH(GETDATE(), -2)))
+SELECT @EndDate = ISNULL(@EndDate,EOMONTH(GETDATE(), 2))
 DECLARE @NumberOfDates INT = Datediff(day,@BeginDate, @EndDate)
 --select @NumberOfDates
 
