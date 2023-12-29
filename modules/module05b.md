@@ -201,7 +201,7 @@ GO
 
 ## 5. Add activity to load symbols
 
-In the pipeline, add a new Stored Procedure activity named *Populate Symbols Dimension* that executes the procedure that loads the stock symbols. This should be connected to the success output of the foreach activity (not within the foreach activity), as shown below.
+In the pipeline, add a new *Stored Procedure* activity named *Populate Symbols Dimension* that executes the procedure that loads the stock symbols. This should be connected to the success output of the foreach activity (not within the foreach activity), as shown below.
 
 * Name: Populate Symbols Dimension
 * Settings: 
@@ -261,7 +261,7 @@ GO
 
 ## 2. Add activity to the pipeline to load daily stock prices
 
-Add another Stored Procedure activity to the pipeline named *Populate Fact Stocks Daily Prices* that loads the stocks prices from staging into the fact table. Connect the success output of the *Populate Symbols Dimension* to the new *Populate Fact Stocks Daily Prices* activity.
+Add another *Stored Procedure* activity to the pipeline named *Populate Fact Stocks Daily Prices* that loads the stocks prices from staging into the fact table. Connect the success output of the *Populate Symbols Dimension* to the new *Populate Fact Stocks Daily Prices* activity.
 
 * Name: Populate Fact Stocks Daily Prices
 * Settings: 

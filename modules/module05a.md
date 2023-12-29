@@ -62,9 +62,11 @@ In our ETL (extract, transform, and load) process, we'll extract all data that h
 ## Table of Contents
 
 1. [Create the Synapse Data Warehouse](#1-create-a-synapse-data-warehouse-in-the-fabric-workspace)
-2. [Create pipeline](#2-create-pipeline)
-3. [Add ForEach activity](#3-add-foreach-activity)
-4. [Test the Pipeline](#4-test-the-pipeline)
+2. [Copy or download the queries](#2-copy-or-download-the-queries)
+3. [Create the staging and ETL objects](#3-create-the-staging-and-etl-objects)
+4. [Create the data pipeline ](#2-create-the-data-pipeline)
+5. [Add ForEach activity](#3-add-foreach-activity)
+6. [Test the Pipeline](#4-test-the-pipeline)
 
 ## 1. Create a Synapse Data Warehouse in the Fabric workspace
 
@@ -80,28 +82,23 @@ Name the warehouse *StocksDW* (or another name, if you prefer, but be sure to re
 
 ![Empty Warehouse](../images/module05/emptywarehouse.png)
 
-## 2. Create the schema for stocks and metadata
+## 2. Copy or download the queries 
 
-You can create separate SQL queries for each of these SQL scripts below, or you can re-use the same query editor. If you prefer to create separate queries, you can rename them by right-clicking on the query name, and they will be stored in your data warehouse for later use. 
+You can either copy the queries inline as you progress, or download/use these script files. All of these queries can be found in the *resources > module05* folder of this repo, and can be downloaded in the following zip file:
 
-All of these queries can be found in the *resources > module05* folder of this repo, and can be downloaded in the following zip file:
 [All Workshop Resources (resources.zip)](https://github.com/microsoft/fabricrealtimelab/raw/main/files/resources.zip)
 
 Individually, you can download these queries using these links:
-
-[Create Dimension and Fact tables](<../resources/module05/scripts/Create Dimension and Fact tables.sql>)
-[Create stocks and metadata tables](<../resources/module05/scripts/Create stocks and metadata tables.sql>)
-[Create Views](<../resources/module05/scripts/Create Views.sql>)
-[ETL.sp_Dim_Date_Load](../resources/module05/scripts/ETL.sp_Dim_Date_Load.sql)
-[ETL.sp_Dim_Symbol_Load](../resources/module05/scripts/ETL.sp_Dim_Symbol_Load.sql)
-[ETL.sp_Fact_Stocks_Daily_Prices_Load](../resources/module05/scripts/ETL.sp_Fact_Stocks_Daily_Prices_Load.sql)
-[ETL.sp_IngestSourceInfo_Updat](../resources/module05/scripts/ETL.sp_IngestSourceInfo_Update.sql)
 
 [1 - Create Staging and ETL.sql](<../resources/module05/scripts/1 - Create Staging and ETL.sql>)
 [2 - Create Dimension and Fact tables.sql](<../resources/module05/scripts/2 - Create Dimension and Fact tables.sql>)
 [3 - Load Dimension tables.sql](<../resources/module05/scripts/3 - Load Dimension tables.sql>)
 [4 - Create Staging Views.sql](<../resources/module05/scripts/4 - Create Staging Views.sql>)
 [5 - ETL.sp_Fact_Stocks_Daily_Prices_Load.sql](<../resources/module05/scripts/5 - ETL.sp_Fact_Stocks_Daily_Prices_Load.sql>)
+
+Note: SQL statements executed in pipeline activities will need to be copied from the steps below.
+
+## 3. Create the staging and ETL objects
 
 Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- *stg* and *ETL*; schemas help group workloads by type or function. The *stg* schema is for staging, and contains intermediate tables for the ETL process. The *ETL* schema contains mostly queries used for data movement, as well as a single table for state.  
 
@@ -162,9 +159,9 @@ This should look similar to:
 
 ![DW First Queries](../images/module05/dwfirstqueries.png)
 
-## 2. Create pipeline 
+## 4. Create the data pipeline 
 
-From the workspace (or from within the Data Factory persona), create a new pipeline named *PL_Refresh_DWH*. 
+From the workspace (or from within the Data Factory persona), create a new *Data pipeline* named *PL_Refresh_DWH*. 
 
 ![Create Pipeline](../images/module05/createpipeline.png)
 
@@ -178,7 +175,7 @@ This should look similar to:
 
 ![Get Watermark](../images/module05/pipeline-getwatermark.png)
 
-## 3. Add ForEach activity
+## 5. Add ForEach activity
 
 Add a *ForEach* activity to the pipeline. Connect the *On Success* event on the *Lookup* activity to the *ForEach* by dragging from the *On Success* checkbox on the right side of the activity to the *ForEach* activity. On the settings tab of the *ForEach*, set the *Items* to:
 
@@ -227,7 +224,7 @@ This step first truncates old data from the staging table, and then copies the d
 
 ![Copy KQL](../images/module05/pipeline-copykql.png)
 
-Next, add a Lookup Activity to the ForEach activity named *Get New Watermark*. On the Settings tab, select the data warehouse and use the following query:
+Next, add a *Lookup* activity to the ForEach activity named *Get New Watermark*. On the *Settings* tab, select the data warehouse and use the following query:
 
 ```sql
 @concat('Select Max(timestamp) as WaterMark from stg.', item().ObjectName)
@@ -246,9 +243,9 @@ The pipeline should now look similar to:
 
 ![Update Watermark](../images/module05/pipeline-updatewatermark.png)
 
-## 4. Test the Pipeline
+## 6. Test the Pipeline
 
-While we aren't quite done, we have enough to test to make sure things are working as expected. From the Home tab in the pipeline, select *Run*. The pipeline will first validate to find any configuration errors. This initial run will take a few moments, and will copy the data into the staging table. 
+While we aren't quite done, we have enough to test to make sure things are working as expected. From the *Home* tab in the pipeline, select *Run*. The pipeline will first validate to find any configuration errors. This initial run will take a few moments, and will copy the data into the staging table. 
 
 From the pipeline, we should see the following output:
 
@@ -278,12 +275,12 @@ GO
 
 ## :tada: Summary
 
-In this first part of module 05, we created a Synapse Data Warehouse, a Data Pipeline, and implemented the basic logic for our ingestion into the warehouse.
+In this first part of module 05, we created a Synapse data warehouse, a data pipeline, and implemented the basic logic for our ingestion into the warehouse.
 
 ## :white_check_mark: Results
 
-- [x] Created a Synapse Data Warehouse
-- [x] Created a basic Pipeline
+- [x] Created a Synapse data warehouse
+- [x] Created a basic data pipeline
 - [x] Verified the pipeline is working
 
 ## :thinking: Additional Learning
