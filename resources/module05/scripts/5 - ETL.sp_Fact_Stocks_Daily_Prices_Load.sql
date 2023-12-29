@@ -1,5 +1,5 @@
+/* 5 - ETL.sp_Fact_Stocks_Daily_Prices_Load.sql */
 
-/*******************************************************/
 CREATE PROCEDURE [ETL].[sp_Fact_Stocks_Daily_Prices_Load]
 AS
 BEGIN

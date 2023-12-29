@@ -1,5 +1,6 @@
--- Dimensions and Facts (dbo)
+/* 2 - Create Dimension and Fact tables.sql */
 
+-- Dimensions and Facts (dbo)
 CREATE TABLE dbo.fact_Stocks_Daily_Prices
 (
    Symbol_SK INT NOT NULL
@@ -9,7 +10,7 @@ CREATE TABLE dbo.fact_Stocks_Daily_Prices
    ,ClosePrice FLOAT NOT NULL
 )
 GO
-
+/**************************************/
 CREATE TABLE dbo.dim_Symbol
 (
     Symbol_SK INT NOT NULL
@@ -18,6 +19,7 @@ CREATE TABLE dbo.dim_Symbol
     ,Market VARCHAR(15)
 )
 GO
+/**************************************/
 CREATE TABLE dbo.dim_Date
 (
     DateKey DATE NOT NULL
