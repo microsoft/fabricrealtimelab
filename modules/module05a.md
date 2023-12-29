@@ -64,9 +64,9 @@ In our ETL (extract, transform, and load) process, we'll extract all data that h
 1. [Create the Synapse Data Warehouse](#1-create-a-synapse-data-warehouse-in-the-fabric-workspace)
 2. [Copy or download the queries](#2-copy-or-download-the-queries)
 3. [Create the staging and ETL objects](#3-create-the-staging-and-etl-objects)
-4. [Create the data pipeline ](#2-create-the-data-pipeline)
-5. [Add ForEach activity](#3-add-foreach-activity)
-6. [Test the Pipeline](#4-test-the-pipeline)
+4. [Create the data pipeline ](#4-create-the-data-pipeline)
+5. [Add ForEach activity](#5-add-foreach-activity)
+6. [Test the Pipeline](#6-test-the-pipeline)
 
 ## 1. Create a Synapse Data Warehouse in the Fabric workspace
 
