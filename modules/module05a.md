@@ -86,15 +86,15 @@ Name the warehouse *StocksDW* (or another name, if you prefer, but be sure to re
 
 You can either copy the queries inline as you progress, or download/use these script files. All of these queries can be found in the *resources > module05* folder of this repo, and can be downloaded in the following zip file:
 
-[All Workshop Resources (resources.zip)](https://github.com/microsoft/fabricrealtimelab/raw/main/files/resources.zip)
+* [All Workshop Resources (resources.zip)](https://github.com/microsoft/fabricrealtimelab/raw/main/files/resources.zip)
 
 Individually, you can download these queries using these links:
 
-[1 - Create Staging and ETL.sql](<../resources/module05/scripts/1 - Create Staging and ETL.sql>)
-[2 - Create Dimension and Fact tables.sql](<../resources/module05/scripts/2 - Create Dimension and Fact tables.sql>)
-[3 - Load Dimension tables.sql](<../resources/module05/scripts/3 - Load Dimension tables.sql>)
-[4 - Create Staging Views.sql](<../resources/module05/scripts/4 - Create Staging Views.sql>)
-[5 - ETL.sp_Fact_Stocks_Daily_Prices_Load.sql](<../resources/module05/scripts/5 - ETL.sp_Fact_Stocks_Daily_Prices_Load.sql>)
+* [1 - Create Staging and ETL.sql](<../resources/module05/scripts/1 - Create Staging and ETL.sql>)
+* [2 - Create Dimension and Fact tables.sql](<../resources/module05/scripts/2 - Create Dimension and Fact tables.sql>)
+* [3 - Load Dimension tables.sql](<../resources/module05/scripts/3 - Load Dimension tables.sql>)
+* [4 - Create Staging Views.sql](<../resources/module05/scripts/4 - Create Staging Views.sql>)
+* [5 - ETL.sp_Fact_Stocks_Daily_Prices_Load.sql](<../resources/module05/scripts/5 - ETL.sp_Fact_Stocks_Daily_Prices_Load.sql>)
 
 Note: SQL statements executed in pipeline activities will need to be copied from the steps below.
 
