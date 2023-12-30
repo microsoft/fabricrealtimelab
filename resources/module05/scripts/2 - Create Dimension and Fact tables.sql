@@ -31,5 +31,5 @@ CREATE TABLE dbo.dim_Date
     ,[MonthName] varchar(25)
     ,[Quarter] int
     ,[QuarterName] varchar(2)
-);
+)
 GO
