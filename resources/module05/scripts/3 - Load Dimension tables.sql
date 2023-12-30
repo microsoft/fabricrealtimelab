@@ -1,28 +1,46 @@
 /* 3 - Load Dimension tables.sql */
 
 CREATE PROC [ETL].[sp_Dim_Date_Load]
-@BeginDate DATE  = NULL
+@BeginDate DATE = NULL
 ,@EndDate DATE = NULL
 AS
 BEGIN
-SELECT @BeginDate  = ISNULL(@BeginDate, DATEADD(DAY, 1, EOMONTH(GETDATE(), -2)))
-SELECT @EndDate = ISNULL(@EndDate,EOMONTH(GETDATE(), 2))
-DECLARE @NumberOfDates INT = Datediff(day,@BeginDate, @EndDate)
---select @NumberOfDates
 
-WHILE @NumberOfDates > 0 
-BEGIN
-    INSERT INTO [dbo].[dim_Date]
-    SELECT DateKey
-    ,Datepart(dd,DateKey) as DayOfMonth
-    ,FORMAT(DateKey, 'MMMM') as MonthName
-    ,Year(DateKey) as [Year]
-    FROM 
-    (SELECT DateKey = dateadd(d,@NumberOfDates, @BeginDate)
-    ) Dates
+SET @BeginDate = ISNULL(@BeginDate, '2022-01-01')
+SET @EndDate = ISNULL(@EndDate, DATEADD(year, 2, GETDATE()))
 
-    SET @NumberOfDates = @NumberOfDates - 1
-END
+DECLARE @N AS INT = 0
+DECLARE @NumberOfDates INT = DATEDIFF(day,@BeginDate, @EndDate)
+DECLARE @SQL AS NVARCHAR(MAX)
+DECLARE @STR AS VARCHAR(MAX) = ''
+
+WHILE @N <= @NumberOfDates
+    BEGIN
+    SET @STR = @STR + CAST(DATEADD(day,@N,@BeginDate) AS VARCHAR(10)) 
+    
+    IF @N < @NumberOfDates
+        BEGIN
+            SET @STR = @STR + ','
+        END
+
+    SET @N = @N + 1;
+    END
+
+SET @SQL = 'INSERT INTO dbo.dim_Date ([DateKey]) SELECT CAST([value] AS DATE) FROM STRING_SPLIT(@STR, '','')';
+
+EXEC sys.sp_executesql @SQL, N'@STR NVARCHAR(MAX)', @STR;
+
+UPDATE dbo.dim_Date
+SET 
+    [DayOfMonth] = DATEPART(day,DateKey)
+    ,[DayOfWeeK] = DATEPART(dw,DateKey)
+    ,[DayOfWeekName] = DATENAME(weekday, DateKey)
+    ,[Year] = DATEPART(yyyy,DateKey)
+    ,[Month] = DATEPART(month,DateKey)
+    ,[MonthName] = DATENAME(month, DateKey)
+    ,[Quarter] = DATEPART(quarter,DateKey)
+    ,[QuarterName] = CONCAT('Q',DATEPART(quarter,DateKey))
+
 END
 GO
 /**************************************/
