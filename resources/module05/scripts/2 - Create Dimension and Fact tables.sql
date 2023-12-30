@@ -20,11 +20,16 @@ CREATE TABLE dbo.dim_Symbol
 )
 GO
 /**************************************/
-CREATE TABLE dbo.dim_Date
+CREATE TABLE dbo.dim_Date 
 (
-    DateKey DATE NOT NULL
-    ,DayOfMonth VARCHAR(2)
-    ,MonthName VARCHAR(20)
-    ,Year VARCHAR(4)    
+    [DateKey] DATE NOT NULL
+    ,[DayOfMonth] int
+    ,[DayOfWeeK] int
+    ,[DayOfWeekName] varchar(25)
+    ,[Year] int
+    ,[Month] int
+    ,[MonthName] varchar(25)
+    ,[Quarter] int
+    ,[QuarterName] varchar(2)
 )
 GO

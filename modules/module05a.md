@@ -44,9 +44,14 @@ erDiagram
     }
     "Date Dimension" {
         date DateKey
-        int DayOfMonth
-        int Year
+        int DayNum
+        int DayOfWeekNum
+        string DayOfWeekName
+        int MonthNum
         string MonthName
+        int QuarterNum
+        string QuarterName
+        int Year
     }
     "Stock Price Fact" }o--|| "Symbol Dimension":Symbol_SK
     "Symbol Dimension" {
