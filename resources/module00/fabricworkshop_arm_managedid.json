@@ -15,21 +15,16 @@
         "stockdebuginfo": "0",
         "printonlyerrors": "0",
         "usegrowthrate": "1",
+        "useManagedIdentity": "1",
         "containerName": "stockgenerator",
         "eventHubName": "stockeventhub",
         "location": "[resourceGroup().location]",
         "randomString": "[substring(guid(resourceGroup().id), 0, 6)]",
         "namespaceName": "fabricworkshop",
         "fullnamespace": "[format('ehns-{0}-{1}', variables('randomString'), variables('namespaceName'))]",
+        "eventHubFQNS": "[format('{0}.servicebus.windows.net', variables('fullnamespace'))]",
         "fullcontainername": "[format('aci-{0}-{1}', variables('randomString'), variables('containerName'))]",
-        "defaultSASKeyName": "stockeventhub_sas",
-        "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('fullnamespace'), variables('defaultSASKeyName'))]"
-    },
-    "outputs": {
-        "PrimaryConnectionString": {
-            "type": "string",
-            "value": "[listkeys(variables('authRuleResourceId'), '2017-04-01').primaryConnectionString]"
-        }
+        "defaultSASKeyName": "stockeventhub_sas"
     },
     "resources": [
         {
@@ -102,17 +97,37 @@
             }
         },
         {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2020-04-01-preview",
+            "name": "[guid(resourceGroup().id, variables('fullcontainerName'))]",
+            "properties": {
+                "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'f526a384-b230-433a-b45c-95f59c4a2dec')]",
+                "principalId": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups', variables('fullcontainerName')),'2023-05-01', 'full').identity.principalId]",
+                "principalType": "ServicePrincipal",
+                "scope": "[resourceGroup().id]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('fullcontainerName'))]"
+            ]
+        },
+        {
             "type": "Microsoft.ContainerInstance/containerGroups",
             "apiVersion": "2023-05-01",
             "name": "[variables('fullcontainerName')]",
             "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ],
             "properties": {
                 "sku": "Standard",
                 "containers": [
                     {
                         "name": "[variables('fullcontainerName')]",
                         "properties": {
-                            "image": "realtimelab.azurecr.io/realtimegenerator:v2",
+                            "image": "realtimelab.azurecr.io/realtimegenerator:v3",
                             "ports": [
                                 {
                                     "protocol": "TCP",
@@ -126,7 +141,15 @@
                                 },
                                 {
                                     "name": "EVENTHUBCONNECTIONSTRING",
-                                    "value": "[listkeys(variables('authRuleResourceId'), '2017-04-01').primaryConnectionString]"
+                                    "value": "NotNeededForManagedIdentity"
+                                },
+                                {
+                                    "name": "EVENTHUBFQNS",
+                                    "value": "[variables('eventHubFQNS')]"
+                                },
+                                {
+                                    "name": "USEMANAGEDIDENTITY",
+                                    "value": "[variables('useManagedIdentity')]"
                                 },
                                 {
                                     "name": "EVENTS",
