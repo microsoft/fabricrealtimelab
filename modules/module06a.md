@@ -77,7 +77,7 @@ In a lakehouse medallion architure (with bronze, silver, gold layers) data is in
 
 ![Medallion Architecture](../images/module06/onelake-medallion-lakehouse-architecture-example.png)
 
-These layers are not intended to be a hard rule, but rather a guiding principle. Some architures may have 2 layers, others may have 4 or more. The layers are typically separated into different lakehouses. For the purposes of this module, we'll be using the same lakehouse to store a all layers. Read more on implementing a [medallion architecture in Fabric here](https://learn.microsoft.com/en-us/fabric/onelake/onelake-medallion-lakehouse-architecture).
+These layers are not intended to be a hard rule, but rather a guiding principle. Some architures may have 2 layers, others may have 4 or more. We'll explore this a bit more in the next module by creating aggregation silver-level tables. Layers are typically separated into different lakehouses, but for the purposes of our lab, we'll be using the same lakehouse to store all layers. Read more on implementing a [medallion architecture in Fabric here](https://learn.microsoft.com/en-us/fabric/onelake/onelake-medallion-lakehouse-architecture).
 
 ## Table of Contents
 
@@ -92,7 +92,7 @@ These layers are not intended to be a hard rule, but rather a guiding principle.
 
 ## 1. Create the lakehouse
 
-Start by creating a lakehouse. Note: if you completing this module after the data science module or another module that uses a lakehouse, you may re-use that lakehouse or create a new one.
+Start by creating a lakehouse. Note: if you completing this module after the data science module or another module that uses a lakehouse, you may re-use that lakehouse or create a new one, but we'll assume the same lakehouse is shared across all modules.
 
 Within your Fabric workspace, switch to the data engineering persona (bottom left), and from the home page of the persona, create a new lakehouse by clicking the *Lakehouse* button. Name the lakehouse *StocksLakehouse*. 
 
@@ -149,6 +149,9 @@ The next step is to run through this first notebook. You can either click *Run a
 
 Most of the code in our notebooks is written in Python, but notebooks support a variety of languages. Several cells of the notebook are defined functions, such as *def create_dim_symbol()*: these contain the code, but do not run until the function is called. You will also notice the cell that drops the tables is *frozen*; frozen cells will not run and cannot be altered until unfrozen. This is helpful for testing where we might want to occasionally run code when working with notebooks interactively. While similar to 'commenting out' sections of code, freezing cells is powerful in that any output of the cells are also preserved.
 
+> :bulb: **Frozen Cells**
+> Important! Frozen cells are intended for interactive notebook use. When notebooks are executed by a scheduled task, frozen cells are currently executed like normal cells. Therefore, it's a good idea to comment out cells completely if they may be run by a scheduled task.
+
 When all cells have been run, refresh the schema by clicking the three dots (...) dots to the right of the Tables and clicking Refresh, as shown in the image below. You should see additional tables for our dimensional model:
 
 ![Frozen Cell](../images/module06/frozencell.png)
@@ -159,7 +162,7 @@ With the schema in place, we're ready to look at our main notebook that will pro
 
 Our fact table contains the daily stock prices (the high, low, and closing price), while our dimensions are for our date and stock symbols (which might contain company details and other information). Although simple, conceptually this model represents a  star schema that can be applied to larger datasets. 
 
-Load the *Lakehouse 2* notebook. Similarly to the above step, attach the Lakehouse to the notebook. We recommend you run each cell individually, but you can also click Run All. Be sure the *sourceTableName* in the first cell matches the name of your table that contains the imported data from the Event Hub.
+Load the *Lakehouse 2* notebook. Similarly to the above step, attach the lakehouse to the notebook. We recommend you run each cell individually, but you can also click Run All. Be sure the *sourceTableName* in the first cell matches the name of your table that contains the imported data from the Event Hub.
 
 When you have finished running through the notebook, feel free to run it a few times and observe the behavior. There are a few key points to keep in mind: 
 
@@ -242,7 +245,7 @@ dwfact.PriceDateKey <= @endDate
 ORDER BY dwfact.PriceDateKey ASC, Symbol ASC
 ```
 
-The query above will pull the min, max, and close price for each stock over the time period from both the data warehouse and lakehouse, and place them side-by-side in the query results. The results should be identical for the data warehouse and lakehouse. However, because the data for the lakehouse may have been set up some time after the KQL database that is used to feed the data warehouse, it is possible some values may not be equal if the max or min prices occured before data was being ingested into the Lakehouse.
+The query above will pull the min, max, and close price for each stock over the time period from both the data warehouse and lakehouse, and place them side-by-side in the query results. The results should be identical for the data warehouse and lakehouse. However, because the data for the lakehouse may have been set up some time after the KQL database that is used to feed the data warehouse, it is possible some values may not be equal if the max or min prices occured before data was being ingested into the lakehouse.
 
 ![Compare Data](../images/module06/comparedata.png)
 
