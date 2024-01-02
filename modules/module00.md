@@ -103,17 +103,17 @@ This option deploys as a Jupyter notebook, generating our stock prices and publi
 
 ![Eventstream Preview](../images/module00/eventstreampreview.png)
 
-With this step completed, we're ready to move on -- you can skip Option 2.
+With this step completed, we're ready to move on -- you can skip the next step.
 
 ## 4. Option 2 - Deploy the app via Azure Container Instance
 
 This option deploys the stock generator app to an Azure Container Instance using an ARM template. The app will generate stock data that publishes the data to an Azure Event Hub, which is also configured during the deployment of the ARM template. 
 
-To auto-deploy the resources, use these steps below. 
+To auto-deploy the resources, use these steps below. (All templates are located in the /resource/module00 folder, if you have would like to deploy via another method.)
 
 1. `Right-click` or `Ctrl + click` the button below to open the Azure Portal in a new window.
 
-    [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Ffabricrealtimelab%2Fmain%2Fresources%2Fmodule00%2Ffabricrealtimeworkshop_armtemplate.json)
+    [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Ffabricrealtimelab%2Fmain%2Fresources%2Fmodule00%2Ffabricworkshop_arm_managedid.json)
 
 2. Beneath the **Resource group** field, click **Create new** and provide a unique name (e.g. `realtimeworkshop`), select a valid location, and then click **Review + create**.
 
@@ -140,27 +140,36 @@ To auto-deploy the resources, use these steps below.
 3. Once the validation has passed, click **Create**.
 
 > :bulb: **Problems deploying?**
-> If you have issues deploying, here are a couple of things to check: you subscription might have limitations on regions or resources, or a region may have capacity constraints. Try a different region, but if the problem persists please ask a proctor for assistance or file an issue with the project.
+> If you have issues deploying, here are a couple of things to check: you subscription might have limitations on regions or resources, or a region may have capacity constraints. Try a different region, but if the problem persists please ask a proctor for assistance or file an issue with the project. The default template uses a [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) for the deployed app to authenticate with the Event Hub. In the event you are not able to use managed identities, you can configure the app to use SAS (Shared Access Signature) keys. Please use this template for using SAS keys: [Deploy to Azure Using SAS Key](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Ffabricrealtimelab%2Fmain%2Fresources%2Fmodule00%2Ffabricworkshop_arm_sas.json)
 
-4. After the deployment has completed, open the resource group and verify the Event Hub namespace and ACI machine is deployed: 
+4. After the deployment has completed, open the resource group and verify the *Event Hub Namespace* and *Azure Container Instance* (ACI) is deployed: 
 
 ![Azure Deployment](../images/module00/azuredeployment.png)
 
-5. Open the EventHubNamespace, which will have a name similar to ehns-123456-fabricrealtime. On the Settings > Shared access policies page, take note of this event hub namespace name (such as ehns-123456-fabricrealtime), the event hub name (by default, fwtheventhub), the name of the SAS key (by default, RootManagedSharedAccessKey), and copy the primary key to your clipboard or safe location.
+5. Open the Event Hub namespace, which will have a name similar to *ehns-123456-fabricworkshop*. On the *Settings* > *Shared access policies* page, click the *stockeventhub_sas* SAS key. Copy the primary key to your clipboard or other safe location, as this will be needed shortly. In short, you'll need the following:
+
+* The Event Hub namespace (such as *ehns-123456-fabricworkshop*)
+* The Event Hub name (default name is *stockeventhub*)
+* The name of the SAS key (default name is *stockeventhub_sas*)
+* The primary key of the SAS key (copy to the clipboard)
 
 ![Azure SAS Key](../images/module00/azuresaskey.png)
 
-6. In your Fabric workspace, switch to the Real-Time Analytics persona (bottom left) and create a new Eventstream. Name the Eventstream StockEventStream.
+6. In your Fabric workspace (we recommend having this open in another tab), switch to the Real-Time Analytics persona (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
 
 ![Create Eventstream](../images/module00/setupeventstream.png)
 
-7. On the Eventstream, configure a new source and select Event Hub:
+7. On the Eventstream, configure a new source and select *Event Hub*:
 
 ![Create Custom App](../images/module00/eventstream-eventhub.png)
 
-8. On the Azure Event Hubs configuration page, add a new connection and using the values from EventHub you noted earlier, specifying the $Default consumer group: 
+8. On the Azure Event Hubs configuration page, add a new connection and using the values from Event Hub you noted earlier (the Event Hub namespace, the Event Hub name, the name of the SAS key, and key itself copied to your clipboard), specifying the *$Default* consumer group, and Data format of *Json*: 
 
 ![Configure Event Hub](../images/module00/eventstream-hubconnection.png)
+
+9. With the Event Hub configured, click on *Data Preview*. You should see events including the stock symbol, price, and timestamp.
+
+![Data Preview](../images/module00/eventstream-hub-preview.png)
 
 ## :thinking: Additional Learning
 

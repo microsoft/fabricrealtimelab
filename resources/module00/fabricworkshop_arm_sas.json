@@ -15,12 +15,14 @@
         "stockdebuginfo": "0",
         "printonlyerrors": "0",
         "usegrowthrate": "1",
+        "useManagedIdentity": "0",
         "containerName": "stockgenerator",
         "eventHubName": "stockeventhub",
         "location": "[resourceGroup().location]",
         "randomString": "[substring(guid(resourceGroup().id), 0, 6)]",
         "namespaceName": "fabricworkshop",
         "fullnamespace": "[format('ehns-{0}-{1}', variables('randomString'), variables('namespaceName'))]",
+        "eventHubFQNS": "[format('{0}.servicebus.windows.net', variables('fullnamespace'))]",
         "fullcontainername": "[format('aci-{0}-{1}', variables('randomString'), variables('containerName'))]",
         "defaultSASKeyName": "stockeventhub_sas",
         "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('fullnamespace'), variables('defaultSASKeyName'))]"
@@ -106,13 +108,16 @@
             "apiVersion": "2023-05-01",
             "name": "[variables('fullcontainerName')]",
             "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ],
             "properties": {
                 "sku": "Standard",
                 "containers": [
                     {
                         "name": "[variables('fullcontainerName')]",
                         "properties": {
-                            "image": "realtimelab.azurecr.io/realtimegenerator:v2",
+                            "image": "realtimelab.azurecr.io/realtimegenerator:v3",
                             "ports": [
                                 {
                                     "protocol": "TCP",
@@ -127,6 +132,14 @@
                                 {
                                     "name": "EVENTHUBCONNECTIONSTRING",
                                     "value": "[listkeys(variables('authRuleResourceId'), '2017-04-01').primaryConnectionString]"
+                                },
+                                {
+                                    "name": "EVENTHUBFQNS",
+                                    "value": "[variables('eventHubFQNS')]"
+                                },
+                                {
+                                    "name": "USEMANAGEDIDENTITY",
+                                    "value": "[variables('useManagedIdentity')]"
                                 },
                                 {
                                     "name": "EVENTS",
