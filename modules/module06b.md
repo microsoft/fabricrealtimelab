@@ -193,7 +193,7 @@ def minute(timestamp):
 
 **Step 5: Group by symbol, datestamp, hour, and minute**
 
-Click *Operations* > *Group by and aggregate*. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. Click *Add aggregation*. Create three new aggregations: price - Maximum, price - Minimum, and price - Last value, which should look similar to the image below:
+Click *Operations* > *Group by and aggregate*. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. Click *Add aggregation*. Create three new aggregations: *price - Maximum*, *price - Minimum*, and *price - Last value*, which should look similar to the image below:
 
 ![Final aggregation](../images/module06/datawrangler-aggregate.png)
 
@@ -201,14 +201,14 @@ Click *Apply* and add the code to the notebook.
 
 **Step 6: Review the code**
 
-In the cell that is added, in the last two lines of the cell, notice the dataframe returned is named *df_stocks_clean_1*. Rename this *df_stocks_agg_minute*, like below: 
+In the cell that is added, in the last two lines of the cell, notice the dataframe returned is named *df_stocks_clean_1*. Rename this *df_stocks_agg_minute*, and change the name of the function to *aggregate_data_minute*, as shown below. Remember, if you get stuck, refer to the commented-out code as a reference. 
 
 ```python
-# old
+# old:
 # df_stocks_clean_1 = clean_data(df_stocks_clean)
 # display(df_stocks_clean_1)
 
-df_stocks_agg_minute = clean_data(df_stocks_clean)
+df_stocks_agg_minute = aggregate_data_minute(df_stocks_clean)
 display(df_stocks_agg_minute)
 ```
 
@@ -219,7 +219,7 @@ Run the next cell that calls the merge function, which writes the data into the 
 ```python
 # write the data to the stocks_minute_agg table
 
-merge_minute_agg(df_stocks_clean)
+merge_minute_agg(df_stocks_agg_minute)
 ```
 
 You can query the table to verify rows are written, and even re-reun the entire notebook to continue ingesting data.
@@ -274,11 +274,11 @@ Always keep in mind you can adapt the code to suit your needs.
 
 ## 7. Additional steps
 
-For an added challenge, create a new data wrangler step that further aggregates the data to per-hour precision. This can be done by loading the existing *df_stocks_agg_minute* into data wrangler, grouping by symbol, datestamp, and hour, and then creating new min/max/last based on the existing aggregations columns, which would look like:
+For an added challenge, create a new data wrangler step that further aggregates the data to per-hour precision. This can be done by loading the existing *df_stocks_agg_minute* into data wrangler, grouping by *symbol*, *datestamp*, and *hour*, and then creating new min/max/last based on the existing aggregations columns, which would look like:
 
 ![Hour aggregation](../images/module06/datawrangler-houragg.png)
 
-Example code is shown below. In addition to renaming the function, the alias' of the columns have also been changed to keep the column names the same. Because we are aggregating data that has already been aggregating, data wrangler is naming the columns like price_max_max, price_min_min; it's important to modify the aliases to keep the names the same.
+Example code is shown below. In addition to renaming the function to *aggregate_data_hour*, the alias' of the columns have also been changed to keep the column names the same. Because we are aggregating data that has already been aggregated, data wrangler is naming the columns like price_max_max, price_min_min; it's important to modify the aliases to keep the names the same.
 
 Finally, we also named the return dataframe *df_stocks_agg_hour* as shown in the code snippet below:
 
@@ -287,7 +287,7 @@ Finally, we also named the return dataframe *df_stocks_agg_hour* as shown in the
 
 from pyspark.sql import functions as F
 
-def aggregate_data_minute(df_stocks_agg_minute):
+def aggregate_data_hour(df_stocks_agg_minute):
     # Performed 3 aggregations grouped on columns: 'symbol', 'datestamp', 'hour'
     df_stocks_agg_minute = df_stocks_agg_minute.groupBy('symbol', 'datestamp', 'hour').agg(
         F.max('price_max').alias('price_max'), 
@@ -297,11 +297,11 @@ def aggregate_data_minute(df_stocks_agg_minute):
     df_stocks_agg_minute = df_stocks_agg_minute.sort(df_stocks_agg_minute['symbol'].asc(), df_stocks_agg_minute['datestamp'].asc(), df_stocks_agg_minute['hour'].asc())
     return df_stocks_agg_minute
 
-df_stocks_agg_hour = aggregate_data_minute(df_stocks_agg_minute)
+df_stocks_agg_hour = aggregate_data_hour(df_stocks_agg_minute)
 display(df_stocks_agg_hour)
 ```
 
-The code to merge can be completed as shown below, which is commented-out in the notebook.
+The code to merge the hour aggregated data is in the next cell:
 
 ```python
 merge_hour_agg(df_stocks_agg_hour)
@@ -309,7 +309,7 @@ merge_hour_agg(df_stocks_agg_hour)
 
 ## :tada: Summary
 
-In this module, you leveraged data wrangler to quickly preprocess and transform raw data into silver-level tables suitable for use in data science and reporting. 
+In this module, you leveraged data wrangler to quickly preprocess and transform raw data into silver-level tables suitable for use in data science and reporting. We began with the raw table with per-second readings for each stock; data was cleansed, then aggregated to minute-level precision (60 rows per minute reduced to 1). Then, data was aggregated again to hour-level precision. Raw data would have 3600 rows per hour, while the minute aggregated data would have 60, and now the hour data would have 1. 
 
 ## References
 

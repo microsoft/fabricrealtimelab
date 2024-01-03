@@ -42,13 +42,13 @@ Throughout this lab, there are several Jupyter notebooks, SQL scripts, and other
 
 Extract this zip file to a convenient location, and use these files instead of manually downloading each asset individually.
 
-[All Workshop Resources (resources.zip)](https://github.com/microsoft/fabricrealtimelab/raw/main/files/resources.zip)
+* [All Workshop Resources (resources.zip)](https://github.com/microsoft/fabricrealtimelab/raw/main/files/resources.zip)
 
 ## 2. Create Fabric Capacity and Workspace
 
 Microsoft Fabric is deployed to an Azure Active Directory tenant. Within each Fabric tenant, Fabric capacities can be created to group resources for various purposes -- this might be done organizationally (sales, marketing, development), geographically, or other logical grouping. 
 
-If a Fabric Trial is available, we recommend taking advantage of that opportunity to try Microsoft Fabric for a period of time (currently 60 days) with no commitment.
+If a Fabric Trial is available, we recommend taking advantage of that opportunity to try Microsoft Fabric for a period of time (currently 60 days) with no commitment. To see if you are in a trial or eligible for a trial, visit the [Fabric portal](https://app.fabric.microsoft.com/). If you are able to log in or presented the option to start a trial, you should be all set! 
 
 To create a Fabric capacity outside of a trial environment, create a new resource from the Azure portal, and search for Fabric. 
 
