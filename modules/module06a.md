@@ -201,7 +201,7 @@ This step is optional.
 
 If you are completing this lab in a single day, the fact table will only have a single data point for each stock as the data is aggregated to high/low/close prices for each day. Additional data is available that can be imported; this allows for more interesting reports and analysis. (These same files are shared by the data science module.)
 
-To complete this step, load the *Lakehouse 3* notebook. This notebook will download additional history data, and process it very similarly to the *Lakehouse 2* notebook that loads the fact table. Run through the notebook -- notice the difference is that the data is being loaded from CSV files and then loaded into the fact table.
+To complete this step, load the *Lakehouse 3* notebook. This notebook will download additional history data, storing it into the *raw_stock_data* table. The high watermark level will be reset, so the *Lakehouse 2* notebook that loads the fact table will pick up the new rows. Run through the notebook -- notice the dataframes are being loaded from CSV files.
 
 ![Report with Historical Data](../images/module06/reportwithhistorical.png)
 
