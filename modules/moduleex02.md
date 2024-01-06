@@ -1,4 +1,4 @@
-# Module 10b - Additional Real-time Dashboard
+# Module Ex-02 - Additional Real-time Dashboard
 
 [< Previous Module](../modules/moduleex01.md) - **[Home](../README.md)** - [Next Module >](./moduleex03.md)
 

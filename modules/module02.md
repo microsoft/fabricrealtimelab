@@ -64,7 +64,7 @@ In this KQL query, the results are limited to rows within the last 5 minutes, wh
 
 The previous price is calculated by looking at the previous row of the same symbol (8 rows earlier). This requires the data is *serialized* so the order of the data is guaranteed, as required when using functions like *prev()* or *next()*. However, because we are using an *order by*, the data is automatically serialized so using the *serialize* keyword is not strictly required, but might be a good idea for clarity.
 
-While this query is quick and effective, there are other ways to approach aggregation and look-back. We'll revisit this in our add-ons in [Module 10](../modules/module10.md). 
+While this query is quick and effective, there are other ways to approach aggregation and look-back. We'll revisit this in our add-ons in [the Extras](../modules/moduleex00.md). 
 
 ## 3. Calculate biggest price changes and time change occured
 

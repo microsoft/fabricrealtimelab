@@ -1,6 +1,6 @@
-# Module 010a - KQL Queryset Improvements
+# Module Ex-01 - KQL Queryset Improvements
 
-[< Previous Module](../modules/module10.md) - **[Home](../README.md)** - [Next Module >](./moduleex02.md)
+[< Previous Module](../modules/moduleex00.md) - **[Home](../README.md)** - [Next Module >](./moduleex02.md)
 
 ## :stopwatch: Estimated Duration
 

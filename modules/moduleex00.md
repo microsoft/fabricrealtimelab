@@ -1,6 +1,6 @@
 # Extras - Continued Learning
 
-[< Previous Module](../modules/module04.md) - **[Home](../README.md)** - [Next Module >](./moduleex01.md)
+[< Previous Module](../modules/module07c.md) - **[Home](../README.md)** - [Next Module >](./moduleex01.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -17,9 +17,9 @@ The modules contained within will explore certain aspects of the solution in mor
 
 ## :books: Modules
 
-* Ex-1: [Advanced KQL Queries](../modules/moduleex01.md)
-* Ex-2: [Additional Real-time Dashboard](../modules/moduleex02.md)
-* Ex-3: [Prediction vs Actual Reporting](../modules/moduleex03.md)
+* Ex-01: [Advanced KQL Queries](../modules/moduleex01.md)
+* Ex-02: [Additional Real-time Dashboard](../modules/moduleex02.md)
+* Ex-03: [Prediction vs Actual Reporting](../modules/moduleex03.md)
 
 
 
