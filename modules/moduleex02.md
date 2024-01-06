@@ -1,6 +1,6 @@
 # Module 10b - Additional Real-time Dashboard
 
-[< Previous Module](../modules/module10a.md) - **[Home](../README.md)** - [Next Module >](./module10c.md)
+[< Previous Module](../modules/moduleex01.md) - **[Home](../README.md)** - [Next Module >](./moduleex03.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -75,7 +75,7 @@ StockHistory
 
 In the results, we see a real-time summarized table of the current data by symbol over the previous 5 minutes. Of course, realistically we might look at data since the previous close or open.
 
-![Report Results](../images/module10/module10b/reportresults.png)
+![Report Results](../images/moduleex/moduleex02/reportresults.png)
 
 ## 2. Build a new dashboard
 
@@ -91,7 +91,7 @@ For the gauge, add the percent changed, and change the value from sum to average
 
 The initial report should look similar to:
 
-![Initial Report](../images/module10/module10b/initialreport.png)
+![Initial Report](../images/moduleex/moduleex02/initialreport.png)
 
 On all visuals except the donut, the colors can changed conditionally based on the value. In the above initial report image, note the conditional formatting button for each element on the visual. Click this to open the conditional formatting window. In the conditional formatting window, configure Rules on the sum of percentage, declaring two rules:
 
@@ -100,11 +100,11 @@ On all visuals except the donut, the colors can changed conditionally based on t
 
 This should look similar to the image below:
 
-![Conditional Formatting](../images/module10/module10b/conditionalformatting.png)
+![Conditional Formatting](../images/moduleex/moduleex02/conditionalformatting.png)
 
 This can be repeated for table, gauge, and stacked bar visuals -- and of course, modify to suite your preference. Once completed, the report should look similar to the report below.
 
-![Completed Report](../images/module10/module10b/completedreport.png)
+![Completed Report](../images/moduleex/moduleex02/completedreport.png)
 
 All that is left is to configure the report to auto-refresh every second or two, and you've built a handy real-time report!
 

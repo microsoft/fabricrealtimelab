@@ -111,7 +111,7 @@ Use the last cell of the notebook (frozen by default) to query the *stocks_predi
 
 This notebook can be scheduled as needed (perhaps once per evening or weekly). Also, instead of loading data from the CSV files, the data should be loaded from the *raw_stock_data* or *stocks_minute_agg* table. 
 
-For even more explorstion, if you completed the lakehouse module, check out the [Prediction vs Actual Reporting](../modules/module10c.md) bonus module.
+For even more exploration, if you completed the lakehouse module, check out the [Prediction vs Actual Reporting](../modules/moduleex03.md) bonus module.
 
 ## :tada: Summary
 

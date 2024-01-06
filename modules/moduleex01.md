@@ -1,6 +1,6 @@
 # Module 010a - KQL Queryset Improvements
 
-[< Previous Module](../modules/module10.md) - **[Home](../README.md)** - [Next Module >](./module10b.md)
+[< Previous Module](../modules/module10.md) - **[Home](../README.md)** - [Next Module >](./moduleex02.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -38,7 +38,7 @@ StockPrice
 
 The original table contains the timestamp, symbol, and price columns. The previous price, and consequently price difference and percent difference, is calculated by looking at the symbol's previous entry, which is 8 rows earlier, as shown in the image below:
 
-![Original Query Results](../images/module10/module10a/originalqueryresults.png)
+![Original Query Results](../images/moduleex/moduleex01/originalqueryresults.png)
 
 Recall, too, that the table order needs to be serialized because we are using the windowing [prev()](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/prevfunction) function, although in this instance the *order by* will serialize the results.
 
@@ -46,11 +46,11 @@ So what problems does this present? For starters, the query assumes there are al
 
 Most noticeably, though, the data may not be received in our expected order. While our event hub has guaranteed consistency, expecting the events are received in alphabetical order (specified in the order by) is fragile. We shouldn't expect the KQL database ingestion from the event hub to be in any particular order. We may even see this issue in a chart, like as shown in this image (specifically, notice the right side of the right chart):
 
-![Chart Issue](../images/module10/module10a/chartissue.png)
+![Chart Issue](../images/moduleex/moduleex01/chartissue.png)
 
 Indeed, we can see this kind of behavior if we rapidly query and catch the results at just the right moment:
 
-![Query Error](../images/module10/module10a/orderissue.png)
+![Query Error](../images/moduleex/moduleex01/orderissue.png)
 
 As you can see in the results, we've ingested a row (symbol WHO), but missing some other symbols. This has caused our use of the *prev()* function to give us the wrong results temporarily (matching the symbol BCUZ). Alarmingly, this erroniously sees this as a massive price drop, but if we were to query this a moment later, you'd likely see the rows complete.
 
@@ -120,7 +120,7 @@ The top part of the query (before the partition statement) retrieves the last 5 
 
 The results look like:
 
-![New Query Results](../images/module10/module10a/newqueryresults.png)
+![New Query Results](../images/moduleex/moduleex01/newqueryresults.png)
 
 The resulting query is far more resilient to order/data issues, and maintains a loose coupling with the data producer. Naturally, a query like this is more computationally expensive, so we'd want to be cognizant of the amount of data we are querying.
 
