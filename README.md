@@ -41,9 +41,9 @@ Additional modules for end-to-end solution:
 Continued Learning & Additional Modules
 
 10. [(Optional) Advanced KQL, Dashboards, Troubleshooting](./modules/module10.md)
-   * 10a: [KQL Queryset Improvements](./modules/moduleex01.md)
-   * 10b: [Additional Real-time Dashboard](./modules/moduleex02.md)
-   * 10c: [Predicted vs Actual Reporting](./modules/moduleex03.md)
+   * Ex-01: [KQL Queryset Improvements](./modules/moduleex01.md)
+   * Ex-02: [Additional Real-time Dashboard](./modules/moduleex02.md)
+   * Ex-03: [Predicted vs Actual Reporting](./modules/moduleex03.md)
 
 <div align="right"><a href="#fabric-real-time-workshop">↥ back to top</a></div>
 
