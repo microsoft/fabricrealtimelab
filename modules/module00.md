@@ -16,18 +16,16 @@ Depending on the deployment method, you may also need:
 
 ## :loudspeaker: Introduction
 
-In order to follow along with the workshop exercises, we need to provision a set of resources. At the heart of the scenario is our real-time stock price generator script that generates a continuous stream of stock prices that we'll use throughout the workshop. There are two ways to deploy this application:
+In order to follow along with the workshop exercises, a set of resources will need to be provisioned. At the heart of the scenario is the real-time stock price generator script that generates a continuous stream of stock prices that are used throughout the workshop. There are two ways to deploy this application:
 
 * Option 1 - Deploy the app via Jupyter notebook
 * Option 2 - Deploy the app via Azure Container Instance
 
-Both options yield the same result and is simply a matter of preference. For those using a Fabric free trial, we recommend using the Jupyter notebook (option 1) as it keeps the costs at zero and is 100% within the Fabric portal. The notebook must be kept running for the data to be generated. However, if you anticipate diving deeply into the lakehouse and data science modules, you may wish to go with the container method (option 2) to help avoid resource contention when running multiple notebooks. See the [additional learning section](#thinking-additional-learning) for references that discuss sizing and cluster configuration; running the app in a container will avoid these potential issues.
+When possible, we recommend deploying the stock price generator via Azure Container Instance (option 2). This is because the default Spark cluster will consume a large number of resources. If you intend on completing the lakehouse and data science modules, you may run into resource contention issues when running multiple notebooks. See the [additional learning section](#thinking-additional-learning) for references that discuss sizing and cluster configuration; running the app in a container will avoid these potential issues. (The pay-as-you-go cost for running the container and event hub is roughly $1.70/day (USD), but verify local costs using the [Azure Price Calculator](https://azure.microsoft.com/en-us/pricing/calculator/) -- the ARM template deploys a basic Event Hub and smallest possible 1 vCPU ACI container.) Please remember to deprovision deployments after the lab is complete.
 
-For those who have an existing environment (not a trial, and/or in a large organization), or using a provided lab environment, you may wish to go the container route (option 2) because running the script inside a container is easier and more efficient than using a Spark cluster that the Jupyter notebook will use. (The pay-as-you-go cost for running the container and event hub is roughly $1.70/day, but be sure to verify your costs using the [Azure Price Calculator](https://azure.microsoft.com/en-us/pricing/calculator/) -- the ARM template deploys a basic Event Hub and smallest possible 1 vCPU ACI container.) When deploying via a container, the container starts automatically and begins creating data immediately. 
+Running via a Jupyter notebook will keep the solution completely within the Fabric environment, however the notebook must be kept running for the data to be generated. If you anticipate completing the lab in a few hours and not diving too deeply into the lakehouse or data science sections, this is may be easiest approach particularly if you are using a Fabric free trial.
 
 You can always revisit this option later, should you wish to make a change. Simply deploy the new option, and change the input to the Eventstream to the new source.
-
-We'll begin by creating our Fabric workspace, if necessary, and then deploy the app using one of the options mentioned above.
 
 ## Table of Contents
 
