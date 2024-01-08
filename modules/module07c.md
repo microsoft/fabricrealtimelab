@@ -125,7 +125,7 @@ def readStockHistoryLive():
     return df
 ```
 
-Second, the notebook attempts to find a model in MLflow to load parameters via the *get_model_params()* function. In the event no parameters are found, default parameters are used. This allows data science teams to built effective model parameters that might be different for each stock.
+Second, the notebook attempts to find a model in MLflow to load parameters via the *get_model_params()* function. In the event no model is found, default parameters are used. This allows data science teams to built effective model parameters that might be different for each stock.
 
 ### Predict vs Actual
 
