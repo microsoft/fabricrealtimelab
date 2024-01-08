@@ -50,11 +50,12 @@ In this section, we'll rework both the first two notebooks into one single proce
 
 ## 2. Open and explore the notebook
 
-Open the *DS 3 - Build and Predict* notebook. For reference, the three notebooks used throughout this module are listed below. More details on importing these are in module 07a.
+Open the *DS 3 - Build and Predict* notebook. For reference, the notebooks used throughout this module are listed below. More details on importing these are in module 07a.
 
 * [Download the DS 1 - Build Model Notebook](<../resources/module07/DS 1 - Build Model.ipynb>)
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
 * [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
+* (optional) [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>)
 
 Take some time exploring the notebook, and notice a few key things:
 
