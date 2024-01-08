@@ -1,6 +1,6 @@
-# Module 010c - Predicted vs Actual Reporting
+# Module Ex-03 - Predicted vs Actual Reporting
 
-[< Previous Module](../modules/module10b.md) - **[Home](../README.md)** 
+[< Previous Module](../modules/moduleex02.md) - **[Home](../README.md)** 
 
 ## :stopwatch: Estimated Duration
 
@@ -56,7 +56,7 @@ To build a view that shows predictions and actual data, we'll combine the *stock
 
 In the stocks lakehouse, switch to the SQL analytics endpoint and create a new SQL query:
 
-![Create View](../images/module10/module10c/createview.png)
+![Create View](../images/moduleex/moduleex03/createview.png)
 
 Before creating the view, let's do a little data exploration. Without the aggregation tables, we would need to join the predictions table with the *raw_stock_data* table like the query below. Copy and run the following:
 
@@ -107,7 +107,7 @@ With the view created, we can build a semantic model.
 
 Switch to the *Model* tab (at the bottom of the screen), and then the *Reporting* tab near the top. Click *New semantic model*, adding the *vwPredictionsWithActual* view created above, and give it a name like StocksLakehouse_PredictionsWithActual_Model.
 
-![New Semantic Model](../images/module10/module10c/newsemanticmodel.png)
+![New Semantic Model](../images/moduleex/moduleex03/newsemanticmodel.png)
 
 ## 4. Alter the model settings
 
@@ -115,11 +115,11 @@ Although the query should perform just fine for even heavy use, this step is an 
 
 Switch to the workspace items view, filter or find the semantic model, and click the three ellipsis next to the *StocksLakehouse_PredictionsWithActual_Model* semantic model and select more settings. (Keep this context menu in mind -- you will revisit this in a moment.)
 
-![Settings](../images/module10/module10c/settings.png)
+![Settings](../images/moduleex/moduleex03/settings.png)
 
 Under the *Query Caching*, select *On* and click *Apply*. Under *Refresh*, turn off *Keep your Direct Lake data up to date* and instead, define a daily refresh schedule using the options presented. Click *Apply*.
 
-![Settings](../images/module10/module10c/querycaching.png)
+![Settings](../images/moduleex/moduleex03/querycaching.png)
 
 Ideally, the model refresh would occur just after the predictions are generated and periodically throughout the day. This an example of how we can tune performance for expensive queries, particularly in cases when there are infrequent updates to underlying data.
 
@@ -136,15 +136,15 @@ In the report, we'll create a line chart to display the predicted vs actual data
 
 Add a slicer to the canvas to the side of the report, and drag and drop the column *Symbol* to the slicer. Configure the slicer, under the slicer settings, to use the style *Tile*. When complete, the report should look similar to:
 
-![Report - First Visual](../images/module10/module10c/report1.png)
+![Report - First Visual](../images/moduleex/moduleex03/report1.png)
 
 Colors and labels/column names may be customized to suit your preference. The slicer should allow the chart to be customized per stock, and when completed look similar to:
 
-![Report - Completed](../images/module10/module10c/report1-finished.png)
+![Report - Completed](../images/moduleex/moduleex03/report1-finished.png)
 
 If you prefer more of a 'dashboard' style that shows multiple stocks, you can configure multiple charts on the same canvas. Each chart can be configured to filter a different stock, such as:
 
-![Commpleted Report](../images/module10/module10c/report2.png)
+![Commpleted Report](../images/moduleex/moduleex03/report2.png)
 
 ## 5. Next steps
 

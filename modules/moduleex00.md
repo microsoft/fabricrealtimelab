@@ -1,6 +1,6 @@
-# Module 10 - Additional Exercises
+# Extras - Continued Learning
 
-[< Previous Module](../modules/module04.md) - **[Home](../README.md)** - [Next Module >](./module010a.md)
+[< Previous Module](../modules/module07c.md) - **[Home](../README.md)** - [Next Module >](./moduleex01.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -17,9 +17,9 @@ The modules contained within will explore certain aspects of the solution in mor
 
 ## :books: Modules
 
-* 10a: [Advanced KQL Queries](../modules/module10a.md)
-* 10b: [Additional Real-time Dashboard](../modules/module10b.md)
-* 10c: [Prediction vs Actual Reporting](../modules/module10c.md)
+* Ex-01: [Advanced KQL Queries](../modules/moduleex01.md)
+* Ex-02: [Additional Real-time Dashboard](../modules/moduleex02.md)
+* Ex-03: [Prediction vs Actual Reporting](../modules/moduleex03.md)
 
 
 
