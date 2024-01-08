@@ -44,11 +44,13 @@ In this module, we'll build a notebook that queries MLflow for available models,
 
 ## 1. Open and explore the notebook
 
-Open the *DS 2 - Predict Stock Prices* notebook. For reference, the three notebooks used throughout this module are listed below. More details on importing these are in module 07a.
+Open the *DS 2 - Predict Stock Prices* notebook. For reference, the notebooks used throughout this module are listed below. More details on importing these are in module 07a.
 
 * [Download the DS 1 - Build Model Notebook](<../resources/module07/DS 1 - Build Model.ipynb>)
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
 * [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
+* (optional) [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>)
+
 
 Take a few moments to explore the *DS 2* notebook, and be sure to add the same default lakehouse to the notebook similar to the steps in module 07a. Many of the elements in this notebook should look familiar to *DS 1*. 
 

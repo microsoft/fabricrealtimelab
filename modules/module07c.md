@@ -50,11 +50,12 @@ In this section, we'll rework both the first two notebooks into one single proce
 
 ## 2. Open and explore the notebook
 
-Open the *DS 3 - Build and Predict* notebook. For reference, the three notebooks used throughout this module are listed below. More details on importing these are in module 07a.
+Open the *DS 3 - Build and Predict* notebook. For reference, the notebooks used throughout this module are listed below. More details on importing these are in module 07a.
 
 * [Download the DS 1 - Build Model Notebook](<../resources/module07/DS 1 - Build Model.ipynb>)
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
 * [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
+* (optional) [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>)
 
 Take some time exploring the notebook, and notice a few key things:
 
@@ -105,13 +106,31 @@ If you are running this in a time constrained lab environment, you may wish to s
 
 ## 4. Examine the results
 
-Use the last cell of the notebook (frozen by default) to query the *stocks_prediction* table to verify results are being written to the table. If you reload the report created in the previous section, you should see considerably more data in the reports.
+Use the last cell of the notebook (frozen by default) to query the *stocks_prediction* table to verify results are being written to the table. If you reload the report created in the previous section, you should see considerably more data in the reports. This notebook can be scheduled as needed (perhaps once per evening or weekly).
 
 ## 5. Additional Challenges
 
-This notebook can be scheduled as needed (perhaps once per evening or weekly). Also, instead of loading data from the CSV files, the data should be loaded from the *raw_stock_data* or *stocks_minute_agg* table. 
+### Load Live Data
 
-For even more exploration, if you completed the lakehouse module, check out the [Prediction vs Actual Reporting](../modules/moduleex03.md) bonus module.
+The *DS 3* notebook loads historical information from the downloaded CSV files. If you've completed the lakehouse module (particularly the historical data load), the completed solution would ideally be pulling data from the *raw_stock_data* or *stocks_minute_agg* table. An example of how to do this is in the *DS 4 - Use Live Data for Forecast* notebook. This notebook introduces two key changes: first, data is loaded from the *stocks_minute_agg* table as shown below. The timestamp is calculated from the date, hour, and minute columns:
+
+```python
+def readStockHistoryLive():
+    
+    df = spark.sql("SELECT * FROM stocks_minute_agg")
+
+    # create a timestamp column, derived from the datestamp + hour + minute columns
+    df = df.withColumn('timestamp', F.expr("to_timestamp(datestamp) + make_interval(0, 0, 0, 0, hour, minute, 0)"))
+
+    # ...
+    return df
+```
+
+Second, the notebook attempts to find a model in MLflow to load parameters via the *get_model_params()* function. In the event no model is found, default parameters are used. This allows data science teams to built effective model parameters that might be different for each stock.
+
+### Predict vs Actual
+
+For even more exploration, if you completed the lakehouse module, check out the [Prediction vs Actual Reporting](../modules/moduleex03.md) extra module. This module details how to create a report that mashes-up actual prices and predicted prices.
 
 ## :tada: Summary
 
