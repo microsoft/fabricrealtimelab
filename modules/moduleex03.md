@@ -1,6 +1,6 @@
 # Module Ex-03 - Predicted vs Actual Reporting
 
-[< Previous Module](../modules/moduleex02.md) - **[Home](../README.md)** 
+[< Previous Module](../modules/moduleex02.md) - **[Home](../README.md)** - [Next Module >](./moduleex04.md)
 
 ## :stopwatch: Estimated Duration
 
