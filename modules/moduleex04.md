@@ -29,7 +29,7 @@ If you are building a large dataset for consumption by a group of participants, 
 
 ## 1. Understanding the variables
 
-First, the notebook is designed is a tool and not intended to be executed "as-is". 
+First, the notebook is designed is a tool will various utility cells and not intended to be executed "as-is". 
 
 Near the top of the notebook, you will see some variables like the ones below:
 
@@ -50,6 +50,8 @@ sleepTime = 0
 The notebook will cycle one reading per second (*intervalInSeconds*), similar to the default generator. However, storing data at 1 second intervals creates large files and is often unnecessary, so the *writeFrequency* determines how often to record the values. Change this to 1 to record every second, but we recommend keeping this at 60. The default value of 60 means 1 reading every minute will be recorded. (While it may appear that it would be equivalent and faster to set *intervalInSeconds* to 60 and *writeFrequency* to 1 to produce data for each minute, this isn't the case. Having the notebook cycle the same as the generator app ensures trends and ranges are similar.)
 
 ## 2. Stock parameters
+
+Stock variables may be left as-is or modified to suit.
 
 *Note: all parameters can be copied to the ARM template for the ACI generator, or StockGeneratorNotebook, so the real-time generator produces consistent data. Note that the ARM template requires single-line and escaped double-quotes (see current ARM template as an example).
 
@@ -95,15 +97,17 @@ The AGR controls how high the max value grows per year and is compounded daily; 
 
 ## 3. Events and Timers
 
-The trends are primarily influenced by *events* and *timers*. Both are defined in Json objects. 
+Events and timers may be left as-is or modified to suit.
 
-Events affect every stock. Only 1 event may be running at a time -- if another event is expected to run, it will be queued until after the current event completes. An event is defined like so:
+Price trends are primarily influenced by *events* and *timers*. Both are defined in Json objects. 
+
+Events affect every stock and designed to add brief periods of similar but unpredictable movement across all stocks. Only 1 event may be running at a time -- if another event is expected to run, it will be queued until after the current event completes. An event is defined like so:
 
 ```json
-{"type": "random", "name": "Rando1", "frequency": 0.003, "increasechance": 0.504, "duration": 30, "modifier": 0.4}
+{"type": "random", "name": "Random Event", "frequency": 0.003, "increasechance": 0.504, "duration": 30, "modifier": 0.4}
 ```
 
-The type may be *random* or *periodic*. The *frequency* for random events indicate the chance the event will trigger on each cycle; for periodic events, frequency is how often the event is triggered. An *increasechance* of 1 would cause all stocks to rise when triggered. *Duration* indicates how many cycles the event runs for, and *modifier* helps will slow the changes to make them more gradual to prevent run-aways. All stocks will either rise or fall accordingly.
+The type may be *random* or *periodic*. The *frequency* for random events indicate the chance the event will trigger on each cycle; for periodic events, frequency is how often the event is triggered. An *increasechance* of 1 would cause all stocks to rise when triggered. *Duration* indicates how many cycles the event runs for, and *modifier* adjusts the per-cycle price change to make changes more gradual and prevent run-aways. All stocks will either rise or fall accordingly.
 
 Triggers are more granular and time-based. They act as modifiers to the stock's variables; multiple triggers can run concurrently and their modifiers stack. Triggers are defined like this example:
 
@@ -113,10 +117,10 @@ Triggers are more granular and time-based. They act as modifiers to the stock's 
 
 This trigger is active between 2pm and 10pm UTC, on Monday/Wednesday/Friday (0 is Monday, 6 is Sunday). This timer is active every month of the year, adding a 0.04 (4%) modifier to the stock increase chance and is applied to the WHO, WHAT, and WHY stocks. When active, these stocks gain a slightly higher chance to increase, given all other factors. Modifiers can be negative.
 
-This next example occurs on New Years Day and is applied to all stocks, resulting in a +15% modifier. 
+This next example occurs on New Years Day and is applied to all stocks, resulting in a +10% modifier. 
 
 ```json
-{"name": "New Years Day", "start":"00:00:00", "end":"23:59:59", "days":"0|1|2|3|4|5|6", "dayofmonth":"1", "months": "1", "modifier":0.15, "appliedTo": "all"}
+{"name": "New Years Day", "start":"00:00:00", "end":"23:59:59", "days":"0|1|2|3|4|5|6", "dayofmonth":"1", "months": "1", "modifier":0.10, "appliedTo": "all"}
 ```
 
 Using a combination of filters, you can create seasonal affects over either long or short time periods.
