@@ -152,3 +152,5 @@ In this module, you build a KQL queryset to summarize the data, and build a new 
 
 - [x] Developed a new KQL query to summarize the data
 - [x] Developed a new real-time dashboard
+
+[Continue >](./moduleex03.md)
