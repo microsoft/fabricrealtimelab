@@ -30,6 +30,10 @@ Most ML models are multivariate: for example, consider a travel time estimator t
 
 This being the case, we should generate our predictions immediately after creating the model; if we want to generate new predictions, we should consider retraining the ML model with the latest available data for improved accuracy. For practical purposes, then, this section shows how we could implement the ML model building and forecasting in a single step. Of course, we could have a separate process for each stock -- but for simplicity, all of the stocks will share the same basic model parameters. (And, in theory, we could store and retrieve model parameters in MLflow, allowing data scientists to develop the model parameters, as done in 07a, whenever new predicitions are needed.)
 
+Prefer video content? These videos illustrate the content in this module:
+* [Getting Started with Data Science in Microsoft Fabric, Part 1](https://youtu.be/kdUIUPwIy4g)
+* [Getting Started with Data Science in Microsoft Fabric, Part 2](https://youtu.be/GFTDxnPDTpQ)
+
 ## Table of Contents
 
 1. [Methods to retrain](#1-methods-to-retrain)
@@ -140,3 +144,4 @@ In this module, we further refined the process to build a model and generate pre
 
 - [x] Loaded a notebook into your Fabric environment that focuses on building an ML model and generating predictions.
 
+[Continue >](./module00.md)

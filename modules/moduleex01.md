@@ -137,3 +137,5 @@ In this module, you learned about KQL windowing, partition and scan operators, a
 ## :white_check_mark: Results
 
 - [x] Developed a new KQL query for use in dashboards.
+
+[Continue >](./moduleex02.md)

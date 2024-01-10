@@ -71,7 +71,15 @@ Be sure to assign the workspace to the capacity created above. To do this, expan
 
 ## 3. Option 1 - Deploy the app via Jupyter Notebook
 
-This option deploys as a Jupyter notebook, generating our stock prices and publishing to an Eventstream within Fabric.
+This option deploys as a Jupyter notebook, generating our stock prices and publishing to an Eventstream within Fabric. This diagram illustrates the end state of the deployment:
+
+```mermaid
+flowchart LR
+    subgraph fabric [Microsoft Fabric]
+    direction LR
+    A[Jupyter Notebook] --> B{Eventstream} 
+    end
+```
 
 1. To begin, download the following notebook to a convenient location:
 
@@ -105,7 +113,18 @@ With this step completed, we're ready to move on -- you can skip the next step.
 
 ## 4. Option 2 - Deploy the app via Azure Container Instance
 
-This option deploys the stock generator app to an Azure Container Instance using an ARM template. The app will generate stock data that publishes the data to an Azure Event Hub, which is also configured during the deployment of the ARM template. 
+This option deploys the stock generator app to an Azure Container Instance using an ARM template. The app will generate stock data that publishes the data to an Azure Event Hub, which is also configured during the deployment of the ARM template. This diagram illustrates the end state of the deployment:
+
+```mermaid
+flowchart LR
+    subgraph azure [Microsoft Azure]
+    A["Azure Container Instance"] --> B[Event Hub] 
+    end
+    B --> C{Eventstream}
+    subgraph fabric [Microsoft Fabric]
+    C{Eventstream}
+    end
+```
 
 To auto-deploy the resources, use these steps below. (All templates are located in the /resource/module00 folder, if you have would like to deploy via another method.)
 

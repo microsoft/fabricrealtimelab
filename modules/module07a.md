@@ -29,6 +29,10 @@ As a refresher on the scenario, AbboCost Financial has been modernizing their st
 
 In this module, AbboCost would like to explore predictive analytics help inform their advisors. The goal is to analyze historical data for patterns that can be used to create forecasts of future values. Microsoft Fabric's Data Science capability is the ideal place to do this kind of exploration.
 
+Prefer video content? These videos illustrate the content in this module:
+* [Getting Started with Data Science in Microsoft Fabric, Part 1](https://youtu.be/kdUIUPwIy4g)
+* [Getting Started with Data Science in Microsoft Fabric, Part 2](https://youtu.be/GFTDxnPDTpQ)
+
 ## :bulb: About Notebooks
 
 Most of this lab will be done within a Jupyter notebook, an industry standard way of doing exploratory data analyis, building models, and visualizing datasets, and processing data. A notebook itself is separated into indiviual sections called cells which contain code or text documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is generally the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
@@ -139,3 +143,4 @@ In this module, you learned how to approach a data science solution in Fabric by
 
 - [x] Loaded a notebook into your Fabric environment, created an ML model and stored the model in MLflow, and evaluated the model performance.
 
+[Continue >](./module07b.md)
