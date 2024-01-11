@@ -15,6 +15,9 @@
 
 Now that our data is streaming into our KQL database, we can begin to query and explore the data, and leverage KQL to gain insights into the data. 
 
+Prefer video content? These videos illustrate the content in this module:
+* [Getting Started with Real-time Analytics in Microsoft Fabric](https://youtu.be/wGox1lf0ve0)
+
 ## Table of Contents
 
 1. [Create KQL Queryset](#1-create-kql-queryset)

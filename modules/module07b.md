@@ -34,6 +34,10 @@ This module is a continuation of module 07a. In module 07a, the stock data was a
 
 In this module, we'll build a notebook that queries MLflow for available models, and builds predictions. We'll then build a semantic model for the predictions to leverage in Power BI. We'll build a report in Power BI Desktop that uses multiple datasets.
 
+Prefer video content? These videos illustrate the content in this module:
+* [Getting Started with Data Science in Microsoft Fabric, Part 1](https://youtu.be/kdUIUPwIy4g)
+* [Getting Started with Data Science in Microsoft Fabric, Part 2](https://youtu.be/GFTDxnPDTpQ)
+
 ## Table of Contents
 
 1. [Open and explore the notebook](#1-open-and-explore-the-notebook)
@@ -182,3 +186,5 @@ In this module, you followed up on the creation of the ML model by consuming the
 - [x] Loaded and ran the DS 2 notebook, which loaded available ML models and generated predictions
 - [x] Stored the predictions in a new lakehouse table
 - [x] Build a Power BI report incorporating the prediction data
+
+[Continue >](./module07c.md)

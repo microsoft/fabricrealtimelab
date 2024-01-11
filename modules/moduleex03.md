@@ -166,3 +166,5 @@ In this module, we created a view in the lakehouse to aggregate predicted vs act
 - [x] Developed a new lakehouse view
 - [x] Modified the semantic model settings to cache the result
 - [x] Developed a new predicted vs actual report
+
+[Continue >](./moduleex04.md)

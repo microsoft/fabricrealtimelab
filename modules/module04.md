@@ -34,6 +34,9 @@ Learn more about Data Activator on the [Microsoft Learn Data Activator](https://
 >
 > Currently, Data Activator can consume data from Power BI and Eventstreams (such as Azure Event Hub, Kafka). In the future, additional sources (like KQL querysets) and more advanced triggering will be added. Read the [Data Activator roadmap](https://learn.microsoft.com/en-us/fabric/release-plan/data-activator) for more information.
 
+Prefer video content? These videos illustrate the content in this module:
+* [Getting Started with Data Activator in Microsoft Fabric](https://youtu.be/3DjLJLiwkC0)
+
 ## Table of Contents
 
 1. [Prepare the report](#1-prepare-the-report)
