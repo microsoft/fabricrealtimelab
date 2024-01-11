@@ -161,7 +161,7 @@ To auto-deploy the resources, use these steps below. (All templates are located 
 
 ![Create Custom App](../images/module00/eventstream-eventhub.png)
 
-8. On the Azure Event Hubs configuration page, add a new connection and using the values from Event Hub you noted earlier (the Event Hub namespace, the Event Hub name, the name of the SAS key, and key itself copied to your clipboard), specifying the *$Default* consumer group, and Data format of *Json*: 
+8. On the Azure Event Hubs configuration page, add a new connection and using the values from Event Hub you noted earlier (the Event Hub namespace, the Event Hub name, the name of the SAS key, and key itself copied to your clipboard), specifying the *$Default* consumer group, and Data format of *JSON*: 
 
 ![Configure Event Hub](../images/module00/eventstream-hubconnection.png)
 
