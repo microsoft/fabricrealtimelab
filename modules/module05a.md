@@ -1,5 +1,4 @@
-# Module 05a - Data Warehousing
-## Setting up the Warehouse and Pipeline
+# Module 05a - Data Warehousing - Setup Warehouse and Pipeline
 
 [< Previous Module](../modules/module04.md) - **[Home](../README.md)** - [Next Module >](./module05b.md)
 
