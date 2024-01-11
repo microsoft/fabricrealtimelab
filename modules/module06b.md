@@ -2,12 +2,6 @@
 
 [< Previous Module](../modules/module06a.md) - **[Home](../README.md)** - [Next Module >](./module07a.md)
 
-<style type="text/css">
-img { 
-    border: 5px solid #FF1111;
-}
-</style>
-
 ## :stopwatch: Estimated Duration
 
 * 60 minutes 
