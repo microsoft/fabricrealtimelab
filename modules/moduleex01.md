@@ -19,7 +19,7 @@ In this module, we explore the original KQL query used to retrieve stock data. W
 
 ## Table of Contents
 
-1. [Examine the original query](#1-examine-the-oroginal-query)
+1. [Examine the original query](#1-examine-the-original-query)
 2. [Consider a mitigation strategy](#2-consider-a-mitigation-strategy)
 3. [Rewrite the KQL](#3-rewrite-the-kql)
 
