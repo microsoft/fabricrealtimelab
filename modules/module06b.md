@@ -1,4 +1,4 @@
-# Module 06b - Data Lakehouse - Data Wrangler
+# Module 06b - Data Lakehouse: Data Wrangler
 
 [< Previous Module](../modules/module06a.md) - **[Home](../README.md)** - [Next Module >](./module07a.md)
 

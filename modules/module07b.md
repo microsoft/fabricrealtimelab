@@ -1,6 +1,6 @@
 # Module 07b - Data Science: Using models, saving to Lakehouse, building a report
 
-[< Previous Module](./modules/module07a.md) - **[Home](../README.md)** - [Next Module >](./module07c.md)
+[< Previous Module](../modules/module07a.md) - **[Home](../README.md)** - [Next Module >](../modules/module07c.md)
 
 ## :stopwatch: Estimated Duration
 

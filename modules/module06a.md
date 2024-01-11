@@ -1,4 +1,4 @@
-# Module 06a - Data Lakehouse
+# Module 06a - Data Lakehouse: Building a Lakehouse
 
 [< Previous Module](../modules/module05c.md) - **[Home](../README.md)** - [Next Module >](./module06b.md)
 

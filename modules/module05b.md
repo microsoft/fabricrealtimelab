@@ -1,4 +1,4 @@
-# Module 05b - Data Warehousing - Build Star Schema
+# Module 05b - Data Warehousing: Build Star Schema
 
 [< Previous Module](../modules/module05a.md) - **[Home](../README.md)** - [Next Module >](./module05c.md)
 
