@@ -44,6 +44,7 @@ Extras: [Additional Content and Continued Learning](./modules/moduleex00.md)
    * Ex-01: [KQL Queryset Improvements](./modules/moduleex01.md)
    * Ex-02: [Additional Real-time Dashboard](./modules/moduleex02.md)
    * Ex-03: [Predicted vs Actual Reporting](./modules/moduleex03.md)
+   * Ex-04: [Generate Custom Historical Data](./modules/moduleex03.md)
 
 <div align="right"><a href="#fabric-real-time-workshop">↥ back to top</a></div>
 
