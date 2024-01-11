@@ -100,7 +100,7 @@ Within your Fabric workspace, switch to the data engineering persona (bottom lef
 
 ## 2. Add lakehouse to Eventstream
 
-Open the Eventstream created in the first module. Click the plus symbol on the output of the Eventstream to add a new destination. Select *Lakehouse* from the context menu, and in the side panel that opens, select the lakehouse created above and create a new table called *raw_stock_data*. Ensure the input data format is *Json*; this should look similar to the image below:
+Open the Eventstream created in the first module. Click the plus symbol on the output of the Eventstream to add a new destination. Select *Lakehouse* from the context menu, and in the side panel that opens, select the lakehouse created above and create a new table called *raw_stock_data*. Ensure the input data format is *JSON*; this should look similar to the image below:
 
 ![Add Destination to Eventstream](../images/module06/addeventstream.png)
 

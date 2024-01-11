@@ -99,7 +99,7 @@ The AGR controls how high the max value grows per year and is compounded daily; 
 
 Events and timers may be left as-is or modified to suit.
 
-Price trends are primarily influenced by *events* and *timers*. Both are defined in Json objects. 
+Price trends are primarily influenced by *events* and *timers*. Both are defined in JSON objects. 
 
 Events affect every stock and designed to add brief periods of similar but unpredictable movement across all stocks. Only 1 event may be running at a time -- if another event is expected to run, it will be queued until after the current event completes. An event is defined like so:
 
