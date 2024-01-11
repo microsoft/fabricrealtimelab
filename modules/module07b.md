@@ -1,6 +1,6 @@
 # Module 07b - Data Science: Using models, saving to Lakehouse, building a report
 
-[< Previous Module](./modules/module07a.md) - **[Home](../README.md)** - [Next Module >](./module07c.md)
+[< Previous Module](../modules/module07a.md) - **[Home](../README.md)** - [Next Module >](../modules/module07c.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -16,7 +16,7 @@ Recommended modules for reports:
 - [x] Completed [Module 01 - KQL Database ](../modules/module01.md)
 - [x] Completed [Module 02 - KQL Queries](../modules/module02.md)
 - [x] Completed [Module 03 - Reporting](../modules/module03.md)
-- [x] Completed [Module 06 - Lakehouse](../modules/module03.md)
+- [x] Completed [Module 06 - Lakehouse](../modules/module06a.md)
 
 You can complete the reporting section without the recommended modules above, but the functionality will be limited.
 

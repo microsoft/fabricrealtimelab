@@ -1,6 +1,6 @@
 # Module Ex-03 - Predicted vs Actual Reporting
 
-[< Previous Module](../modules/moduleex02.md) - **[Home](../README.md)** - [Next Module >](./moduleex04.md)
+[< Previous Module](../modules/moduleex02.md) - **[Home](../README.md)** - [Next Module >](../modules/moduleex04.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -12,7 +12,7 @@
 - [x] Completed [Module 01](../modules/module01.md)
 - [x] Completed [Module 02](../modules/module02.md)
 - [x] Completed [Module 03](../modules/module03.md)
-- [x] Completed [Module 06 - Data Lakehouse](../modules/module06.md)
+- [x] Completed [Module 06 - Data Lakehouse](../modules/module06a.md)
 - [x] Completed [Module 07 - Data Science](../modules/module07a.md)
 
 ## :loudspeaker: Introduction

@@ -1,6 +1,6 @@
 # Module 07a - Data Science: Building and storing an ML model
 
-[< Previous Module](./modules/module06.md) - **[Home](../README.md)** - [Next Module >](./module07b.md)
+[< Previous Module](./modules/module06a.md) - **[Home](../README.md)** - [Next Module >](./module07b.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -11,9 +11,9 @@
 
 - [x] Access to a Fabric environment
 
-We've designed this module to be stand-alone with no dependencies on earlier modules. However, it may be helpful to have completed [Module 01 - Initial Setup](./module01.md) and [Module 06 - Lakehouse](./module06.md). Module 01 will help you get familiar with the scenario, while Module 06 will introduce the Lakehouse. Our data science solution will be storing data in a Lakehouse, so if you've completed Module 06, you will be ready to dive right in.
+We've designed this module to be stand-alone with no dependencies on earlier modules. However, it may be helpful to have completed [Module 01 - Initial Setup](./module01.md) and [Module 06 - Lakehouse](./module06a.md). Module 01 will help you get familiar with the scenario, while Module 06 will introduce the Lakehouse. Our data science solution will be storing data in a Lakehouse, so if you've completed Module 06, you will be ready to dive right in.
 
-If you have not created any Fabric resources and consuming this module as a stand-alone exercise, you can follow the instructions in [Module 01 - Create Fabric Capacity](./module01.md?#1-create-fabric-capacity) to get a Fabric environment up and running.
+If you have not created any Fabric resources and consuming this module as a stand-alone exercise, you can follow the instructions in [Module 00 - Create Fabric Capacity](./module00.md#2-create-fabric-capacity-and-workspace) to get a Fabric environment up and running.
 
 ## :book: Sections
 

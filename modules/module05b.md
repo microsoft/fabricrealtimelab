@@ -1,4 +1,4 @@
-# Module 05b - Data Warehousing
+# Module 05b - Data Warehousing: Build Star Schema
 
 [< Previous Module](../modules/module05a.md) - **[Home](../README.md)** - [Next Module >](./module05c.md)
 
@@ -37,6 +37,9 @@ We'll also create views to support the pipeline by making it easier to load data
 4. [Create the views](#4-create-the-views)
 5. [Add activity to load symbols](#5-add-activity-to-load-symbols)
 6. [Create the procedure to load daily prices](#6-create-the-procedure-to-load-daily-prices)
+7. [Add activity to the pipeline to load daily stock prices](#7-add-activity-to-the-pipeline-to-load-daily-stock-prices)
+8. [Run the pipeline](#8-run-the-pipeline)
+9. [Schedule the pipeline](#9-schedule-the-pipeline)
 
 ## 1. Create the dimension and fact tables
 
@@ -282,7 +285,7 @@ END
 GO
 ```
 
-## 2. Add activity to the pipeline to load daily stock prices
+## 7. Add activity to the pipeline to load daily stock prices
 
 Add another *Stored Procedure* activity to the pipeline named *Populate Fact Stocks Daily Prices* that loads the stocks prices from staging into the fact table. Connect the success output of the *Populate Symbols Dimension* to the new *Populate Fact Stocks Daily Prices* activity.
 
@@ -292,13 +295,13 @@ Add another *Stored Procedure* activity to the pipeline named *Populate Fact Sto
 
 ![Load prices](../images/module05/pipeline-loadprices.png)
 
-## 3. Run the pipeline
+## 8. Run the pipeline
 
 Our pipeline should be complete! Run the pipeline by clicking the *Run* button, and verify the pipeline runs and fact and dimension tables are being loaded. 
 
 ![Run all](../images/module05/pipeline-runall.png)
 
-## 4. Schedule the pipeline
+## 9. Schedule the pipeline
 
 Next, schedule the pipeline to run periodically. This will vary by business case, but this could be run frequently (every few minutes) or once or twice per day. To schedule the pipeline, click the *Schedule* button (next to the *Run* button) and set up a recurring schedule, such as hourly or every few minutes:
 
