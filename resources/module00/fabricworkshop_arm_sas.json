@@ -15,7 +15,8 @@
         "stockdebuginfo": "0",
         "printonlyerrors": "0",
         "usegrowthrate": "1",
-        "useManagedIdentity": "0",
+        "usemanagedidentity": "0",
+        "warmuphours": "0",
         "containerName": "stockgenerator",
         "eventHubName": "stockeventhub",
         "location": "[resourceGroup().location]",
@@ -117,7 +118,7 @@
                     {
                         "name": "[variables('fullcontainerName')]",
                         "properties": {
-                            "image": "realtimelab.azurecr.io/realtimegenerator:v4",
+                            "image": "realtimelab.azurecr.io/realtimegenerator:v5",
                             "ports": [
                                 {
                                     "protocol": "TCP",
@@ -139,7 +140,11 @@
                                 },
                                 {
                                     "name": "USEMANAGEDIDENTITY",
-                                    "value": "[variables('useManagedIdentity')]"
+                                    "value": "[variables('usemanagedidentity')]"
+                                },
+                                {
+                                    "name": "WARMUPHOURS",
+                                    "value": "[variables('warmuphours')]"
                                 },
                                 {
                                     "name": "EVENTS",
