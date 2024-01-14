@@ -1,6 +1,6 @@
 # Module 02 - Exploring the Data
 
-[< Previous Module](../modules/module01.md) - **[Home](../README.md)** - [Next Module >](./module03.md)
+[< Previous Module](./module01.md) - **[Home](../README.md)** - [Next Module >](./module03.md)
 
 ## :stopwatch: Estimated Duration
 

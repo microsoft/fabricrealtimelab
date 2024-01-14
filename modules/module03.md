@@ -1,6 +1,6 @@
 # Module 03 - Reporting
 
-[< Previous Module](../modules/module02.md) - **[Home](../README.md)** - [Next Module >](./module04.md)
+[< Previous Module](./module02.md) - **[Home](../README.md)** - [Next Module >](./module04.md)
 
 ## :stopwatch: Estimated Duration
 
