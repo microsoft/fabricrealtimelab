@@ -20,6 +20,8 @@ With the data loaded in the database and our inital KQL Queryset complete, we ca
 
 1. [Configure Refresh Rate](#1-configure-refresh-rate)
 2. [Create a basic Power BI report](#2-create-a-basic-power-bi-report)
+3. [Create a second visual for percent change](#3-create-a-second-visual-for-percent-change)
+4. [Configure the report to auto-refresh](#4-configure-the-report-to-auto-refresh)
 
 ## 1. Configure Refresh Rate
 
