@@ -1,6 +1,6 @@
 # Module 05c - Data Warehousing: Semantic Modeling
 
-[< Previous Module](../modules/module05b.md) - **[Home](../README.md)** - [Next Module >](./module06a.md)
+[< Previous Module](./module05b.md) - **[Home](../README.md)** - [Next Module >](./module06a.md)
 
 ## :stopwatch: Estimated Duration
 

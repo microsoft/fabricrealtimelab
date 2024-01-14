@@ -1,6 +1,6 @@
 # Module 05a - Data Warehousing: Setup Warehouse and Pipeline
 
-[< Previous Module](../modules/module04.md) - **[Home](../README.md)** - [Next Module >](./module05b.md)
+[< Previous Module](./module04.md) - **[Home](../README.md)** - [Next Module >](./module05b.md)
 
 ## :stopwatch: Estimated Duration
 

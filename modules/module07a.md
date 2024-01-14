@@ -1,6 +1,6 @@
 # Module 07a - Data Science: Building and storing an ML model
 
-[< Previous Module](./modules/module06a.md) - **[Home](../README.md)** - [Next Module >](./module07b.md)
+[< Previous Module](./module06a.md) - **[Home](../README.md)** - [Next Module >](./module07b.md)
 
 ## :stopwatch: Estimated Duration
 

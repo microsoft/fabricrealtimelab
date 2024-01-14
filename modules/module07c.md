@@ -1,6 +1,6 @@
 # Module 07c - Data Science: Solution in practice
 
-[< Previous Module](../modules/module07b.md) - **[Home](../README.md)** - [Next Module >](../modules/moduleex00.md)
+[< Previous Module](./module07b.md) - **[Home](../README.md)** - [Next Module >](./moduleex00.md)
 
 ## :stopwatch: Estimated Duration
 
