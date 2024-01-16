@@ -61,7 +61,7 @@ Individually view and download:
 * [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
 * [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>) (optional)
 
-Take a few moments to explore the *DS 2* notebook, and be sure to add the same default lakehouse to the notebook similar to the steps in module 07a. Many of the elements in this notebook should look familiar to *DS 1*. 
+Take a few moments to explore the *DS 2 - Predict Stock Prices* notebook, and be sure to add the same default lakehouse to the notebook similar to the steps in module 07a. Many of the elements in this notebook should look familiar to *DS 1*. 
 
 Notice that much of the notebook has been broken out into function definitions, such as *def write_predictions*, which help encapsulate logic into smaller steps. Notebooks can include other libraries (as you've seen already at the top of most notebooks), and can also execute other notebooks. This notebook completes these tasks at a high level:
 
