@@ -1,6 +1,6 @@
 # Module 07b - Data Science: Using models, saving to Lakehouse, building a report
 
-[< Previous Module](../modules/module07a.md) - **[Home](../README.md)** - [Next Module >](../modules/module07c.md)
+[< Previous Module](./module07a.md) - **[Home](../README.md)** - [Next Module >](./module07c.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -50,13 +50,18 @@ Prefer video content? These videos illustrate the content in this module:
 
 Open the *DS 2 - Predict Stock Prices* notebook. For reference, the notebooks used throughout this module are listed below. More details on importing these are in module 07a.
 
+All resources (notebooks, scripts, etc.) for all modules can be downloaded in this zip file:
+
+* [All Workshop Resources (resources.zip)](https://github.com/microsoft/fabricrealtimelab/raw/main/files/resources.zip)
+
+Individually view and download:
+
 * [Download the DS 1 - Build Model Notebook](<../resources/module07/DS 1 - Build Model.ipynb>)
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
 * [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
-* (optional) [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>)
+* [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>) (optional)
 
-
-Take a few moments to explore the *DS 2* notebook, and be sure to add the same default lakehouse to the notebook similar to the steps in module 07a. Many of the elements in this notebook should look familiar to *DS 1*. 
+Take a few moments to explore the *DS 2 - Predict Stock Prices* notebook, and be sure to add the same default lakehouse to the notebook similar to the steps in module 07a. Many of the elements in this notebook should look familiar to *DS 1*. 
 
 Notice that much of the notebook has been broken out into function definitions, such as *def write_predictions*, which help encapsulate logic into smaller steps. Notebooks can include other libraries (as you've seen already at the top of most notebooks), and can also execute other notebooks. This notebook completes these tasks at a high level:
 

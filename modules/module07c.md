@@ -1,6 +1,6 @@
 # Module 07c - Data Science: Solution in practice
 
-[< Previous Module](../modules/module07b.md) - **[Home](../README.md)** - [Next Module >](../modules/moduleex00.md)
+[< Previous Module](./module07b.md) - **[Home](../README.md)** - [Next Module >](./moduleex00.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -56,12 +56,18 @@ In this section, we'll rework both the first two notebooks into one single proce
 
 Open the *DS 3 - Build and Predict* notebook. For reference, the notebooks used throughout this module are listed below. More details on importing these are in module 07a.
 
+All resources (notebooks, scripts, etc.) for all modules can be downloaded in this zip file:
+
+* [All Workshop Resources (resources.zip)](https://github.com/microsoft/fabricrealtimelab/raw/main/files/resources.zip)
+
+Individually view and download:
+
 * [Download the DS 1 - Build Model Notebook](<../resources/module07/DS 1 - Build Model.ipynb>)
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
 * [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
-* (optional) [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>)
+* [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>) (optional)
 
-Take some time exploring the notebook, and notice a few key things:
+Take some time exploring the *DS 3 - Build and Predict* notebook, and notice a few key things:
 
 * There is no logging to or using MLflow. Data scientists can still use MLflow for developing models, logging metrics, and collaborating. 
 * The ML models are built, then predictions are made immediately and saved to the predictions table. There is no persistence of the model.

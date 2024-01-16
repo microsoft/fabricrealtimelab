@@ -1,6 +1,6 @@
 # Module 01 - KQL Database Configuration and Ingestion
 
-[< Previous Module](../modules/module00.md) - **[Home](../README.md)** - [Next Module >](./module02.md)
+[< Previous Module](./module00.md) - **[Home](../README.md)** - [Next Module >](./module02.md)
 
 ## :stopwatch: Estimated Duration
 

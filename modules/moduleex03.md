@@ -61,6 +61,7 @@ In the stocks lakehouse, switch to the SQL analytics endpoint and create a new S
 Before creating the view, let's do a little data exploration. Without the aggregation tables, we would need to join the predictions table with the *raw_stock_data* table like the query below. Copy and run the following:
 
 ```sql
+-- slow: join against raw table
 select sp.Symbol, yhat, Predict_time, avg(raw.price) as avgprice, 
 min(raw.price) as minprice, max(raw.price) as maxprice
 from stocks_prediction sp
@@ -75,6 +76,7 @@ group by sp.Symbol, yhat, Predict_time
 This query is incredibly expensive to run (over 1 minute on our relatively small dataset) because it has to aggregate a great deal of data. It may run quickly if the amount of data is small, but as the data size grows, this query can take several minutes. Rewriting the query to take advantage of the silver aggregate tables would look like the following query. Run the following:
 
 ```sql
+-- fast: join against aggregation table
 select sp.Symbol, yhat, Predict_time, sma.LastPrice, 
 sma.MinPrice, sma.MaxPrice
 from stocks_prediction sp

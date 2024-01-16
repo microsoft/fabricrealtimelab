@@ -1,6 +1,6 @@
 # Module 06b - Data Lakehouse: Data Wrangler
 
-[< Previous Module](../modules/module06a.md) - **[Home](../README.md)** - [Next Module >](./module07a.md)
+[< Previous Module](./module06a.md) - **[Home](../README.md)** - [Next Module >](./module07a.md)
 
 ## :stopwatch: Estimated Duration
 

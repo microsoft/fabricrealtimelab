@@ -1,6 +1,6 @@
 # Module 02 - Exploring the Data
 
-[< Previous Module](../modules/module01.md) - **[Home](../README.md)** - [Next Module >](./module03.md)
+[< Previous Module](./module01.md) - **[Home](../README.md)** - [Next Module >](./module03.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -95,14 +95,19 @@ StockPrice
 
 This is particularly useful when creating reports that aggregate real time data over a longer time period.
 
+## :thinking: Tips
+
+* Too much data? Consider adding a row limit filter, like 'take 1000', to limit the number of rows returned.
+
+## :thinking: Additional Learning
+
+* [KQL prev() function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/prevfunction)
+* [KQL summarize operator](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/summarizeoperator)
+* [MS Learn: Query data in a KQL queryset](https://learn.microsoft.com/en-us/fabric/real-time-analytics/kusto-query-set)
+
 ## :tada: Summary
 
 In this exercise, you create several KQL Querysets to explore the data. Moreover, these Querysets will serve as filters and transformations of the data to feed into the reports we will create in the next module.
-
-## :thinking: Tips
-
-* Has your stock market crashed or seeing unusual data? Restarting the container will reset the initial stock prices.
-* Too much data? Consider adding a row limit filter, like 'take 1000', to limit the number of rows returned.
 
 ## :white_check_mark: Results
 

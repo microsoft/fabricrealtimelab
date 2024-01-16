@@ -1,6 +1,6 @@
 # Module 04 - Data Activator
 
-[< Previous Module](../modules/module03.md) - **[Home](../README.md)** - [Next Module >](./module05a.md)
+[< Previous Module](./module03.md) - **[Home](../README.md)** - [Next Module >](./module05a.md)
 
 ## :stopwatch: Estimated Duration
 
