@@ -1,10 +1,8 @@
-# Microsoft Fabric Real-Time Analytics Workshop
+# Microsoft Fabric End-to-End Real-Time Analytics Workshop
 
-Welcome to the Microsoft Fabric Real-time Analytics end-to-end workshop!
+Welcome to the Microsoft Fabric end-to-end Real-time Analytics workshop!
 
 In this workshop, we'll start by rapidly generating real-time data and understanding how that data can be processed and visualized in Microsoft Fabric. With the initial reporting in place, multiple modules are available that explore data warehousing, data lakehouse architecture, data activator, data science, and of course, real-time analytics. The modules are designed to be cohesive but flexible -- they all involve the same core scenario, but have limited dependencies so you can consume the modules that make the most sense for you. 
-
-Analytics on real-time data presents unique challenges compared to traditional batch and near real-time scenarios. With real-time analytics, potentially large volumes of data need continuous ingestion, transformation, and visualization.
 
 The basic architecture of our solution is illustrated below. The app deployed in the beginning of this workshop (either as a docker container or running in Jupyter notebook) will publish events to our Fabric environment. The data is ingested into a KQL database for real-time reporting in Power BI. 
 
