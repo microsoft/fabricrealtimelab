@@ -24,6 +24,9 @@ This module is broken down into 3 sections:
 
 ## :loudspeaker: Introduction
 
+Prefer video content? This video gives an overview of the data warehouse solution in this module:
+* [Getting Started with Data Warehousing in Microsoft Fabric](https://youtu.be/e6RyPj0Cmec)
+
 In this module, you will build a Synapse Data Warehouse inside Microsoft Fabric to aggregate data from the KQL database. In Microsoft Fabric, there are two primary ways to building a data warehouse: using a Synapse Data Warehouse, the focus of this module, and a lakehouse, the topic of the next module.
 
 A Synapse Data Warehouse stores its data in OneLake in Delta/Parquet format similar to lakehouse tables. However, only a Synapse Data Warehouse offers read/write on the T-SQL endpoint. If you are migrating a data warehouse or more familiar with T-SQL development, using a Synapse Data Warehouse is a logical choice. 
