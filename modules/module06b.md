@@ -87,13 +87,13 @@ In data wrangler, we'll record a number of steps to process data. In the screens
 
 To remove null/empty values:
 
-*Click Operations* > *Find and replace* > *Drop missing values*. Select the *symbol* and *price* columns and click *Apply*. Notice the rows that match are highlighted in red in the middle window (in the screenshot below). Click *Apply*.
+Under *Operations* > *Find and replace*, click *Drop missing values*. From the *Target columns* dropdown, select the *symbol* and *price* columns and click *Apply*. Notice the rows that match are highlighted in red in the middle window (in the screenshot below). Click *Apply* under the *Target columns* dropdown.
 
 ![Drop missing values](../images/module06/datawrangler-dropmissing.png)
 
 To remove zero-price values:
 
-Click *Operations* > *Sort and filter* > *Filter*. Uncheck *Keep matching rows*, select *price*, and set the condition to *equal* to *0*. Notice the rows with zero are dropped.
+Under *Operations* > *Sort and filter*, click *Filter*. **Uncheck** *Keep matching rows*, select *price* as the target column, and set the condition to *equal* to *0*. Notice the rows with zero are marked red as they will be dropped (if the other rows are marked red, be sure to uncheck the *Keep matching rows* checkbox). Click *Apply* in the *Operations* panel beneath the Filter.
 
 ![Drop zero price](../images/module06/datawrangler-dropzero.png)
 
@@ -115,7 +115,7 @@ display(anomaly_df_clean)
 
 Run the cell and observe the output has removed the invalid rows.
 
-The function created, *clean_data*, contains all of the steps in sequence and can be modified as needed. Because we loaded data wrangler with the *anomaly_df*, the method is written to take that dataframe by name, but this can be any dataframe that matches the schema. Additionally, we can edit the name of the function if we'd like it to be a bit clearer. 
+The function created, *clean_data*, contains all of the steps in sequence and can be modified as needed. Notice that each step performed in data wrangler is commented. Because data wrangler was loaded with the *anomaly_df*, the method is written to take that dataframe by name, but this can be any dataframe that matches the schema. Additionally, we can edit the name of the function if we'd like it to be a bit clearer. 
 
 Modify the function name from *clean_data* to *remove_invalid_rows*, and change the line *anomaly_df_clean = clean_data(anomaly_df)* to *df_stocks_clean = remove_invalid_rows(df_stocks)* as shown below. Also, while not necessary for functionality, you can change the name of the dataframe used in the function to simply *df* as shown below:
 
@@ -133,21 +133,27 @@ df_stocks_clean = remove_invalid_rows(df_stocks)
 display(df_stocks_clean)
 ```
 
-This function will now remove the invalid rows from our *df_stocks* dataframe and return a new dataframe called *df_stocks_clean*. It is common to used a different name for the output dataframe (such as *df_stocks_clean*) to make the cell idempotent -- this way, we can go back and re-run the cell, make modifications, etc., without having to reload our original data.
+This function will now remove the invalid rows from our *df_stocks* dataframe and return a new dataframe called *df_stocks_clean*. It is common to use a different name for the output dataframe (such as *df_stocks_clean*) to make the cell idempotent -- this way, we can go back and re-run the cell, make modifications, etc., without having to reload our original data.
 
 Run this cell and observe the output before continuing to the next step.
 
 ## 4. Build aggregation routine
 
-This step will be more involved because we'll build more steps in data wrangler. In this step, we'll add several derived columns in order to group the data.
+This next series will be more involved because we'll build a number of steps in data wrangler, adding derived columns and aggregating the data. If you get stuck, continue as best you can and use the sample code in the notebook to help fix any issues after.
+
+Scroll down just past the commented-out example code to the *Symbol/Date/Hour/Minute Aggregation Section*, placing your cursor in the *Add data wrangler here* cell.
 
 Load data wranger again, this time selecting the *df_stocks_clean* dataframe. Perform the following steps:
 
 **Step 1: Convert timestamp from string to timestamp type**
 
-Click on the three dots in the corner of the *timestamp* column and select *Change column type*. For the *New type*, select *datetime64[ns]* and click *Apply*:
+Click on the three dots in the corner of the *timestamp* column and select *Change column type*:
 
 ![Change timestamp type](../images/module06/datawrangler-changetimestamp.png)
+
+For the *New type*, select *datetime64[ns]* and click *Apply*:
+
+![Change timestamp type](../images/module06/datawrangler-changetimestamp2.png)
 
 **Step 2: Add new datestamp column**
 
@@ -157,7 +163,11 @@ Select *Operations* > *New column by example*. Under *Target columns*, choose *t
 
 **Step 3: Add new hour column**
 
-Following the steps above, create another new column named *hour*, also using *timestamp* as a *Target columns*. In the new *hour* column, enter an hour for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *13*. This allows data wrangler to infer we are looking for the hour component, and should build code similar to:
+Similar to adding the datestamp column above, create a new column named *hour*, also using *timestamp* in the *Target columns*. In the new *hour* column that appear in the data preview, enter an hour for any given row -- but try to pick a row that has a unique hour value. For example, if the *timestamp* is *2023-12-21 06:13:00* enter *06*:
+
+![Add hour](../images/module06/datawrangler-addhour.png)
+
+You may need to enter example values for several rows. This allows data wrangler to infer we are looking for the hour component, and should build code similar to:
 
 ```python
 # Derive column 'hour' from column: 'timestamp'
@@ -171,11 +181,10 @@ def hour(timestamp):
     return f"{number1:01.0f}"
 ```
 
-**Step 4: Convert the hour to integer**
+> :bulb: **Problems with hour or minute?**
+> In the event data wrangler isn't correctly inferring the hour or minute components, try a different row with more unique values. Some date/time values are difficult, such as "2024-01-01 01:01:00". If it is still troublesome, just continue and this can be fixed manually after the code is added to the notebook.
 
-Next, convert the hour column to an integer. Click on the three dots in the corner of the *hour* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*.
-
-**Step 5: Add new minute column**
+**Step 4: Add new minute column**
 
 Same as with the hour column, create a new *minute* column. In the new *minute* column, enter a minute for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *22*. The code generated should look similar to:
 
@@ -191,13 +200,17 @@ def minute(timestamp):
     return f"{number1:01.0f}"
 ```
 
+**Step 5: Convert the hour to integer**
+
+Next, convert the hour column to an integer. Click on the three dots in the corner of the *hour* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*.
+
 **Step 6: Convert the minute to integer**
 
 Convert the minute column to an integer. Click on the three dots in the corner of the *minute* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*.
 
 **Step 7: Group by symbol, datestamp, hour, and minute**
 
-Click *Operations* > *Group by and aggregate*. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. Click *Add aggregation*. Create three new aggregations: *price - Maximum*, *price - Minimum*, and *price - Last value*, which should look similar to the image below:
+Under *Operations*, click *Group by and aggregate*. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. Using *Add aggregation*, create a total of three aggregations: *price - Maximum*, *price - Minimum*, and *price - Last value*, which should look similar to the image below:
 
 ![Final aggregation](../images/module06/datawrangler-aggregate.png)
 
@@ -216,6 +229,11 @@ df_stocks_agg_minute = aggregate_data_minute(df_stocks_clean)
 display(df_stocks_agg_minute)
 ```
 
+If any of the data wrangling steps don't seem to be quite correct (not getting the correct hour or minute, for example), refer to the commented-out samples. Step 7 below has a number of additional considerations that may help.
+
+> :bulb: **Uncommenting or Commenting Large Blocks**
+> If you'd like to comment-out (or uncomment) large blocks, you can highlight the section of code (or CTRL-A to select everything in the current cell) and use CTRL-/ (Control *slash*) to toggler commenting.
+
 ## 5. Run the merge
 
 Run the next cell that calls the merge function, which writes the data into the table:
@@ -226,17 +244,23 @@ Run the next cell that calls the merge function, which writes the data into the 
 merge_minute_agg(df_stocks_agg_minute)
 ```
 
-You can query the table to verify rows are written, and even re-reun the entire notebook to continue ingesting data.
-
 ## 6. Aggregate hourly
 
 Let's review where we are: our per-second data has been cleansed, and then summarized to the per-minute level. This reduces our rowcount from 86,400 rows/day to 1,440 rows/day per stock symbol. For reports that might show monthly data, we can further aggregate the data to per-hour frequency, reducing the data to 24 rows/day per stock symbol. 
 
-This final data wrangler step will be easier than the previous. In the final placeholder under the Symbol/Date/Hour section, load the existing *df_stocks_agg_minute* dataframe into data wrangler, grouping by *symbol*, *datestamp*, and *hour*, and then creating new min/max/last based on the existing aggregations columns, which would look like:
+This final data wrangler step will be easier than the previous. In the final placeholder under the *Symbol/Date/Hour* section, load the existing *df_stocks_agg_minute* dataframe into data wrangler.
+
+Under *Operations*, select *Group by and aggregate*, grouping by *symbol*, *datestamp*, and *hour*, and then creating three aggregations:
+
+* price_min: Minimum
+* price_max: Maximum
+* price_last: Last value
+
+This should look like:
 
 ![Hour aggregation](../images/module06/datawrangler-houragg.png)
 
-Example code is shown below. In addition to renaming the function to *aggregate_data_hour*, the alias' of the columns have also been changed to keep the column names the same. Because we are aggregating data that has already been aggregated, data wrangler is naming the columns like price_max_max, price_min_min; it's important to modify the aliases to keep the names the same for clarity.
+Example code is shown below. In addition to renaming the function to *aggregate_data_hour*, the alias' of the columns have also been changed to keep the column names the same. Because we are aggregating data that has already been aggregated, data wrangler is naming the columns like price_max_max, price_min_min; we will modify the aliases to keep the names the same for clarity.
 
 Finally, we also named the return dataframe *df_stocks_agg_hour* as shown in the code snippet below:
 
