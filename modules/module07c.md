@@ -122,7 +122,7 @@ Use the last cell of the notebook (frozen by default) to query the *stocks_predi
 
 ### Load Live Data
 
-The *DS 3* notebook loads historical information from the downloaded CSV files. If you've completed the lakehouse module (particularly the historical data load), the completed solution would ideally be pulling data from the *raw_stock_data* or *stocks_minute_agg* table. An example of how to do this is in the *DS 4 - Use Live Data for Forecast* notebook. This notebook introduces two key changes: first, data is loaded from the *stocks_minute_agg* table as shown below. The timestamp is calculated from the date, hour, and minute columns:
+The *DS 3* notebook loads historical information from the downloaded CSV files. If you've completed the lakehouse module, the completed solution would ideally be pulling data from the *stocks_minute_agg* table. An example of how to do this is in the *DS 4 - Use Live Data for Forecast* notebook. This notebook introduces two key changes: first, data is loaded from the *stocks_minute_agg* table as shown below. The timestamp is calculated from the date, hour, and minute columns:
 
 ```python
 def readStockHistoryLive():
@@ -136,7 +136,21 @@ def readStockHistoryLive():
     return df
 ```
 
-Second, the notebook attempts to find a model in MLflow to load parameters via the *get_model_params()* function. In the event no model is found, default parameters are used. This allows data science teams to built effective model parameters that might be different for each stock.
+Second, the notebook attempts to find a model in MLflow to load parameters via the *get_model_params()* function. In the event no model is found, default parameters are used. This allows data science teams to build effective model parameters that might be different for each stock. With this approach, the parameters can be tuned over time and loaded immediately before building the model.
+
+With this approach, our data flow would now look like:
+
+```mermaid
+flowchart LR
+    subgraph Bronze [Bronze]
+    B[(raw_stock_data)]
+    end
+    subgraph Silver [Silver]
+    B[(raw_stock_data)] --> C[(stocks_minute_agg)]
+    C --> P[(stocks_predicition)]
+    B[(raw_stock_data)] --> D[(stocks_hour_agg)]
+    end
+```
 
 ### Predict vs Actual
 

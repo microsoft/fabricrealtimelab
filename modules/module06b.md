@@ -34,6 +34,19 @@ flowchart LR
 
 The notebook used here will build both aggregation tables, which are silver-level artifacts. While it is common to separate medallion layers into different lakehouses, given the small size of our data and for the purposes of our lab, we'll be using the same lakehouse to store all layers.
 
+By the end of this module, our data flow will look like:
+
+```mermaid
+flowchart LR
+    subgraph Bronze [Bronze]
+    B[(raw_stock_data)]
+    end
+    subgraph Silver [Silver]
+    B[(raw_stock_data)] --> C[(stocks_minute_agg)]
+    B[(raw_stock_data)] --> D[(stocks_hour_agg)]
+    end
+```
+
 ## Table of Contents
 
 1. [Import Notebook](#1-import-notebook)

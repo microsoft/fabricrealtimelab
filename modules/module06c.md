@@ -55,6 +55,23 @@ erDiagram
     }
 ```
 
+By the end of this module, our data flow will look like:
+
+```mermaid
+flowchart LR
+    subgraph Bronze [Bronze]
+    B[(raw_stock_data)]
+    end
+    subgraph Silver [Silver]
+    B[(raw_stock_data)] --> C[(stocks_minute_agg)]
+    B[(raw_stock_data)] --> D[(stocks_hour_agg)]
+    end
+    subgraph Gold [Gold]
+    D --> G
+    G[(Fact/Dimension Tables)]
+    end
+```
+
 ## Table of Contents
 
 1. [Import notebooks](#1-import-notebooks)
