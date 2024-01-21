@@ -1,6 +1,6 @@
-# Module 06a - Data Lakehouse: Building the Aggregation Tables
+# Module 06b - Data Lakehouse: Building the Aggregation Tables
 
-[< Previous Module](./module06a.md) - **[Home](../README.md)** - [Next Module >](./module06b.md)
+[< Previous Module](./module06a.md) - **[Home](../README.md)** - [Next Module >](./module06c.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -20,7 +20,7 @@ This module is broken down into the following sections:
 
 ## :loudspeaker: Introduction
 
-Our goal in this module is to build curated and aggregated data suitable for use in building our dimensional model and in data science. With the raw data having a per-second frequency, this data size is often not ideal for reporting or analysis. Further, the data isn't cleansed, so we're at risk of non-conformed data causing issues in reports or pipelines where erroneous data isn't expected. These new tables will store the data at the per-minute and per-hour level. Fortunately, *data wrangler* makes this an easy task.
+Our goal in this module is to build curated and aggregated data suitable for use in building our dimensional model and in data science. With the raw data having a per-second frequency, this data size is often not ideal for reporting or analysis. Further, the data isn't cleansed, so we're at risk of non-conforming data causing issues in reports or pipelines where erroneous data isn't expected. These new tables will store the data at the per-minute and per-hour level. Fortunately, *data wrangler* makes this an easy task.
 
 As a refresher, a traditional medallion architecture looks similar to:
 
@@ -32,7 +32,7 @@ flowchart LR
     D --> E[(Gold / modeled)]
 ```
 
-The notebook used here will build both aggregation tables, which are silver-level artifacts. As a reminder, it is common to separate medallion layers into different lakehouses, but for the purposes of our lab and simplicity of the data model, we'll be using the same lakehouse to store all layers.
+The notebook used here will build both aggregation tables, which are silver-level artifacts. While it is common to separate medallion layers into different lakehouses, given the small size of our data and for the purposes of our lab, we'll be using the same lakehouse to store all layers.
 
 ## Table of Contents
 
@@ -69,17 +69,17 @@ Take a moment to scroll through the notebook. Be sure to add the default lakehou
 
 1. Two tables in the lakehouse are created: *stocks_minute_agg* and *stocks_hour_agg* if they do not already exist.
 2. An 'anomaly' dataframe is created to illustrate data cleansing.
-3. A merge function writes the data to the tables.
+3. A merge function writes the data to the tables. Merging is convenient when we may want to insert or update existing rows.
 4. The latest data written to the tables is queried. Notice that we are not using a watermark to keep track of what has been imported (as was done in Module 5). Because we're aggregating to the minute or hour, we'll process all data from the most recent hour/minute.
 5. **Important!** There are *three* placeholders for data wrangler code you will be creating. Example data wrangler code is commented-out for reference/troubleshooting, if you do not want to complete the data wrangling steps, or are stuck and would like some help.
 
 ## 3. Build cleansing routine
 
-Run all of the cells individually until the first cell with the content "# add data wrangler here", running the cell immediately above that loads *df_stocks* from the table. Click in the "# add data wrangler here" cell to make it the active cell. From the top window, select the *Data* tab, and click *Transform DataFrame in Data Wrangler*:
+In the *Lakehouse 2 - Build Aggregation Tables* notebook, run all of the cells individually until the first cell with the content "# add data wrangler here", running the cell immediately above that loads *df_stocks* from the table. Click in the "# add data wrangler here" cell to make it the active cell. From the top window, select the *Data* tab, and click *Transform DataFrame in Data Wrangler*:
 
 ![Start Data Wrangler](../images/module06/datawrangler-load.png)
 
-A list of all dataframes (both pandas and Spark) will be listed. Data wrangler can work with both types of dataframes. For this first exercise, select *anomaly_df* to load the dataframe in data wrangler. We'll use the *anomaly_df* because it will provide visual feedback on the steps below. Once loaded, the screen should look like:
+A list of all dataframes (both pandas and Spark) will be listed. Data wrangler can work with both types of dataframes. For this first exercise, select *anomaly_df* to load the dataframe in data wrangler. We'll use the *anomaly_df* because it was intentionally created with a few invalid rows that can be tested. Once loaded, the screen should look like:
 
 ![Anomaly dataframe in data wrangler](../images/module06/datawrangler-main.png)
 
@@ -151,13 +151,13 @@ Click on the three dots in the corner of the *timestamp* column and select *Chan
 
 ![Change timestamp type](../images/module06/datawrangler-changetimestamp.png)
 
-For the *New type*, select *datetime64[ns]* and click *Apply*:
+For the *New type*, select *datetime64[ns]* and click *Apply*. Notice the new column has changed types:
 
 ![Change timestamp type](../images/module06/datawrangler-changetimestamp2.png)
 
 **Step 2: Add new datestamp column**
 
-Select *Operations* > *New column by example*. Under *Target columns*, choose *timestamp*. Enter a *Derived column name* of *datestamp*. Do not yet click *Apply*; in the new *datestamp* column, enter an example value for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *2023-12-01*. This allows data wrangler to infer we are looking for the date without a time component; once the columns autofill, click *Apply*:
+Select *Operations* > *New column by example*. Under *Target columns*, choose *timestamp*. Enter a *Derived column name* of *datestamp*. Do not yet click *Apply*; in the new *datestamp* column, enter an example value for any given row. For example, if the *timestamp* is *2023-12-21 00:07:00* enter *2023-12-01*. This allows data wrangler to infer we are looking for the date without a time component; once the columns autofill, click *Apply*:
 
 ![Add datestamp](../images/module06/datawrangler-adddatestamp.png)
 
@@ -231,7 +231,7 @@ display(df_stocks_agg_minute)
 
 If any of the data wrangling steps don't seem to be quite correct (not getting the correct hour or minute, for example), refer to the commented-out samples. Step 7 below has a number of additional considerations that may help.
 
-> :bulb: **Uncommenting or Commenting Large Blocks**
+> :bulb: **Uncommenting or Commenting Large Blocks:**
 > If you'd like to comment-out (or uncomment) large blocks, you can highlight the section of code (or CTRL-A to select everything in the current cell) and use CTRL-/ (Control *slash*) to toggler commenting.
 
 ## 5. Run the merge

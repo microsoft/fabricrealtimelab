@@ -114,7 +114,7 @@ The lakehouse has two types of storage: managed tables and unmanaged files. As y
 
 The next step is to run through this first notebook. By default, the notebook will load 30 days of data prior to the current day, adding to the *raw_stock_data* table. You can either click *Run all* from the left top tool bar, but is recommended you run each cell individually by clicking the play button on the left side of each cell to follow along with the process. The location of these buttons is shown by the arrows in the above image. 
 
-Most of the code in our notebooks is written in Python, but notebooks support a variety of languages. Several cells of the notebook are defined functions, such as *def getDownloadInfo(year)*: these contain code, but do not run until the function is called. Notice that the notebook downloaded zip files from our storage account, and unzipped them in the *Files* section. These CSV files contain the historical information, which can then be loaded by the into a dataframe:
+Most of the code in our notebooks is written in Python, but notebooks support a variety of languages. Several cells of the notebook are defined functions, such as *def getDownloadInfo(year)*: these contain code, but do not run until the function is called. Notice that the notebook downloaded zip files, and unzipped them in the *Files* section. These CSV files contain the historical information, which can then be loaded by the into a dataframe:
 
 ![Downloaded Files](../images/module06/lakehousefilesdownload.png)
 
@@ -125,12 +125,12 @@ You may also come across cells that are *frozen*; frozen cells will not run and 
 
 ## :tada: Summary
 
-In this module, you set up the lakehouse by implementing a Lambda architecture for the hot path (real-time) and cold path(batch). You also loaded several notebooks, running the first notebook to load historical data. 
+In this module, you set up the lakehouse by implementing a Lambda architecture for the hot path (real-time) and cold path (batch). You also loaded several notebooks, running the first notebook to load historical data. 
 
 ## References
 
 * [Fabric Medallion Architecture](https://learn.microsoft.com/en-us/fabric/onelake/onelake-medallion-lakehouse-architecture)
-* [Wikipedia:Lambda architecture](https://en.wikipedia.org/wiki/Lambda_architecture)
+* [Wikipedia: Lambda architecture](https://en.wikipedia.org/wiki/Lambda_architecture)
 * [Fabric Storage Decision Guide](https://learn.microsoft.com/en-us/fabric/get-started/decision-guide-data-store)
 
 ## :white_check_mark: Results

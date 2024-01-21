@@ -93,7 +93,7 @@ If there is no lakehouse associated with the notebook, click *Add* underneath th
 
 ![Add Lakehouse to Notebook](../images/module06/addlakehousetonotebook-lh3.png)
 
-With the notebook loaded and the lakehouse attached, notice the schema on the left. We should see the *raw_stock_data* table as well as the *stocks_minute_agg* and *stocks_hour_agg* tables.
+With the notebook loaded and the lakehouse attached, notice the schema on the left. In addition to the *raw_stock_data* table, there should be the *stocks_minute_agg* and *stocks_hour_agg* tables.
 
 ![Lakehouse Schema](../images/module06/lakehouseschema-agg.png)
 
@@ -103,7 +103,7 @@ When all cells have been run, refresh the schema by clicking the three dots (...
 
 ![Schema with Fact](../images/module06/schemawithfact.png)
 
-With the schema in place, we're ready to look at our main notebook that will process the incremental load into the fact table.
+The date and symbol tables should already be populated. With the schema in place, we're ready to look at our main notebook that will process the incremental load into the fact table.
 
 ## 3. Load fact table
 
@@ -111,13 +111,13 @@ Our fact table contains the daily stock prices (the high, low, and closing price
 
 Load the *Lakehouse 4 - Load Star Schema* notebook. Attach the lakehouse to the notebook. We recommend you run each cell individually, but you can also click *Run All*. Be sure the *sourceTableName* in the first cell matches the name of the hourly aggregation table.
 
-When you have finished running through the notebook, there are a few key points to keep in mind: 
+When you have finished running through the notebook, the fact table should now be populated. There are a few key points to keep in mind: 
 
 * While this notebook can be run as a scheduled task, it's primarily designed to be used interactively. We could remove much of the display code and other artifacts to improve performance.
 * Take note of the symbol incremental load (*dim_symbol_incremental_load*). A business question that must be asked is, "Can we handle new stock symbols in the data feed?" In a real world scenario, this might be a common scenario, or it may not be possible depending on the data source. In this case, the notebook will support new symbols that might not exist in the symbol dimension table, however, this takes processing time. As with all business problems, this is a tradeoff between performance and functionality, and will vary by business needs.
 * This notebook loads data from the *stocks_hour_agg* table. Because the *stocks_hour_agg* table is also loaded from a notebook, we'd typically orchestrate all of these activities from either a pipeline, spark job, or master notebook.
 
-To scheduled the notebook to run periodically, click on the *Run* tab, and click *Schedule*. The notebook can be configured to run periodically (such as every hour or as neededw):
+To scheduled the notebook to run periodically, click on the *Run* tab, and click *Schedule*. The notebook can be configured to run periodically (such as every hour or as needed):
 
 ![Schedule Notebook](../images/module06/schedule.png)
 
@@ -152,7 +152,7 @@ Both the *Lakehouse 2 - Build Aggregation Tables* and *Lakehouse 4 - Load Star S
 * A master notebook can be used to execute each notebook.
 * The notebooks could be integrated into one master notebook
 
-What are the pros/cons of the different approaches?
+Consider how additional dependencies may be handled. In the Data Science module, the aggregation tables are also used to build ML models. Depending on business needs, not all of these processes need to run frequently -- for example, the aggregation load may run every few minutes, while the dimensional model load and ML models introduced later might only run daily. What are the pros/cons of the different approaches?
 
 ## 6. Additional challenge for the overachiever
 
