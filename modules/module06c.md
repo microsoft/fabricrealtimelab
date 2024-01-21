@@ -139,15 +139,15 @@ When complete, click the *New report* button to create a new report. Similar to 
 * Y-axis: ClosePrice (fact_stocks_daily_prices)
 * Legend: Symbol (dim_symbol)
 
-![Simple Report](../images/module06/simplereport.png)
+![Simple Report](../images/module06/pbi-factreport.png)
 
 ## 5. Notebook orchestration
 
 As an optional challenge, build a more refined orchestration for the two primary notebooks that load data. 
 
-Both the *Lakehouse 2 - Build Aggregation Tables* and *Lakehouse 4 - Load Star Schema* need to be run periodically and,ideally, in order because the *Lakehouse 4* notebook depends on data from the aggregation tables. There are a variety of ways to accomplish this, such as:
+Both the *Lakehouse 2 - Build Aggregation Tables* and *Lakehouse 4 - Load Star Schema* need to be run periodically and, ideally, in order because the *Lakehouse 4* notebook depends on data from the aggregation tables. There are a variety of ways to accomplish this, such as:
 
-* A Data Pipeline can be used to orchestrate the execution.
+* A data pipeline can be used to orchestrate the execution.
 * The notebooks can be scheduled periodically at offset times.
 * A master notebook can be used to execute each notebook.
 * The notebooks could be integrated into one master notebook
