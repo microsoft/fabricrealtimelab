@@ -1,4 +1,4 @@
-# Module 06a - Data Lakehouse: Building a Lakehouse
+# Module 06c - Data Lakehouse: Building the Dimensional Model
 
 [< Previous Module](./module06b.md) - **[Home](../README.md)** - [Next Module >](./module07a.md)
 
@@ -91,19 +91,17 @@ Click on your workspace to view all items in your *RealTimeWorkshop* workspace a
 
 If there is no lakehouse associated with the notebook, click *Add* underneath the text *Add Lakehouse*, and add the lakehouse created earlier. *Important*: You will need to add the lakehouse to every imported notebook -- do this each time you open a notebook for the first time.
 
-![Add Lakehouse to Notebook](../images/module06/addlakehousetonotebook.png)
+![Add Lakehouse to Notebook](../images/module06/addlakehousetonotebook-lh3.png)
 
-With the notebook loaded and the lakehouse attached, notice the schema on the left. We should see the *raw_stock_data* tablem as well as the *stocks_minute_agg* and *stocks_hour_agg* tables.
+With the notebook loaded and the lakehouse attached, notice the schema on the left. We should see the *raw_stock_data* table as well as the *stocks_minute_agg* and *stocks_hour_agg* tables.
 
-*************************
-![Lakehouse Schema](../images/module06/lakehouseschema1.png)
+![Lakehouse Schema](../images/module06/lakehouseschema-agg.png)
 
 Run through this entire notebook. You can either click *Run all* from the left top tool bar, but is recommended you run each cell individually by clicking the play button on the left side of each cell to follow along with the process. 
 
-When all cells have been run, refresh the schema by clicking the three dots (...) dots to the right of the *Tables* and clicking *Refresh*, as shown in the image below. You should see additional tables for our dimensional model:
+When all cells have been run, refresh the schema by clicking the three dots (...) dots to the right of the *Tables* and clicking *Refresh*. You should see additional tables (*dim_symbol*, *dim_date*, and *fact_stocks_daily_prices*) for our dimensional model:
 
-*************************
-![Frozen Cell](../images/module06/frozencell.png)
+![Schema with Fact](../images/module06/schemawithfact.png)
 
 With the schema in place, we're ready to look at our main notebook that will process the incremental load into the fact table.
 
