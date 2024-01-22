@@ -14,7 +14,7 @@
 
 ## :loudspeaker: Introduction
 
-With the data loaded in the database and our inital KQL Queryset complete, we can begin to craft visualizations for real-time dashboards.
+With the data loaded in the database and our initial KQL Queryset complete, we can begin to craft visualizations for real-time dashboards.
 
 ## Table of Contents
 
@@ -29,7 +29,7 @@ Our Power BI tenant needs to be configured to allow for real time updating. To c
 
 ![Power BI Admin Portal](../images/module03/pbiadminportal.png)
 
-Select *Capacity settings* on the left, and select the Fabric capacity that matches your current environment: this will be *Trial* if using a trial environment, or the capacity name configured earlier if using a new Fabric capacity. If you are using your organization's capacity, you may not have sufficient permissions to modify these settings, which means some functinoality will be limited if the organization has limited the max refresh rate.
+Select *Capacity settings* on the left, and select the Fabric capacity that matches your current environment: this will be *Trial* if using a trial environment, or the capacity name configured earlier if using a new Fabric capacity. If you are using your organization's capacity, you may not have sufficient permissions to modify these settings, which means some functionality will be limited if the organization has limited the max refresh rate.
 
 ![Power BI Capacity Settings](../images/module03/fabriccapacitysettings.png)
 

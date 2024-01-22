@@ -209,7 +209,7 @@ dwfact.PriceDateKey <= @endDate
 ORDER BY dwfact.PriceDateKey ASC, Symbol ASC
 ```
 
-The query above will pull the min, max, and close price for each stock over the time period from both the data warehouse and lakehouse, and place them side-by-side in the query results. The results should be identical for the data warehouse and lakehouse. However, because the data for the lakehouse may have been set up some time after the KQL database that is used to feed the data warehouse, it is possible some values may not be equal if the max or min prices occured before data was being ingested into the lakehouse.
+The query above will pull the min, max, and close price for each stock over the time period from both the data warehouse and lakehouse, and place them side-by-side in the query results. The results should be identical for the data warehouse and lakehouse. However, because the data for the lakehouse may have been set up some time after the KQL database that is used to feed the data warehouse, it is possible some values may not be equal if the max or min prices occurred before data was being ingested into the lakehouse.
 
 ![Compare Data](../images/module06/comparedata.png)
 

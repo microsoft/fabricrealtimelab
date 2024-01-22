@@ -22,7 +22,7 @@ Prefer video content? These videos illustrate the content in this module:
 
 1. [Create KQL Queryset](#1-create-kql-queryset)
 2. [Query recent prices](#2-query-recent-prices)
-3. [Calculate biggest price changes and time change occured](#3-calculate-biggest-price-changes-and-time-change-occured)
+3. [Calculate biggest price changes and time change occurred](#3-calculate-biggest-price-changes-and-time-change-occurred)
 
 ## 1. Create KQL Queryset
 
@@ -69,11 +69,11 @@ The previous price is calculated by looking at the previous row of the same symb
 
 While this query is quick and effective, there are other ways to approach aggregation and look-back. We'll revisit this in our add-ons in [the Extras](../modules/moduleex00.md) content. 
 
-## 3. Calculate biggest price changes and time change occured
+## 3. Calculate biggest price changes and time change occurred
 
 Let's try a more advanced query. 
 
- Create another KQL Queryset, called *StockAggregate*, to find out the biggest price difference for each stock, and the time it occured. 
+ Create another KQL Queryset, called *StockAggregate*, to find out the biggest price difference for each stock, and the time it occurred. 
 
  To do this, we can use the [summarize](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/summarizeoperator) operator, which produces a table that aggregates the input table into groups based on the specified parameters. 
 

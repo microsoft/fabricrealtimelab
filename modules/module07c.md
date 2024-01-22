@@ -28,7 +28,7 @@ However, in this specific scenario, there is little benefit to creating the mode
 
 Most ML models are multivariate: for example, consider a travel time estimator that calculates travel time between two locations. Such a model could have dozens of input variables, but two major variables would certainly include the time of day and weather conditions. Because the weather is changing frequently, we'd pass this data into the model to generate new travel time predictions (inputs: time of day and weather, output: travel time).
 
-This being the case, we should generate our predictions immediately after creating the model; if we want to generate new predictions, we should consider retraining the ML model with the latest available data for improved accuracy. For practical purposes, then, this section shows how we could implement the ML model building and forecasting in a single step. Of course, we could have a separate process for each stock -- but for simplicity, all of the stocks will share the same basic model parameters. (And, in theory, we could store and retrieve model parameters in MLflow, allowing data scientists to develop the model parameters, as done in 07a, whenever new predicitions are needed.)
+This being the case, we should generate our predictions immediately after creating the model; if we want to generate new predictions, we should consider retraining the ML model with the latest available data for improved accuracy. For practical purposes, then, this section shows how we could implement the ML model building and forecasting in a single step. Of course, we could have a separate process for each stock -- but for simplicity, all of the stocks will share the same basic model parameters. (And, in theory, we could store and retrieve model parameters in MLflow, allowing data scientists to develop the model parameters, as done in 07a, whenever new predictions are needed.)
 
 Prefer video content? These videos illustrate the content in this module:
 * [Getting Started with Data Science in Microsoft Fabric, Part 1](https://youtu.be/kdUIUPwIy4g)
@@ -147,7 +147,7 @@ flowchart LR
     end
     subgraph Silver [Silver]
     B[(raw_stock_data)] --> C[(stocks_minute_agg)]
-    C --> P[(stocks_predicition)]
+    C --> P[(stocks_prediction)]
     B[(raw_stock_data)] --> D[(stocks_hour_agg)]
     end
 ```

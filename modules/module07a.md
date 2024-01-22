@@ -35,13 +35,13 @@ Prefer video content? These videos illustrate the content in this module:
 
 ## :bulb: About Notebooks
 
-Most of this lab will be done within a Jupyter notebook, an industry standard way of doing exploratory data analyis, building models, and visualizing datasets, and processing data. A notebook itself is separated into indiviual sections called cells which contain code or text documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is generally the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
+Most of this lab will be done within a Jupyter notebook, an industry standard way of doing exploratory data analysis, building models, and visualizing datasets, and processing data. A notebook itself is separated into individual sections called cells which contain code or text documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is generally the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
 
 ## :crystal_ball: About Prophet
 
 [Prophet](https://facebook.github.io/prophet/) is a library created by Facebook's core data science team to analyze and predict time-series data. Prophet is univariate, meaning it only uses a single variable (our stock price at a given point in time). This is ideal for our scenario because this is the extent of the data that is currently available in our feed. In more complex scenarios, we'd typically use a multivariate model to find correlations -- for example, is weather impacting our sales data? This eliminates the need for feature engineering in this context.
 
-Additionally, Prophet handles outliers and missing data well. In many data science scenarios, we'd do extensive cleaning and data preparation, such as looking for erronious, missing, or null values. Fabric has this capability built-in with [Data Wrangler](https://learn.microsoft.com/en-us/fabric/data-science/data-wrangler), but is not needed in this circumstance.
+Additionally, Prophet handles outliers and missing data well. In many data science scenarios, we'd do extensive cleaning and data preparation, such as looking for erroneous, missing, or null values. Fabric has this capability built-in with [Data Wrangler](https://learn.microsoft.com/en-us/fabric/data-science/data-wrangler), but is not needed in this circumstance.
 
 Finally, Prophet has built-in validation. In developing most models, we'd typically divide the data into training and test datasets. The training dataset is used to create the model, and this model is then subsequently evaluated using the test dataset. This is the gold standard because a model is most accurately evaluated by using data the model has not yet seen. While this can be done manually, the built in validation routines provides functionality to perform model validation in a number of ways, as you'll see in the notebook.
 
@@ -116,7 +116,7 @@ The *DS 1* notebook is documented throughout the notebook, but in short, the not
 The routine that generates the stock data is largely random, but there are some trends that should emerge. Because we don't know when you might be doing this lab, we've generated several years worth of data. The notebook will load the data and will truncate future data when building the model. As part of an overall solution, we'd then supplement the historical data with new real-time data in our lakehouse, re-training the model as necessary (daily/weekly/monthly).
 
 > :bulb: **Notes about data prediction**
-> The purpose of this module is to demonstrate one way to approach a data science solution in Fabric. Predicting stock prices (ficticious or otherwise) is challenging, particularly with univariate time-series data. Improving the accuracy (as measured by root mean squared error, r2, and other metrics) is not the focus of the challenge.
+> The purpose of this module is to demonstrate one way to approach a data science solution in Fabric. Predicting stock prices (fictitious or otherwise) is challenging, particularly with univariate time-series data. Improving the accuracy (as measured by root mean squared error, r2, and other metrics) is not the focus of the challenge.
 
 ## 5. Run the notebook
 
