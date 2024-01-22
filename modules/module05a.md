@@ -110,7 +110,7 @@ Note: SQL statements executed in pipeline activities will need to be copied from
 
 Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- *stg* and *ETL*; schemas help group workloads by type or function. The *stg* schema is for staging, and contains intermediate tables for the ETL process. The *ETL* schema contains mostly queries used for data movement, as well as a single table for state.  
 
-Note that the begin date for the waterwark is arbitrarily chosen as some previous date (12/31/2022), ensuring all data is captured -- this date will be updated on each successful run. 
+Note that the begin date for the watermark is arbitrarily chosen as some previous date (12/31/2022), ensuring all data is captured -- this date will be updated on each successful run. 
 
 ```sql
 /* 1 - Create Staging and ETL.sql */

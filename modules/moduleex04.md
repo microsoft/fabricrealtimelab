@@ -72,7 +72,7 @@ The ref line above helps refer to their index and is as follows:
 
 |  | Value | Explanation |
 |--:|---|---|
-| 0 | Starting price | Iniital price when script starts |
+| 0 | Starting price | Initial price when script starts |
 | 1 | Min price | Absolute minimum price for stock |
 | 2 | Max price | Max price before factoring YoY growth |
 | 3 | Mu | Mu (mean) value for normalvariate random generation |
@@ -87,7 +87,7 @@ The ref line above helps refer to their index and is as follows:
 | 12 | 80-100 increase chance | When stock is between 80-100% of its price range, % chance it will increase |
 | 13 | Annual Growth Rate (%) | Growth rate of stock, compounded daily; negative values ok |
 
-Each cycle (default is 1 second) a stock will move based on a absolute value of a Python normalvariate(mu,sigma). A mu of .04 indicates a stock will change a mean average of $0.04 per cycle. The sigma is the standard deviation from the mean -- a small value keeps the variablility low, higher value increases volatility. 
+Each cycle (default is 1 second) a stock will move based on a absolute value of a Python normalvariate(mu,sigma). A mu of .04 indicates a stock will change a mean average of $0.04 per cycle. The sigma is the standard deviation from the mean -- a small value keeps the variability low, higher value increases volatility. 
 
 Corrections refer to the chance a stock will trend up or down for a period of time. A length of 60 means a correction will last for 60 cycles. This can be increased to very long periods for multi-hour or multi-day runs, but recommend a high correction modifier to keep stocks from running away over long periods of time.
 
@@ -107,7 +107,7 @@ Events affect every stock and designed to add brief periods of similar but unpre
 {"type": "random", "name": "Random Event", "frequency": 0.003, "increasechance": 0.504, "duration": 30, "modifier": 0.4}
 ```
 
-The type may be *random* or *periodic*. The *frequency* for random events indicate the chance the event will trigger on each cycle; for periodic events, frequency is how often the event is triggered. An *increasechance* of 1 would cause all stocks to rise when triggered. *Duration* indicates how many cycles the event runs for, and *modifier* adjusts the per-cycle price change to make changes more gradual and prevent run-aways. All stocks will either rise or fall accordingly.
+The type may be *random* or *periodic*. The *frequency* for random events indicate the chance the event will trigger on each cycle; for periodic events, frequency is how often the event is triggered. An *increasechance* of 1 would cause all stocks to rise when triggered. *Duration* indicates how many cycles the event runs for, and *modifier* adjusts the per-cycle price change to make changes more gradual and prevent runaways. All stocks will either rise or fall accordingly.
 
 Triggers are more granular and time-based. They act as modifiers to the stock's variables; multiple triggers can run concurrently and their modifiers stack. Triggers are defined like this example:
 

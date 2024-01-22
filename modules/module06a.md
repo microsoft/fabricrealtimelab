@@ -29,11 +29,11 @@ Throughout the lakehouse modules, we'll build a lakehouse architecture to ingest
 
 ## :bulb: About Notebooks
 
-Most of this lab will be done within Jupyter notebooks, an industry standard way of doing exploratory data analyis, building models, visualizing datasets, and processing data. A notebook itself is separated into indiviual sections called cells which contain code or documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
+Most of this lab will be done within Jupyter notebooks, an industry standard way of doing exploratory data analysis, building models, visualizing datasets, and processing data. A notebook itself is separated into individual sections called cells which contain code or documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
 
 ## :bulb: About Medallion Architecture
 
-In a lakehouse medallion architure (with bronze, silver, gold layers) data is ingested in the raw/bronze layer, typically "as-is" from the source. Data is processed through an Extract, Load, and Transform (ELT) process where the data is incrementally processed, until it reaches the curated gold layer for reporting. A typical architecture may look similar to:
+In a lakehouse medallion architecture (with bronze, silver, gold layers) data is ingested in the raw/bronze layer, typically "as-is" from the source. Data is processed through an Extract, Load, and Transform (ELT) process where the data is incrementally processed, until it reaches the curated gold layer for reporting. A typical architecture may look similar to:
 
 ![Medallion Architecture](../images/module06/onelake-medallion-lakehouse-architecture-example.png)
 

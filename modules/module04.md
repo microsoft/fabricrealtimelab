@@ -45,7 +45,7 @@ Prefer video content? These videos illustrate the content in this module:
 4. [Add a property](#4-add-a-property)
 5. [Configure and start trigger](#5-configure-and-start-trigger)
 6. [Configure a new trigger for low price detection](#6-configure-a-new-trigger-for-low-price-detection)
-7. [Optional: Configure a new Reflex for Pecent Changed](#7-optional-configure-a-new-reflex-for-percent-changed)
+7. [Optional: Configure a new Reflex for Percent Changed](#7-optional-configure-a-new-reflex-for-percent-changed)
 
 ## 1. Prepare the report
 

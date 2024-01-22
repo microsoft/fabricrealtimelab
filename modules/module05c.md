@@ -53,7 +53,7 @@ The model designer should automatically open after creating the semantic model a
 
 ![Open Data Model](../images/module05/opendatamodel.png)
 
-To create relationships between the fact and dimension tables, drag the key from the fact table to the corresponding key in the dimension table. This should create a 1:many relationship between the two tables, and look similar to the below image. Note the button to create a *New Report* -- this will be the next step. Ensure the dimension tables are *1* while the fact table is *many* (illustrated with an asterisk in the diagrqm).
+To create relationships between the fact and dimension tables, drag the key from the fact table to the corresponding key in the dimension table. This should create a 1:many relationship between the two tables, and look similar to the below image. Note the button to create a *New Report* -- this will be the next step. Ensure the dimension tables are *1* while the fact table is *many* (illustrated with an asterisk in the diagram).
 
 * Fact:PriceDateKey -> dim_Date:DateKey
 * Fact:Symbol_SK -> dim_Symbol:Symbol_SK

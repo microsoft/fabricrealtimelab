@@ -52,7 +52,7 @@ Indeed, we can see this kind of behavior if we rapidly query and catch the resul
 
 ![Query Error](../images/moduleex/moduleex01/orderissue.png)
 
-As you can see in the results, we've ingested a row (symbol WHO), but missing some other symbols. This has caused our use of the *prev()* function to give us the wrong results temporarily (matching the symbol BCUZ). Alarmingly, this erroniously sees this as a massive price drop, but if we were to query this a moment later, you'd likely see the rows complete.
+As you can see in the results, we've ingested a row (symbol WHO), but missing some other symbols. This has caused our use of the *prev()* function to give us the wrong results temporarily (matching the symbol BCUZ). Alarmingly, this erroneously sees this as a massive price drop, but if we were to query this a moment later, you'd likely see the rows complete.
 
 While our query should be resilient to these situations, the issue is caused because the code writing the events to the event hub are not (nor should they be) in alphabetical order. While we can review the code that generates the data in another module, the python datatable looks like so:
 
@@ -116,7 +116,7 @@ StockPrice
 | order by timestamp asc, symbol asc
 ```
 
-The top part of the query (before the partition statement) retrieves the last 5 minutes of data, and sets up the three variables (previousprice, pricedifference, and percentdifference). The partition statement creates a subtable for each symbol, and because the subtable is ordered by timestamp, the scan operator only needs a single step (reffered to as *s*, but this is arbitrary), matching the most recent price into a variable *previousprice*. We can then project that value with the rest of the data, and calculate the price and percentage change similarly to the original query.
+The top part of the query (before the partition statement) retrieves the last 5 minutes of data, and sets up the three variables (previousprice, pricedifference, and percentdifference). The partition statement creates a subtable for each symbol, and because the subtable is ordered by timestamp, the scan operator only needs a single step (referred to as *s*, but this is arbitrary), matching the most recent price into a variable *previousprice*. We can then project that value with the rest of the data, and calculate the price and percentage change similarly to the original query.
 
 The results look like:
 

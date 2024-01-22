@@ -38,7 +38,7 @@ Creating a visual report that shows predicted vs actual is a bit more complicate
 
 The fact table is a bit *too-curated* with daily views -- there isn't enough detail to see how the model performs throughout the day. The bronze raw table has all of the data, but it isn't curated enough -- while we could use this table (as you'll see below), it would be extremely slow do so. The aggregated silver-level tables can accomplish this perfectly.
 
-With a medallion archicture, we can extend the concepts learned in Module 06, and this is one of the reasons medallion architecture is so useful: it offers the flexibility to model the data in many different ways to suit changing busines requirements. In this approach, the data is cleansed and summarized into the silver level, which could then be summarized for our fact tables at the gold level:
+With a medallion architecture, we can extend the concepts learned in Module 06, and this is one of the reasons medallion architecture is so useful: it offers the flexibility to model the data in many different ways to suit changing business requirements. In this approach, the data is cleansed and summarized into the silver level, which could then be summarized for our fact tables at the gold level:
 
 ```mermaid
 flowchart LR
@@ -131,7 +131,7 @@ Using the same context menu as above, select *Create report* to load the semanti
 
 In the report, we'll create a line chart to display the predicted vs actual data. To get started, add a line chart to the canvas and configure it as follows:
 
-* X-Axis: Predit_time
+* X-Axis: Predict_time
 * Y-Axis: LastPrice
 * Secondary y-axis: yhat
 * Filter on Predict_time to within the last 7 days
@@ -146,7 +146,7 @@ Colors and labels/column names may be customized to suit your preference. The sl
 
 If you prefer more of a 'dashboard' style that shows multiple stocks, you can configure multiple charts on the same canvas. Each chart can be configured to filter a different stock, such as:
 
-![Commpleted Report](../images/moduleex/moduleex03/report2.png)
+![Completed Report](../images/moduleex/moduleex03/report2.png)
 
 ## 5. Next steps
 

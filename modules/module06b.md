@@ -176,7 +176,7 @@ Select *Operations* > *New column by example*. Under *Target columns*, choose *t
 
 **Step 3: Add new hour column**
 
-Similar to adding the datestamp column above, create a new column named *hour*, also using *timestamp* in the *Target columns*. In the new *hour* column that appear in the data preview, enter an hour for any given row -- but try to pick a row that has a unique hour value. For example, if the *timestamp* is *2023-12-21 06:13:00* enter *06*:
+Similar to adding the *datestamp* column above, create a new column named *hour*, also using *timestamp* in the *Target columns*. In the new *hour* column that appear in the data preview, enter an hour for any given row -- but try to pick a row that has a unique hour value. For example, if the *timestamp* is *2023-12-21 06:13:00* enter *06*:
 
 ![Add hour](../images/module06/datawrangler-addhour.png)
 
@@ -308,11 +308,12 @@ Run the cell to complete the merge. There are a few utility cells at the bottom 
 
 This step is optional and explores the data wrangler generated code.
 
-By now, hopefully you'll agree how useful data wrangler can be. The code generated follows the exact steps executed in the tool, and is either generated for Spark or pandas dataframes and should work across virtually any scenario. Most importantly, the code generated is there as a template for us to modify if we'd like -- we can add, remove, or change the steps as we'd like. Sometimes, the code may not be exactly what we have in mind or we might know a more optimal method.
+By now, hopefully you'll agree how useful data wrangler can be. The code generated follows the exact steps executed in the tool, and is either generated for Spark or pandas dataframes and should work across virtually any scenario. The code generated is there as a template for us to modify if we'd like -- we can add, remove, or change the steps as we'd like. Sometimes, the code may not be exactly what we have in mind or we might know a more optimal method. This often occurs because the way types are handled may vary (for example, Spark has decimal types, but Pandas does not natively).
 
 For example, consider the code that generates the datestamp:
 
 ```python
+# Original data wrangler code:
 # Derive column 'datestamp' from column: 'timestamp'
     
 # Transform based on the following examples:
@@ -322,15 +323,17 @@ udf_fn = F.udf(lambda v : v.strftime("%Y-%m-%d"), T.StringType())
 df_stocks_clean = df_stocks_clean.withColumn("datestamp", udf_fn(F.col("timestamp")))
 ```
 
-This code creates a user-defined function that takes a timestamp, and returns a string in the format *%Y-%m-%d*. If we'd like a native datetime value, we could accomplish this using the pyspark sql method *to_date()* in a single line like this:
+This code creates a user-defined function that takes a timestamp, and returns a string in the format *%Y-%m-%d*. If we'd like a native date value (without a time component), we could accomplish this using the PySpark method *to_date()* in a single line like this:
 
 ```python
+# Simplified code:
 df_stocks_clean = df_stocks_clean.withColumn("datestamp", to_date(F.col("timestamp")))
 ```
 
 As another example, the data wrangler code that derives the hour column and then converts it to an integer will look similar to:
 
 ```python
+# Original data wrangler code:
 # Derive column 'hour' from column: 'timestamp'
     
 def hour(timestamp):
@@ -351,6 +354,7 @@ df_stocks_clean = df_stocks_clean.withColumn('hour', df_stocks_clean['hour'].cas
 The code creates a user-defined function that expects a timestamp, extracts the timestamp.hour, and returns a formatted number as a string. The value is then cast that as an integer. Since we're only interested in the hour as an integer, we could reduce the code to:
 
 ```python
+# Simplified code:
 df_stocks_clean = df_stocks_clean.withColumn("hour", date_format(F.col("timestamp"), "H").cast(T.IntegerType()))
 ```
 

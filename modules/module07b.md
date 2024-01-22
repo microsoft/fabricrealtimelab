@@ -129,7 +129,7 @@ Top left chart: StockHistory (KQL)
 
 Top right chart: StockHistory (KQL)
 * X-axis: Timestamp
-* Y-axix: Price
+* Y-axis: Price
 * Legend: 
     * Without *dim_symbol* table: None (will show overall market)
     * With *dim_symbol* table: *Market* from *dim_symbol* (will show the NYSE/NASDAQ markets)
@@ -157,11 +157,11 @@ Next, right click the *predicted_price* table and select *New measure*. Measures
 
 ![Create Measure](../images/module07/pbid-createmeasure.png)
 
-With the prediction chart selected, navigate to the additional visualizaton options (the magnifying glass/chart icon) and add a new *X-Axis Constant Line*. Under *Value*, use the formula button (fx) to choose a field, and select the *currdate* measure, as shown in the image below. Enable the *Shade area* to *Before*, and configure the transparency and colors to your preference.
+With the prediction chart selected, navigate to the additional visualization options (the magnifying glass/chart icon) and add a new *X-Axis Constant Line*. Under *Value*, use the formula button (fx) to choose a field, and select the *currdate* measure, as shown in the image below. Enable the *Shade area* to *Before*, and configure the transparency and colors to your preference.
 
 ![Add X-Axis Constant Line](../images/module07/pbid-addcurrdatetovisual.png)
 
-You can also add other features, like solid veritcal lines (modifying the visual's gridlines). When complete, your chart should look similar to the image below, where the dashed line on the predictions chart shows the current time, the past is shaded slightly, and lines appear for 12 hour block:
+You can also add other features, like solid vertical lines (modifying the visual's gridlines). When complete, your chart should look similar to the image below, where the dashed line on the predictions chart shows the current time, the past is shaded slightly, and lines appear for 12 hour block:
 
 ![X-Axis Constant Line](../images/module07/pbid-withline.png)
 
