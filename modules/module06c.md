@@ -136,7 +136,7 @@ When you have finished running through the notebook, the fact table should now b
 
 To scheduled the notebook to run periodically, click on the *Run* tab, and click *Schedule*. The notebook can be configured to run periodically (such as every hour or as needed):
 
-![Schedule Notebook](../images/module06/schedule.png)
+![Schedule Notebook](../images/module06/lh4-schedule.png)
 
 ## 4. Build semantic model and simple report
 
