@@ -154,29 +154,17 @@ Run this cell and observe the output before continuing to the next step.
 
 This next series will be more involved because we'll build a number of steps in data wrangler, adding derived columns and aggregating the data. If you get stuck, continue as best you can and use the sample code in the notebook to help fix any issues after.
 
-Scroll down just past the commented-out example code to the *Symbol/Date/Hour/Minute Aggregation Section*, placing your cursor in the *Add data wrangler here* cell.
+Scroll down just past the commented-out example code to the *Symbol/Date/Hour/Minute Aggregation Section*, placing your cursor in the *Add data wrangler here* cell. Load data wrangler again, this time selecting the *df_stocks_clean* dataframe. Perform the following steps:
 
-Load data wranger again, this time selecting the *df_stocks_clean* dataframe. Perform the following steps:
-
-**Step 1: Convert timestamp from string to timestamp type**
-
-Click on the three dots in the corner of the *timestamp* column and select *Change column type*:
-
-![Change timestamp type](../images/module06/datawrangler-changetimestamp.png)
-
-For the *New type*, select *datetime64[ns]* and click *Apply*. Notice the new column has changed types:
-
-![Change timestamp type](../images/module06/datawrangler-changetimestamp2.png)
-
-**Step 2: Add new datestamp column**
+**Step 1: Add new datestamp column**
 
 Select *Operations* > *New column by example*. Under *Target columns*, choose *timestamp*. Enter a *Derived column name* of *datestamp*. Do not yet click *Apply*; in the new *datestamp* column, enter an example value for any given row. For example, if the *timestamp* is *2023-12-21 00:07:00* enter *2023-12-01*. This allows data wrangler to infer we are looking for the date without a time component; once the columns autofill, click *Apply*:
 
 ![Add datestamp](../images/module06/datawrangler-adddatestamp.png)
 
-**Step 3: Add new hour column**
+**Step 2: Add new hour column**
 
-Similar to adding the *datestamp* column above, create a new column named *hour*, also using *timestamp* in the *Target columns*. In the new *hour* column that appear in the data preview, enter an hour for any given row -- but try to pick a row that has a unique hour value. For example, if the *timestamp* is *2023-12-21 06:13:00* enter *06*:
+Similar to adding the *datestamp* column above, create a new column named *hour*, also using *timestamp* in the *Target columns*. In the new *hour* column that appear in the data preview, enter an hour for any given row -- but try to pick a row that has a unique hour value. For example, if the *timestamp* is *2023-12-21 06:13:00* enter *6*:
 
 ![Add hour](../images/module06/datawrangler-addhour.png)
 
@@ -197,9 +185,13 @@ def hour(timestamp):
 > :bulb: **Problems with hour or minute?**
 > In the event data wrangler isn't correctly inferring the hour or minute components, try a different row with more unique values. Some date/time values are difficult, such as "2024-01-01 01:01:00". If it is still troublesome, just continue and this can be fixed manually after the code is added to the notebook.
 
-**Step 4: Add new minute column**
+**Step 3: Add new minute column**
 
-Same as with the hour column, create a new *minute* column. In the new *minute* column, enter a minute for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *22*. The code generated should look similar to:
+Same as with the hour column, create a new *minute* column. In the new *minute* column, enter a minute for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *22*. 
+
+![Add minute](../images/module06/datawrangler-addminute.png)
+
+The code generated should look similar to:
 
 ```python
 # Derive column 'minute' from column: 'timestamp'
@@ -213,15 +205,17 @@ def minute(timestamp):
     return f"{number1:01.0f}"
 ```
 
-**Step 5: Convert the hour to integer**
+**Step 4: Convert the hour to integer**
 
-Next, convert the hour column to an integer. Click on the three dots in the corner of the *hour* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*.
+Next, convert the hour column to an integer. Click on the three dots in the corner of the *hour* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*. See image below for reference:
 
-**Step 6: Convert the minute to integer**
+![Convert to Int32](../images/module06/datawrangler-convertint32.png)
 
-Convert the minute column to an integer. Click on the three dots in the corner of the *minute* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*.
+**Step 5: Convert the minute to integer**
 
-**Step 7: Group by symbol, datestamp, hour, and minute**
+Convert the minute column to an integer using the same steps as you just performed for the hour. Click on the three dots in the corner of the *minute* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*.
+
+**Step 6: Group by symbol, datestamp, hour, and minute**
 
 Under *Operations*, click *Group by and aggregate*. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. Using *Add aggregation*, create a total of three aggregations: *price - Maximum*, *price - Minimum*, and *price - Last value*, which should look similar to the image below:
 
