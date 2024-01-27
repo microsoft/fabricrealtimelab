@@ -65,13 +65,27 @@ flowchart LR
     B --> D[(Lakehouse Tables)]
 ```
 
-Open the Eventstream created in the first module. Click the plus symbol on the output of the Eventstream to add a new destination. Select *Lakehouse* from the context menu, and in the side panel that opens, select the lakehouse created above and create a new table called *raw_stock_data*. Ensure the input data format is *JSON*; this should look similar to the image below:
+In addition to adding the lakehouse to the Eventstream, we'll do some cleanup of the data using some of the functions available in the Eventstream. To begin, open the Eventstream created in the first module. Click the plus symbol on the output of the Eventstream to add a new destination. Select *Lakehouse* from the context menu, and in the side panel that opens, select the lakehouse created above and create a new table called *raw_stock_data*. Ensure the input data format is *JSON*; then click *Open event processor*. This should look similar to the image below:
 
 ![Add Destination to Eventstream](../images/module06/addeventstream.png)
 
-Once complete, the Eventstream will be publishing data to both the KQL Database (hot path) and our lakehouse (cold path); this should look similar to the image below. Note, however, that it may take a few minutes for the Delta table in the lakehouse to be visible.
+After clicking *Open event processor*, various processing can be added like doing aggregations, filtering, and changing types. Click on the *StocksEventstream* (left box on the design surface) that should show all fields: symbol, price, timestamp, EventProcessedUtcTime, PartitionId, and EventEnqueuedUtcTime (these last three were added by the Eventstream). The first thing we'll do is change the *timestamp* column to a *DateTime* as it is likely classified as a string. Click the three ellipsis (...) to the right of the *timestamp* column and select *More options*. This will allow us to change the Data type: select *DateTime*, as shown below:
 
-![Completed Eventstream](../images/module06/completedeventstream.png)
+![Change to Timestamp](../images/module06/addeventstream-changetype.png)
+
+Next, we'll filter the fields we do not need. Hover over the connector line between the StocksEventstream and Lakehouse, and click the plus (+) icon to add a new operation. Select *Manage fields*, as shown here:
+
+![Manage Fields](../images/module06/addeventstream-managefields.png)
+
+Remove the fields EventProcessedUtcTime, PartitionId, and EventEnqueuedUtcTime by clicking the ellipsis (...) to the right of the field name, and click *Remove*:
+
+![Remove Fields](../images/module06/addeventstream-managefields2.png)
+
+When complete, click *Done* to close the event processor, and then click *Save*. Once complete, the lakehouse should now be receiving the symbol, price, and timestamp, and look similar to the image below:
+
+![Completed Eventstream](../images/module06/addeventstream-complete.png)
+
+Our KQL (hot path) and lakehouse (cold path) is now configured. It may take a minute or two for data to be visible in the lakehouse.
 
 ## 3. Import notebooks
 
@@ -96,7 +110,7 @@ From the data engineering persona home page, select *Import notebook*, and impor
 
 ## 4. Import additional data
 
-In order the make the reports more interesting, we need a bit more data to work with. For both the lakehouse and data science modules, additional historical data can be imported to supplement the data that is already being ingested. In this step, we'll run a notebook that downloads and imports this data into the *raw_stock_data* table.
+In order the make the reports more interesting, we need a bit more data to work with. For both the lakehouse and data science modules, additional historical data can be imported to supplement the data that is already being ingested. In this step, we'll run a notebook that downloads and imports this data into the *raw_stock_data* table. The notebook works by looking at the oldest data in the table, prepending the historical data.
 
 Click on your workspace to view all items in your *RealTimeWorkshop* workspace and open the *Lakehouse 1 - Import Data* notebook. If you have trouble finding items as your workspace grows, you can view only the notebooks by clicking the filter and selecting *Notebook*:
 
@@ -120,8 +134,8 @@ Most of the code in our notebooks is written in Python, but notebooks support a 
 
 You may also come across cells that are *frozen*; frozen cells will not run and cannot be altered until unfrozen. This is helpful for testing where we might want to occasionally run code when working with notebooks interactively. While similar to 'commenting out' sections of code, freezing cells is powerful in that any output of the cells are also preserved.
 
-> :bulb: **Frozen Cells**
-> Important! Frozen cells are intended for interactive notebook use. When notebooks are executed by a scheduled task, frozen cells are currently executed like normal cells.
+> :bulb: **Frozen Cells:**
+> Frozen cells are intended for interactive notebook use. When notebooks are executed by a scheduled task, frozen cells are currently executed like normal cells.
 
 ## :tada: Summary
 
