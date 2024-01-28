@@ -231,7 +231,7 @@ In the pipeline, add a new *Stored Procedure* activity named *Populate Symbols D
 
 * Name: Populate Symbols Dimension
 * Settings: 
- * Stored procedure name: [ETL].[sp_Dim_Symbol_Load]
+  * Stored procedure name: [ETL].[sp_Dim_Symbol_Load]
 
 ![Load Symbols in Pipeline](../images/module05/pipeline-loadsymbol.png)
 
@@ -303,7 +303,7 @@ Our pipeline should be complete! Run the pipeline by clicking the *Run* button, 
 
 ## 9. Schedule the pipeline
 
-Next, schedule the pipeline to run periodically. This will vary by business case, but this could be run frequently (every few minutes) or once or twice per day. To schedule the pipeline, click the *Schedule* button (next to the *Run* button) and set up a recurring schedule, such as hourly or every few minutes:
+Next, schedule the pipeline to run periodically. This will vary by business case, but this could be run frequently (every few minutes) or throughout the day (note: in this specific case, because there are roughly 700k rows per day, and KQL limits the query results to 500k, the pipeline must run at least twice per day to stay current). To schedule the pipeline, click the *Schedule* button (next to the *Run* button) and set up a recurring schedule, such as hourly or every few minutes:
 
 ![Schedule Pipeline](../images/module05/pipeline-schedule.png)
 

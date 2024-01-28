@@ -173,7 +173,7 @@ From the workspace (or from within the Data Factory persona), create a new *Data
 
 ![Create Pipeline](../images/module05/createpipeline.png)
 
-Create a *Lookup* activity on the pipeline named *Get WaterMark*. On the settings tab, select the data warehouse as the data store type, and specify the *StocksDW* data warehouse. Specify a *Query* using the SQL statement below, and ensure *First row only* is *unchecked*.
+Create a *Lookup* activity on the pipeline named *Get WaterMark*. On the settings tab, set the *Data store type* to *Workspace*, and set the *Workspace data store type* to *Data Warehouse*. For *Data Warehouse*, choose the *StocksDW* data warehouse. Specify a *Query* using the SQL statement below, and ensure *First row only* is *unchecked*.
 
 ```sql
 SELECT * FROM [ETL].[IngestSourceInfo] WHERE IsActiveFlag = 'Y'
@@ -185,7 +185,7 @@ This should look similar to:
 
 ## 5. Add ForEach activity
 
-Add a *ForEach* activity to the pipeline. Connect the *On Success* event on the *Lookup* activity to the *ForEach* by dragging from the *On Success* checkbox on the right side of the activity to the *ForEach* activity. On the settings tab of the *ForEach*, set the *Items* to:
+Add a *ForEach* activity to the pipeline (click the *Activities* tab and select *ForEach*). Connect the *On Success* event on the *Lookup* activity to the *ForEach* by dragging from the *On Success* checkbox on the right side of the activity to the *ForEach* activity. On the settings tab of the *ForEach*, set the *Items* to:
 
 ```text
 @activity('Get WaterMark').output.value
@@ -197,7 +197,7 @@ This should look similar to the image below:
 
 ![ForEach Added](../images/module05/pipeline-foreach.png)
 
-Add a *Copy Data* activity within the *ForEach*. On this activity:
+Add a *Copy Data* activity within the *ForEach* (click the plus (+) symbol within the ForEach to add a new activity within the ForEach). Configure this new Copy Data activity as follows:
 
 * Name: Copy KQL
 * Source: Select the KQL database holding the incoming stock data (StockDB)
@@ -220,19 +220,17 @@ This should look similar to:
 
 You can click the *Preview data* button next to the query to verify data is returned. A window will open where you can specify a watermark -- enter a recent date such as *2023-12-01*.
 
-Switch to the *Destination* tab on the copy activity.
-
-* Destination: On the destination tab, set the destination to the *StocksDW* warehouse, and select the *stg.StocksPrices* table. Under the *Advanced* section, enter the following SQL script to truncate the table before loading the staging table:
+Switch to the *Destination* tab on the copy activity. On the destination tab, set the destination to the *StocksDW* warehouse, and select the *stg.StocksPrices* table. Under the *Advanced* section, enter the following SQL script to truncate the table before loading the staging table:
 
 ```sql
 delete stg.StocksPrices
 ```
 
-This step first truncates old data from the staging table, and then copies the data from the KQL table, selecting data from the last watermark and inserting it into the staging table. Using a watermark is important to avoid processing the entire table; additionally, KQL queries have a maximum rowcount of 500,000 rows. Given the current rate of data ingested, this equates to about 3/4 of one day. 
+This step first deletes old data from the staging table, and then copies the data from the KQL table, selecting data from the last watermark and inserting it into the staging table. Using a watermark is important to avoid processing the entire table; additionally, KQL queries have a maximum rowcount of 500,000 rows. Given the current rate of data ingested, this equates to about 3/4 of one day. 
 
 ![Copy KQL](../images/module05/pipeline-copykql.png)
 
-Next, add a *Lookup* activity to the ForEach activity named *Get New Watermark*. On the *Settings* tab, select the data warehouse and use the following query:
+Next, add a *Lookup* activity to the ForEach activity named *Get New WaterMark*. On the *Settings* tab, select the data warehouse in the current Workspace, and select *Query* for the *Use Query* option. Enter the following query:
 
 ```sql
 @concat('Select Max(timestamp) as WaterMark from stg.', item().ObjectName)
