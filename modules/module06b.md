@@ -154,41 +154,30 @@ Run this cell and observe the output before continuing to the next step.
 
 This next series will be more involved because we'll build a number of steps in data wrangler, adding derived columns and aggregating the data. If you get stuck, continue as best you can and use the sample code in the notebook to help fix any issues after.
 
-Scroll down just past the commented-out example code to the *Symbol/Date/Hour/Minute Aggregation Section*, placing your cursor in the *Add data wrangler here* cell.
+Scroll down just past the commented-out example code to the *Symbol/Date/Hour/Minute Aggregation Section*, placing your cursor in the *Add data wrangler here* cell. Load data wrangler again, this time selecting the *df_stocks_clean* dataframe. Perform the following steps:
 
-Load data wranger again, this time selecting the *df_stocks_clean* dataframe. Perform the following steps:
+**Step 1: Add new datestamp column**
 
-**Step 1: Convert timestamp from string to timestamp type**
-
-Click on the three dots in the corner of the *timestamp* column and select *Change column type*:
-
-![Change timestamp type](../images/module06/datawrangler-changetimestamp.png)
-
-For the *New type*, select *datetime64[ns]* and click *Apply*. Notice the new column has changed types:
-
-![Change timestamp type](../images/module06/datawrangler-changetimestamp2.png)
-
-**Step 2: Add new datestamp column**
-
-Select *Operations* > *New column by example*. Under *Target columns*, choose *timestamp*. Enter a *Derived column name* of *datestamp*. Do not yet click *Apply*; in the new *datestamp* column, enter an example value for any given row. For example, if the *timestamp* is *2023-12-21 00:07:00* enter *2023-12-01*. This allows data wrangler to infer we are looking for the date without a time component; once the columns autofill, click *Apply*:
+Select *Operations* > *New column by example*. Under *Target columns*, choose *timestamp*. Enter a *Derived column name* of *datestamp*. Do **not** yet click *Apply*; in the new *datestamp* column, enter an example value for any given row. For example, if the *timestamp* is *2023-11-28 02:00:00* enter *2023-11-28*. This allows data wrangler to infer we are looking for the date without a time component; once the columns autofill, click *Apply*:
 
 ![Add datestamp](../images/module06/datawrangler-adddatestamp.png)
 
-**Step 3: Add new hour column**
+**Step 2: Add new hour column**
 
-Similar to adding the *datestamp* column above, create a new column named *hour*, also using *timestamp* in the *Target columns*. In the new *hour* column that appear in the data preview, enter an hour for any given row -- but try to pick a row that has a unique hour value. For example, if the *timestamp* is *2023-12-21 06:13:00* enter *06*:
+Similar to adding the *datestamp* column above, create a new column named *hour*, also using *timestamp* in the *Target columns*. In the new *hour* column that appear in the data preview, enter an hour for any given row -- but try to pick a row that has a unique hour value. For example, if the *timestamp* is *2023-11-28 02:59:00* enter *2*. You may need to enter example values for several rows, as shown here:
 
 ![Add hour](../images/module06/datawrangler-addhour.png)
 
-You may need to enter example values for several rows. This allows data wrangler to infer we are looking for the hour component, and should build code similar to:
+Data wrangler should infer we are looking for the hour component, and build code similar to:
 
 ```python
 # Derive column 'hour' from column: 'timestamp'
 def hour(timestamp):
     """
     Transform based on the following examples:
-       timestamp                  Output
-    1: 2023-12-01T13:22:00.938 => "13"
+        timestamp           Output
+    1: 2023-11-28T02:59 => "2"
+    2: 2023-11-28T03:00 => "3"
     """
     number1 = timestamp.hour
     return f"{number1:01.0f}"
@@ -197,33 +186,48 @@ def hour(timestamp):
 > :bulb: **Problems with hour or minute?**
 > In the event data wrangler isn't correctly inferring the hour or minute components, try a different row with more unique values. Some date/time values are difficult, such as "2024-01-01 01:01:00". If it is still troublesome, just continue and this can be fixed manually after the code is added to the notebook.
 
-**Step 4: Add new minute column**
+**Step 3: Add new minute column**
 
-Same as with the hour column, create a new *minute* column. In the new *minute* column, enter a minute for any given row. For example, if the *timestamp* is *2023-12-01 13:22:00* enter *22*. The code generated should look similar to:
+Same as with the hour column, create a new *minute* column. In the new *minute* column, enter a minute for any given row. For example, if the *timestamp* is *2023-11-28 02:01:00* enter *1*. You may need to enter example values for several rows. 
+
+![Add minute](../images/module06/datawrangler-addminute.png)
+
+The code generated should look similar to:
 
 ```python
 # Derive column 'minute' from column: 'timestamp'
 def minute(timestamp):
     """
     Transform based on the following examples:
-       timestamp                  Output
-    1: 2023-12-01T13:22:00.938 => "22"
+        timestamp           Output
+    1: 2023-11-28T02:01 => "1"
+    2: 2023-11-28T02:02 => "2"
     """
     number1 = timestamp.minute
     return f"{number1:01.0f}"
 ```
 
-**Step 5: Convert the hour to integer**
+**Step 4: Convert the hour to integer**
 
-Next, convert the hour column to an integer. Click on the three dots in the corner of the *hour* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*.
+Next, convert the hour column to an integer. Click on the ellipsis (...) in the corner of the *hour* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*. See image below for reference:
 
-**Step 6: Convert the minute to integer**
+![Convert to Int32](../images/module06/datawrangler-convertint32.png)
 
-Convert the minute column to an integer. Click on the three dots in the corner of the *minute* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*.
+**Step 5: Convert the minute to integer**
 
-**Step 7: Group by symbol, datestamp, hour, and minute**
+Convert the minute column to an integer using the same steps as you just performed for the hour. Click on the ellipsis (...) in the corner of the *minute* column and select *Change column type*. For the *New type*, select *int32* and click *Apply*.
 
-Under *Operations*, click *Group by and aggregate*. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. Using *Add aggregation*, create a total of three aggregations: *price - Maximum*, *price - Minimum*, and *price - Last value*, which should look similar to the image below:
+**Step 6: Group by symbol, datestamp, hour, and minute**
+
+Under *Operations*, click *Group by and aggregate*. For *Columns to group by*, select *symbol*, *datestamp*, *hour*, *minute*. 
+
+Using *Add aggregation*, create a total of three aggregations:
+
+* price: Maximum
+* price: Minimum
+* price: Last value
+
+This should look similar to the image below:
 
 ![Final aggregation](../images/module06/datawrangler-aggregate.png)
 
@@ -231,12 +235,21 @@ Click *Apply* and add the code to the notebook.
 
 **Step 8: Review the code**
 
-In the cell that is added, in the last two lines of the cell, notice the dataframe returned is named *df_stocks_clean_1*. Rename this *df_stocks_agg_minute*, and change the name of the function to *aggregate_data_minute*, as shown below (the function name will also need to be changed to *aggregate_data_minute*). Remember, if you get stuck, refer to the commented-out code as a reference. 
+In the cell that is added, in the last two lines of the cell, notice the dataframe returned is named *df_stocks_clean_1*. Rename this *df_stocks_agg_minute*, and change the name of the function to *aggregate_data_minute*, as shown below. Remember, if you get stuck, refer to the commented-out code as a reference. The purpose of this step is to help keep the steps throughout the notebook tidy:
 
 ```python
 # old:
-# df_stocks_clean_1 = clean_data(df_stocks_clean)
-# display(df_stocks_clean_1)
+def clean_data(df_stocks_clean):
+  ...
+
+df_stocks_clean_1 = clean_data(df_stocks_clean)
+display(df_stocks_clean_1)
+```
+
+```python
+# new:
+def aggregate_data_minute(df_stocks_clean):
+  ...
 
 df_stocks_agg_minute = aggregate_data_minute(df_stocks_clean)
 display(df_stocks_agg_minute)
@@ -259,7 +272,7 @@ merge_minute_agg(df_stocks_agg_minute)
 
 ## 6. Aggregate hourly
 
-Let's review where we are: our per-second data has been cleansed, and then summarized to the per-minute level. This reduces our rowcount from 86,400 rows/day to 1,440 rows/day per stock symbol. For reports that might show monthly data, we can further aggregate the data to per-hour frequency, reducing the data to 24 rows/day per stock symbol. 
+Let's review current progress: our per-second data has been cleansed, and then summarized to the per-minute level. This reduces our rowcount from 86,400 rows/day to 1,440 rows/day per stock symbol. For reports that might show monthly data, we can further aggregate the data to per-hour frequency, reducing the data to 24 rows/day per stock symbol. 
 
 This final data wrangler step will be easier than the previous. In the final placeholder under the *Symbol/Date/Hour* section, load the existing *df_stocks_agg_minute* dataframe into data wrangler.
 
@@ -351,7 +364,7 @@ df_stocks_clean = df_stocks_clean.withColumn("hour", udf_fn(F.col("timestamp")))
 df_stocks_clean = df_stocks_clean.withColumn('hour', df_stocks_clean['hour'].cast(T.IntegerType()))
 ```
 
-The code creates a user-defined function that expects a timestamp, extracts the timestamp.hour, and returns a formatted number as a string. The value is then cast that as an integer. Since we're only interested in the hour as an integer, we could reduce the code to:
+The code creates a user-defined function that expects a timestamp, extracts the timestamp.hour, and returns a formatted number as a string. The value is then cast as an integer. Since we're only interested in the hour as an integer, we could reduce the code to:
 
 ```python
 # Simplified code:
@@ -368,8 +381,6 @@ from pyspark.sql import functions as F
 from pyspark.sql import types as T
 
 def aggregate_data_minute(df_stocks_clean):
-    # Change column type to datetime64[ns] for column: 'timestamp'
-    df_stocks_clean = df_stocks_clean.withColumn('timestamp', df_stocks_clean['timestamp'].cast(T.TimestampType()))
     # Derive column 'datestamp' from column: 'timestamp'
     df_stocks_clean = df_stocks_clean.withColumn("datestamp", to_date(F.col("timestamp")))
 

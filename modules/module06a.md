@@ -120,7 +120,7 @@ If there is no lakehouse associated with the notebook (which will usually be the
 
 ![Add Lakehouse to Notebook](../images/module06/addlakehousetonotebook.png)
 
-With the notebook loaded and the lakehouse attached, notice the schema on the left. The *raw_stock_data* table was created when the Eventstream was configured, and is the landing place for the data that is ingested from the Event Hub. This is our raw/bronze level data, as it represents data without any processing or validation. (It may take a few minutes for this table to appear if you've just configured the Eventstream.)
+With the notebook loaded and the lakehouse attached, notice the schema on the left in the image below. The *raw_stock_data* table was created when the Eventstream was configured, and is the landing place for the data that is ingested from the Event Hub. This is our raw/bronze level data, as it represents data without any processing or validation. (It may take a few minutes for this table to appear if you've just configured the Eventstream.)
 
 ![Lakehouse Schema](../images/module06/lakehouseschema1.png)
 
