@@ -273,7 +273,7 @@ This should look like:
 
 ![Hour aggregation](../images/module06/datawrangler-houragg.png)
 
-Example code is shown below. In addition to renaming the function to *aggregate_data_hour*, the alias' of the columns have also been changed to keep the column names the same. Because we are aggregating data that has already been aggregated, data wrangler is naming the columns like price_max_max, price_min_min; we will modify the aliases to keep the names the same for clarity.
+Example code is shown below. In addition to renaming the function to *aggregate_data_hour*, the alias of each price column has also been changed to keep the column names the same. Because we are aggregating data that has already been aggregated, data wrangler is naming the columns like price_max_max, price_min_min; we will modify the aliases to keep the names the same for clarity.
 
 Finally, we also named the return dataframe *df_stocks_agg_hour* as shown in the code snippet below:
 
