@@ -69,7 +69,7 @@ In addition to adding the lakehouse to the Eventstream, we'll do some cleanup of
 
 ![Add Destination to Eventstream](../images/module06/addeventstream.png)
 
-After clicking *Open event processor*, various processing can be added like doing aggregations, filtering, and changing types. Click on the *StocksEventstream* (left box on the design surface) that should show all fields: symbol, price, timestamp, EventProcessedUtcTime, PartitionId, and EventEnqueuedUtcTime (these last three were added by the Eventstream). The first thing we'll do is change the *timestamp* column to a *DateTime* as it is likely classified as a string. Click the three ellipsis (...) to the right of the *timestamp* column and select *More options*. This will allow us to change the Data type: select *DateTime*, as shown below:
+After clicking *Open event processor*, various processing can be added that perform aggregations, filtering, and changing datatypes. Click on the *StocksEventstream* (left box on the design surface) that should show all fields: symbol, price, timestamp, EventProcessedUtcTime, PartitionId, and EventEnqueuedUtcTime (these last three were added by the Eventstream). The first thing we'll do is change the *timestamp* column to a *DateTime* as it is likely classified as a string. Click the three ellipsis (...) to the right of the *timestamp* column and select *More options*. This will allow us to change the datatype: select *DateTime*, as shown below:
 
 ![Change to Timestamp](../images/module06/addeventstream-changetype.png)
 
@@ -81,7 +81,7 @@ Remove the fields EventProcessedUtcTime, PartitionId, and EventEnqueuedUtcTime b
 
 ![Remove Fields](../images/module06/addeventstream-managefields2.png)
 
-When complete, click *Done* to close the event processor, and then click *Save*. Once complete, the lakehouse should now be receiving the symbol, price, and timestamp, and look similar to the image below:
+When the three fields are removed, click *Done* to close the event processor, and then click *Save*. Once complete, the lakehouse should now be receiving the symbol, price, and timestamp, and look similar to the image below:
 
 ![Completed Eventstream](../images/module06/addeventstream-complete.png)
 
@@ -128,7 +128,7 @@ The lakehouse has two types of storage: managed tables and unmanaged files. As y
 
 The next step is to run through this first notebook. By default, the notebook will load 30 days of data prior to the current day, adding to the *raw_stock_data* table. You can either click *Run all* from the left top tool bar, but is recommended you run each cell individually by clicking the play button on the left side of each cell to follow along with the process. The location of these buttons is shown by the arrows in the above image. 
 
-Most of the code in our notebooks is written in Python, but notebooks support a variety of languages. Several cells of the notebook are defined functions, such as *def getDownloadInfo(year)*: these contain code, but do not run until the function is called. Notice that the notebook downloaded zip files, and unzipped them in the *Files* section. These CSV files contain the historical information, which can then be loaded by the into a dataframe:
+Most of the code in our notebooks is written in Python, but notebooks support a variety of languages. Several cells of the notebook are defined functions, such as *def getDownloadInfo(year)*: these contain code, but do not run until the function is called. Notice that the notebook downloaded zip files, and unzipped them in the *Files* section. These CSV files contain the historical information, which can then be loaded into a dataframe:
 
 ![Downloaded Files](../images/module06/lakehousefilesdownload.png)
 
