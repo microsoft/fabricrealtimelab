@@ -39,7 +39,7 @@ A semantic model, conceptually, provides an abstraction of our data for consumpt
 > :bulb: **Did you know?**
 > Power BI Datasets have recently been renamed to Semantic Models. In some cases, labels may not have been updated. The terms can be used interchangeably. Read more about this change [on the Power BI Blog](https://powerbi.microsoft.com/en-us/blog/datasets-renamed-to-semantic-models/).
 
-When we created our data warehouse, a default semantic model was created automatically. We can leverage this in Power BI, but it also includes many artifacts of the table we may not need. So, we'll create a new semantic model with just our fact and two dimension tables.
+When we created our data warehouse, a default semantic model was created automatically. We can leverage this in Power BI, but it also includes many artifacts of the table we may not need. So, we'll create a new semantic model with just our fact and two dimension tables. First, verify the two dimension tables and fact table exist within the data warehouse (they should be visible under the dbo schema). Switch to the *Reporting* tab and select* New semantic model*.
 
 ![New Semantic Model](../images/module05/dw-newsemanticmodel.png)
 
@@ -53,7 +53,7 @@ The model designer should automatically open after creating the semantic model a
 
 ![Open Data Model](../images/module05/opendatamodel.png)
 
-To create relationships between the fact and dimension tables, drag the key from the fact table to the corresponding key in the dimension table. This should create a 1:many relationship between the two tables, and look similar to the below image. Note the button to create a *New Report* -- this will be the next step. Ensure the dimension tables are *1* while the fact table is *many* (illustrated with an asterisk in the diagram).
+To create relationships between the fact and dimension tables, drag the key from the fact table to the corresponding key in the dimension table. This should create a 1:many relationship between the two tables, and look similar to the below image. Set the cross-filter direction to *Both*. Note the button to create a *New Report* -- this will be the next step. Ensure the dimension tables are *1* while the fact table is *many* (illustrated with an asterisk in the diagram).
 
 * Fact:PriceDateKey -> dim_Date:DateKey
 * Fact:Symbol_SK -> dim_Symbol:Symbol_SK
@@ -62,7 +62,7 @@ To create relationships between the fact and dimension tables, drag the key from
 
 ## 3. Create a simple report
 
-As shown in the image on the previous step, click *New Report* to load the semantic model in Power BI. While we won't have much data yet to make much of a report, conceptually, we can build a report similar to below, which shows a report after the lab has been running for a week or so. The top chart shows the closing price for each stock on each day, while the bottom one shows the high/low/close of the WHO stock:
+As shown in the image on the previous step, click *New Report* to load the semantic model in Power BI. While we won't have much data yet to make much of a report, conceptually, we can build a report similar to below, which shows a report after the lab has been running for a week or so. (The lakehouse module will import additional history to allow for more interesting reports.) The top chart shows the closing price for each stock on each day, while the bottom one shows the high/low/close of the WHO stock:
 
 ![Report](../images/module05/report.png)
 
