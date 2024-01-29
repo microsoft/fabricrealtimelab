@@ -16,8 +16,8 @@
 This module is broken down into the following sections:
 
 * [Module 06a - Setting up the Lakehouse](./module06a.md)
-* [Module 06b - Building the Aggregation Tables](./module06a.md)
-* [Module 06c - Building the Dimensional Model](./module06b.md)
+* [Module 06b - Building the Aggregation Tables](./module06b.md)
+* [Module 06c - Building the Dimensional Model](./module06c.md)
 
 ## :loudspeaker: Introduction
 
