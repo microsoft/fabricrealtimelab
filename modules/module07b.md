@@ -51,6 +51,8 @@ Prefer video content? These videos illustrate the content in this module:
     2. [Build a report in Power BI Desktop](#3-2-build-the-report-in-power-bi-desktop)
     3. [Publish the report](#3-3-publish-the-report)
 4. [Build a Report in the Power BI service](#4-build-a-report-in-the-power-bi-service)
+    1. [Build a semantic model](#4-1-build-a-semantic-model)
+    2. [Build a report in the Power BI service](#4-2-build-the-report-in-the-power-bi-service)
 
 ## 1. Open and explore the notebook
 
@@ -277,7 +279,7 @@ As a final step, configure the report's *Page refresh* to automatically refresh 
 
 ## :tada: Summary
 
-In this module, you followed up on the creation of the ML model by consuming the ML model, generating predictions, and storing those predictions in the lakehouse. You then created a report in Power BI Desktop that shows the current stock prices with predicted values.
+In this module, you followed up on the creation of the ML model by consuming the ML model, generating predictions, and storing those predictions in the lakehouse. You then created a report (or reports) that shows the current stock prices with predicted values.
 
 ## :white_check_mark: Results
 
