@@ -216,7 +216,7 @@ When drag/dropping and configuring the relationship properties, the UI should lo
 
 ![Create Relationship](../images/module07/semantic-model-lakehouse-1.png)
 
-Once complete, the model should look like the image below; verify the relationships are configured properly:
+Once complete, the model should look like the image below; verify the relationships are configured properly with the correct many to one cardinality, cross-filter direction set to both, and Assume referential integrity is set to *Yes*:
 
 ![Verify Relationships](../images/module07/semantic-model-lakehouse-2.png)
 
@@ -235,32 +235,26 @@ The semantic model is complete -- leave the semantic model designer open for the
 On the top of the semantic model designer, click *New report*. This should open the semantic model (with all three tables) into a new Power BI report. Add 3 line charts to the report: 2 across the top row, and 1 across the bottom row. Configure them as follows:
 
 Top left chart (current stock prices):
-
 * X-axis: raw_stock_data - timestamp
 * Y-axis: raw_stock_data - price
 * Legend: raw_stock_data - symbol
-
 * Filter: timestamp to *Relative time is in the last 1 hour*.
 
 Top right chart (overall by market):
-
 * X-axis: raw_stock_data - timestamp
 * Y-axis: raw_stock_data - price
 * Legend: dim_symbol - market
-
 * Filter: timestamp to *Relative time is in the last 4 hours*.
 
 Bottom chart (predictions):
-
 * X-axis: stocks_prediction - Predict_time
 * Y-axis: stocks_prediction - yhat
 * Legend: stocks_prediction - Symbol
-
 * Filter: Predict_time to *Relative date is in the next 5 days*, with *include today* checked.
 
 The initial report should look similar to the report below -- the prediction chart settings are highlighted:
 
-![Initial report](../images/module07/pbis-initialreport.png)
+![Initial report](../images/module07/pbis-initial-report.png)
 
 With the predictions chart selected, navigate to the additional visualization options (the magnifying glass/chart icon -- see image below) and add a new *X-Axis Constant Line*. Click *Add line*, and under the line settings, select the formula button (fx). On the *Value* window that opens, set the *Format style* to *Field value*, and select *currdate* as the field and click *OK*. Refer to this image as a reference:
 
