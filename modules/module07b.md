@@ -34,7 +34,7 @@ This module is a continuation of module 07a. In module 07a, the stock data was a
 
 In this module, we'll build a notebook that queries MLflow for available models, and builds predictions. We'll then build a report that leverages the predictions results. We have two options for building this report: we can use Power BI Desktop, or use the Power BI service as we've done in other modules. These options are listed in two different steps below -- you can do either or both as you'd prefer.
 
-Power BI Desktop has a number of advantages, but the primary advantage in this scenario is the ability to create [composite models](https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-composite-models). Composite models allow us to bring many data sources together -- we'll bring the KQL real-time data together with the predicitions data we'll be creating.
+Power BI Desktop has a number of advantages, but the primary advantage in this scenario is the ability to create [composite models](https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-composite-models). Composite models allow us to bring many data sources together -- we'll bring the KQL real-time data together with the predictions data we'll be creating.
 
 If you're unable to use or run Power BI Desktop -- or simply prefer to use the Power BI service -- we can create a very similar report in the Power BI service. Instead of using the KQL database for real-time data, we'll use the *raw_stock_data* from the lakehouse that contains near real-time data; this data will be delayed about 2 to 5 minutes. This approach requires the completion of [Module 06 - Lakehouse](../modules/module06a.md).
 
@@ -260,7 +260,7 @@ With the predictions chart selected, navigate to the additional visualization op
 
 ![X-axis line](../images/module07/pbis-report-with-xaxis.png)
 
-Adjust the colors and transparency to preference. The dotted line on the chart (the *currdate* measure) shows the current date/time. You can also adjust the *Gridlines*, titles, and other visual options. Verify that cross-filtering works -- for example, selecting NASDAQ in the top right chart should filter all charts to show only the NASDAQ stocks:
+Adjust the colors and transparency to preference. The dotted line on the chart (the *currdate* measure) shows the current date/time. You can also adjust the *gridlines*, titles, and other visual options. Verify that cross-filtering works -- for example, selecting NASDAQ in the top right chart should filter all charts to show only the NASDAQ stocks:
 
 ![X-axis line](../images/module07/pbis-report-filtering.png)
 
