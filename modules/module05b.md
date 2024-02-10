@@ -291,7 +291,7 @@ Add another *Stored Procedure* activity to the pipeline named *Populate Fact Sto
 
 * Name: Populate Fact Stocks Daily Prices
 * Settings: 
- * Stored procedure name: [ETL].[sp_Fact_Stocks_Daily_Prices_Load]
+   * Stored procedure name: [ETL].[sp_Fact_Stocks_Daily_Prices_Load]
 
 ![Load prices](../images/module05/pipeline-loadprices.png)
 

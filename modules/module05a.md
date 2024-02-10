@@ -239,7 +239,7 @@ Next, add a *Lookup* activity to the ForEach activity named *Get New WaterMark*.
 Add a new Stored Procedure activity after the *Get New Watermark* activity, with the name *Update WaterMark*. Configure the activity as follows:
 
 * Name: Update WaterMark
-* Source: StocksDW
+* Warehouse: StocksDW
 * Stored Procedure: ETL.sp_IngestSourceInfo_Update
 * Parameters:
  * ObjectName: @item().ObjectName
