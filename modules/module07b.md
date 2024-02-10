@@ -252,7 +252,7 @@ Bottom chart (predictions):
 * Legend: stocks_prediction - Symbol
 * Filter: Predict_time to *Relative date is in the next 5 days*, with *include today* checked.
 
-The initial report should look similar to the report below -- the prediction chart settings are highlighted:
+The initial report should look similar to the image below -- the prediction chart settings are highlighted:
 
 ![Initial report](../images/module07/pbis-initial-report.png)
 
