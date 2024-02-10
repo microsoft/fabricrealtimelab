@@ -47,9 +47,9 @@ Prefer video content? These videos illustrate the content in this module:
 1. [Open and explore the notebook](#1-open-and-explore-the-notebook)
 2. [Run the notebook](#2-run-the-notebook)
 3. [Build a report in Power BI Desktop](#3-build-a-report-in-power-bi-desktop)
-    a. [Build a semantic model](#3a-build-a-semantic-model)
-    b. [Build a report in Power BI Desktop](#3b-build-the-report-in-power-bi-desktop)
-    c. [Publish the report](#3c-publish-the-report)
+    1. [Build a semantic model](#3-1-build-a-semantic-model)
+    2. [Build a report in Power BI Desktop](#3-2-build-the-report-in-power-bi-desktop)
+    3. [Publish the report](#3-3-publish-the-report)
 4. [Build a Report in the Power BI service](#4-build-a-report-in-the-power-bi-service)
 
 ## 1. Open and explore the notebook
@@ -94,7 +94,7 @@ Once the notebook has been run, you are ready to move to the next step.
 
 If you are unable to use [Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) or prefer to work in the Power BI service, continue to [the step 4](#4-build-a-report-in-the-power-bi-service) to build a similar report using the Power BI service.
 
-### 3a. Build a semantic model
+### 3-1. Build a semantic model
 
 In this step, we'll build a semantic model (formerly called Power BI datasets) to use in our Power BI report. A semantic model represents data that is ready for reporting and acts as an abstraction on top of a data source. ([Read more on semantic models here](https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand)); typically a semantic model will be purpose built (serving a specific reporting need) and may have transformations, relationships, and enrichments like measures to make developing reports easier.
 
@@ -113,7 +113,7 @@ When the model appears, if you have the *dim_symbols* table, create a relationsh
 
 ![Predictions Semantic Model](../images/module07/stockpredictionsmodel.png)
 
-### 3b. Build the report in Power BI Desktop
+### 3-2. Build the report in Power BI Desktop
 
 [Download Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) and install. We'll use Power BI Desktop for the richer integration experience and ability to bring in multiple data sources. If you are unable to run Power BI Desktop on your machine, and no lab environment is available to run Power BI Desktop, you can make due by creating some elements of the report in the Power BI service. Instead of bringing in multiple datasets as outlined in these steps, instead focus on bringing only the single semantic model of the stock prediction data (created above) into the report; to do this, from the semantic model page, click the *Create report* button to create a new report based on this model. 
 
@@ -181,7 +181,7 @@ With the relationships in place, all visual should cross filter, so when selecti
 
 If you'd like to add some finishing touches, clean up the names, titles, and other elements on each visual to be more readable.
 
-### 3c. Publish the report
+### 3-3. Publish the report
 
 On the Power BI Desktop Home tab, you can publish the report to the Power BI service by clicking the *Publish* button. You may also publish the report to a dashboard, change the refresh interval, and make additional modifications for end-users. 
 
@@ -191,13 +191,13 @@ If you completed building the report in Power BI Desktop, this step is optional.
 
 In this step, we'll create a report in the Power BI service that combines near real-time data with the predicted data. This approach requires the completion of [Module 06 - Lakehouse](../modules/module06a.md)
 
-### 4a. Build a semantic model
+### 4-1. Build a semantic model
 
 -- build semantic model RawStocksAndPredictions
     -- add dim symbol, raw_stock_data, and stocks_predicitions tables
     -- add relationships
 
-### 4b. Build the report in the Power BI servce
+### 4-2. Build the report in the Power BI servce
 
 
 
