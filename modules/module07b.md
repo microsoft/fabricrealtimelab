@@ -32,7 +32,11 @@ This module is broken down into 3 sections:
 
 This module is a continuation of module 07a. In module 07a, the stock data was analyzed and an ML model was built and registered in MLflow.
 
-In this module, we'll build a notebook that queries MLflow for available models, and builds predictions. We'll then build a semantic model for the predictions to leverage in Power BI. We'll build a report in Power BI Desktop that uses multiple datasets.
+In this module, we'll build a notebook that queries MLflow for available models, and builds predictions. We'll then build a report that leverages the predictions results. We have two options for building this report: we can use Power BI Desktop, or use the Power BI service as we've done in other modules. These options are listed in two different steps below -- you can do either or both as you'd prefer.
+
+Power BI Desktop has a number of advantages, but the primary advantage in this scenario is the ability to create [composite models](https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-composite-models). Composite models allow us to bring many data sources together -- we'll bring the KQL real-time data together with the predicitions data we'll be creating.
+
+If you're unable to use or run Power BI Desktop -- or simply prefer to use the Power BI service -- we can create a very similar report in the Power BI service. Instead of using the KQL database for real-time data, we'll use the *raw_stock_data* from the lakehouse that contains near real-time data; this data will be delayed about 2 to 5 minutes. This approach requires the completion of [Module 06 - Lakehouse](../modules/module06a.md).
 
 Prefer video content? These videos illustrate the content in this module:
 * [Getting Started with Data Science in Microsoft Fabric, Part 1](https://youtu.be/kdUIUPwIy4g)
@@ -42,9 +46,11 @@ Prefer video content? These videos illustrate the content in this module:
 
 1. [Open and explore the notebook](#1-open-and-explore-the-notebook)
 2. [Run the notebook](#2-run-the-notebook)
-3. [Build a semantic model](#3-build-a-semantic-model)
-4. [Build a simple report in Power BI Desktop](#4-build-a-simple-report-in-power-bi-desktop)
-5. [Publish the report](#5-publish-the-report)
+3. [Build a report in Power BI Desktop](#3-build-a-report-in-power-bi-desktop)
+    a. [Build a semantic model](#3a-build-a-semantic-model)
+    b. [Build a report in Power BI Desktop](#3b-build-the-report-in-power-bi-desktop)
+    c. [Publish the report](#3c-publish-the-report)
+4. [Build a Report in the Power BI service](#4-build-a-report-in-the-power-bi-service)
 
 ## 1. Open and explore the notebook
 
@@ -84,7 +90,11 @@ For additional exploration, return to the previous section and generate ML model
 
 Once the notebook has been run, you are ready to move to the next step. 
 
-## 3. Build a semantic model
+## 3. Build a report in Power BI Desktop
+
+If you are unable to use [Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) or prefer to work in the Power BI service, continue to [the step 4](#4-build-a-report-in-the-power-bi-service) to build a similar report using the Power BI service.
+
+### 3a. Build a semantic model
 
 In this step, we'll build a semantic model (formerly called Power BI datasets) to use in our Power BI report. A semantic model represents data that is ready for reporting and acts as an abstraction on top of a data source. ([Read more on semantic models here](https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand)); typically a semantic model will be purpose built (serving a specific reporting need) and may have transformations, relationships, and enrichments like measures to make developing reports easier.
 
@@ -103,7 +113,7 @@ When the model appears, if you have the *dim_symbols* table, create a relationsh
 
 ![Predictions Semantic Model](../images/module07/stockpredictionsmodel.png)
 
-## 4. Build a simple report in Power BI Desktop
+### 3b. Build the report in Power BI Desktop
 
 [Download Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) and install. We'll use Power BI Desktop for the richer integration experience and ability to bring in multiple data sources. If you are unable to run Power BI Desktop on your machine, and no lab environment is available to run Power BI Desktop, you can make due by creating some elements of the report in the Power BI service. Instead of bringing in multiple datasets as outlined in these steps, instead focus on bringing only the single semantic model of the stock prediction data (created above) into the report; to do this, from the semantic model page, click the *Create report* button to create a new report based on this model. 
 
@@ -171,14 +181,32 @@ With the relationships in place, all visual should cross filter, so when selecti
 
 If you'd like to add some finishing touches, clean up the names, titles, and other elements on each visual to be more readable.
 
-## 5. Publish the report
+### 3c. Publish the report
 
 On the Power BI Desktop Home tab, you can publish the report to the Power BI service by clicking the *Publish* button. You may also publish the report to a dashboard, change the refresh interval, and make additional modifications for end-users. 
+
+## 4. Build a report in the Power BI service
+
+If you completed building the report in Power BI Desktop, this step is optional. 
+
+In this step, we'll create a report in the Power BI service that combines near real-time data with the predicted data. This approach requires the completion of [Module 06 - Lakehouse](../modules/module06a.md)
+
+### 4a. Build a semantic model
+
+-- build semantic model RawStocksAndPredictions
+    -- add dim symbol, raw_stock_data, and stocks_predicitions tables
+    -- add relationships
+
+### 4b. Build the report in the Power BI servce
+
+
 
 ## :thinking: Additional Learning
 
 * [Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) 
 * [Semantic Models](https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand)
+* [Power BI Desktop vs Power BI service](https://learn.microsoft.com/en-us/power-bi/fundamentals/service-service-vs-desktop)
+* [Power BI Composite Models](https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-composite-models)
 * [Data Wrangler](https://learn.microsoft.com/en-us/fabric/data-science/data-wrangler)
 * [Prophet](https://facebook.github.io/prophet/)
 
