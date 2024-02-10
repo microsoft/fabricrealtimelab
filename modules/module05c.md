@@ -30,7 +30,7 @@ One final step is to operationalize the data by creating a semantic model and vi
 
 1. [Create a semantic model](#1-create-a-semantic-model)
 2. [Add relationships](#2-add-relationships)
-3. [Create a simple reportl](#3-create-a-simple-report)
+3. [Create a simple report](#3-create-a-simple-report)
 
 ## 1. Create a semantic model
 
@@ -39,7 +39,7 @@ A semantic model, conceptually, provides an abstraction of our data for consumpt
 > :bulb: **Did you know?**
 > Power BI Datasets have recently been renamed to Semantic Models. In some cases, labels may not have been updated. The terms can be used interchangeably. Read more about this change [on the Power BI Blog](https://powerbi.microsoft.com/en-us/blog/datasets-renamed-to-semantic-models/).
 
-When we created our data warehouse, a default semantic model was created automatically. We can leverage this in Power BI, but it also includes many artifacts of the table we may not need. So, we'll create a new semantic model with just our fact and two dimension tables. First, verify the two dimension tables and fact table exist within the data warehouse (they should be visible under the dbo schema). Switch to the *Reporting* tab and select* New semantic model*.
+When we created our data warehouse, a default semantic model was created automatically. We can leverage this in Power BI, but it also includes many artifacts of the table we may not need. So, we'll create a new semantic model with just our fact and two dimension tables. First, verify the two dimension tables and fact table exist within the data warehouse (they should be visible under the dbo schema). Switch to the *Reporting* tab and select *New semantic model*.
 
 ![New Semantic Model](../images/module05/dw-newsemanticmodel.png)
 

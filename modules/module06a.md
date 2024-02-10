@@ -77,11 +77,11 @@ Next, we'll filter the fields we do not need. Hover over the connector line betw
 
 ![Manage Fields](../images/module06/addeventstream-managefields.png)
 
-Remove the fields EventProcessedUtcTime, PartitionId, and EventEnqueuedUtcTime by clicking the ellipsis (...) to the right of the field name, and click *Remove*:
+In the *Manage fields* pane that opens, click *Add all fields* to add all columns. Then, remove the fields EventProcessedUtcTime, PartitionId, and EventEnqueuedUtcTime by clicking the ellipsis (...) to the right of the field name, and click *Remove*:
 
 ![Remove Fields](../images/module06/addeventstream-managefields2.png)
 
-When the three fields are removed, click *Done* to close the event processor, and then click *Save*. Once complete, the lakehouse should now be receiving the symbol, price, and timestamp, and look similar to the image below:
+When the three fields are removed, click *Done* to close the event processor, and then click *Save* in the bottom right to add the destination to the Eventstream. Once complete, the lakehouse should now be receiving the symbol, price, and timestamp, and look similar to the image below:
 
 ![Completed Eventstream](../images/module06/addeventstream-complete.png)
 

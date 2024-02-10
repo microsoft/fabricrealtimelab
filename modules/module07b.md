@@ -169,7 +169,7 @@ With the relationships in place, all visual should cross filter, so when selecti
 
 ![Cross Filtering](../images/module07/pbid-crossfilter.png)
 
-The last thing we can do is clean up the names, titles, and so on to add a finishing touch.
+If you'd like to add some finishing touches, clean up the names, titles, and other elements on each visual to be more readable.
 
 ## 5. Publish the report
 
