@@ -96,12 +96,12 @@ If you are unable to use [Power BI Desktop](https://powerbi.microsoft.com/en-us/
 
 ### 3-1. Build a semantic model
 
-In this step, we'll build a semantic model (formerly called Power BI datasets) to use in our Power BI report. A semantic model represents data that is ready for reporting and acts as an abstraction on top of a data source. ([Read more on semantic models here](https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand)); typically a semantic model will be purpose built (serving a specific reporting need) and may have transformations, relationships, and enrichments like measures to make developing reports easier.
+In this step, we'll build a semantic model (formerly called Power BI datasets) to use in our Power BI report. A semantic model represents data that is ready for reporting and acts as an abstraction on top of a data source ([read more on semantic models here](https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand)). Typically, a semantic model will be purpose built (serving a specific reporting need) and may have transformations, relationships, and enrichments like measures to make developing reports easier.
 
 > :bulb: **About the word 'model':**
 > In order to disambiguate the term 'model,' we'll do our best to always qualify the type of model we're referring to. Because this is a machine learning module, we use the term 'model' frequently to refer to a machine learning model (or ML model), which is different from a semantic model.
 
-To create a semantic model, open the lakehouse. You can build a new semantic model by either method:
+To create a semantic model, open the lakehouse. You can build a new semantic model by either method below:
 * From the lakehouse mode, select *New semantic model* from the top toolbar
 * From the SQL analytics endpoint mode, select the *Reporting* tab, and select *New semantic model*
 
@@ -193,13 +193,84 @@ In this step, we'll create a report in the Power BI service that combines near r
 
 ### 4-1. Build a semantic model
 
--- build semantic model RawStocksAndPredictions
-    -- add dim symbol, raw_stock_data, and stocks_predicitions tables
-    -- add relationships
+In this step, we'll build a semantic model (formerly called Power BI datasets) to use in our Power BI report. A semantic model represents data that is ready for reporting and acts as an abstraction on top of a data source ([read more on semantic models here](https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand)). Typically, a semantic model will be purpose built (serving a specific reporting need) and may have transformations, relationships, and enrichments like measures to make developing reports easier.
 
-### 4-2. Build the report in the Power BI servce
+To create a semantic model, open the lakehouse. You can build a new semantic model by either method below:
+* From the *Lakehouse* mode (the mode is chosen in the upper-right of the lakehouse window), select *New semantic model* from the top toolbar
+* From the *SQL analytics endpoint* mode, select the *Reporting* tab, and select *New semantic model*
 
+![Create Semantic Model](../images/module07/createsemanticmodel.png)
 
+Name the semantic model *StocksRawWithPredictions*. Add these tables to the model, and then click *Confirm*:
+
+* raw_stock_data
+* dim_symbol
+* stocks_prediction
+
+The designer will load, showing the three tables. Create relationships by drag/dropping the columns below or by using the *Manage Relationships* button in the top navbar. Create the following relationships, setting the cross-direction filter to *Both* and enabling *Assume referential integrity*:
+
+* *raw_stock_data* *symbol* (*) to *dim_symbol* *Symbol* (1)
+* *stocks_prediction* *Symbol* (*) to *dim_symbol* *Symbol* (1)
+
+When drag/dropping and configuring the relationship properties, the UI should look similar to:
+
+![Create Relationship](../images/module07/semantic-model-lakehouse-1.png)
+
+Once complete, the model should look like the image below; verify the relationships are configured properly:
+
+![Verify Relationships](../images/module07/semantic-model-lakehouse-2.png)
+
+Next, we'll add a new measure to the *stocks_prediction* table. On the right *Data* panel, click the ellipsis to the right of the *stocks_prediction* table for *More options*, and select *New measure*. In the expression editor, enter the following expression:
+
+* currdate = NOW()
+
+See the image below for reference:
+
+![Add measure](../images/module07/semantic-model-lakehouse-3-currdate.png)
+
+The semantic model is complete -- leave the semantic model designer open for the next step.
+
+### 4-2. Build the report in the Power BI service
+
+On the top of the semantic model designer, click *New report*. This should open the semantic model (with all three tables) into a new Power BI report. Add 3 line charts to the report: 2 across the top row, and 1 across the bottom row. Configure them as follows:
+
+Top left chart (current stock prices):
+
+* X-axis: raw_stock_data - timestamp
+* Y-axis: raw_stock_data - price
+* Legend: raw_stock_data - symbol
+
+* Filter: timestamp to *Relative time is in the last 1 hour*.
+
+Top right chart (overall by market):
+
+* X-axis: raw_stock_data - timestamp
+* Y-axis: raw_stock_data - price
+* Legend: dim_symbol - market
+
+* Filter: timestamp to *Relative time is in the last 4 hours*.
+
+Bottom chart (predictions):
+
+* X-axis: stocks_prediction - Predict_time
+* Y-axis: stocks_prediction - yhat
+* Legend: stocks_prediction - Symbol
+
+* Filter: Predict_time to *Relative date is in the next 5 days*, with *include today* checked.
+
+The initial report should look similar to the report below -- the prediction chart settings are highlighted:
+
+![Initial report](../images/module07/pbis-initialreport.png)
+
+With the predictions chart selected, navigate to the additional visualization options (the magnifying glass/chart icon -- see image below) and add a new *X-Axis Constant Line*. Click *Add line*, and under the line settings, select the formula button (fx). On the *Value* window that opens, set the *Format style* to *Field value*, and select *currdate* as the field and click *OK*. Refer to this image as a reference:
+
+![X-axis line](../images/module07/pbis-report-with-xaxis.png)
+
+Adjust the colors and transparency to preference. The dotted line on the chart (the *currdate* measure) shows the current date/time. You can also adjust the *Gridlines*, titles, and other visual options. Verify that cross-filtering works -- for example, selecting NASDAQ in the top right chart should filter all charts to show only the NASDAQ stocks:
+
+![X-axis line](../images/module07/pbis-report-filtering.png)
+
+As a final step, configure the report's *Page refresh* to automatically refresh every few minutes as desired.
 
 ## :thinking: Additional Learning
 
