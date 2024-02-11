@@ -95,7 +95,7 @@ Notice the relationship between *stocks_prediction* and *dim_symbol* already exi
 
 If your semantic model does **not** included *dim_symbol*:
 
-Create a new many-to-many relationship between the *StockPrice* *symbol* and the *stocks_prediction* Symbol. Set the cross filter direction to *Both*, and be sure the cardinality is set to *Many-to-many*:
+Create a new many-to-many relationship between the *StockPrice* - *symbol* and the *stocks_prediction* - *Symbol* (after selecting the table, be sure to select the symbol columns in each table). Set the cross filter direction to *Both*, and be sure the cardinality is set to *Many-to-many*:
 
 ![PBID Manage Relationships](../images/module07/pbid-manytomany.png)
 
