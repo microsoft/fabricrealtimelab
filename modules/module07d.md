@@ -9,12 +9,12 @@
 
 ## :thinking: Prerequisites
 
+- [x] Completed [Module 01](../modules/module01.md)
 - [x] Completed Module 07a
 - [x] Completed Module 07b
 
 Recommended modules:
 
-- [x] Completed [Module 01 - KQL Database](../modules/module01.md)
 - [x] Completed [Module 02 - KQL Queries](../modules/module02.md)
 - [x] Completed [Module 03 - Reporting](../modules/module03.md)
 - [x] Completed [Module 06 - Lakehouse](../modules/module06a.md)
@@ -24,7 +24,7 @@ Recommended modules:
 This module is broken down into 4 sections:
 
 * [Module 07a - Building and storing an ML model](./module07a.md)
-* [Module 07b - Using models, saving to the lakehouse, building a report](./module07b.md)
+* [Module 07b - Using models, saving to the lakehouse](./module07b.md)
 * [Module 07c - Solution in practice](./module07c.md)
 * [Module 07d - Building a Prediction Report](./module07d.md)
 

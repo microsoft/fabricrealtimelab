@@ -25,7 +25,7 @@ You can complete the reporting section without the recommended modules above, bu
 This module is broken down into 4 sections:
 
 * [Module 07a - Building and storing an ML model](./module07a.md)
-* [Module 07b - Using models, saving to the lakehouse, building a report](./module07b.md)
+* [Module 07b - Using models, saving to the lakehouse](./module07b.md)
 * [Module 07c - Solution in practice](./module07c.md)
 * [Module 07d - Building a Prediction Report](./module07d.md)
 
@@ -76,9 +76,9 @@ You can either run each cell manually as you follow along with the notebook, or 
 
 ![Run cells](../images/module07/runcell2.png)
 
-For the rest of this step, follow along with documentation in the notebook for an explanation of each cell. The key areas to examine closely include the interaction with MLflow (to find the ML models), and how the data is written to the lakehouse using a merge statement.
+For the rest of this step, follow along with documentation in the notebook for an explanation of each cell. The key areas to examine closely include the interaction with MLflow (to find the ML models), and how the data is written to the lakehouse using a merge statement. The merging acts as an "upsert" -- new data will be inserted, but if a prediction already exists for a given symbol at a certain point in time, the row will be updated.
 
-For additional exploration, return to the previous section and generate ML models for other stock symbols. Notice how this notebook should find those new ML models and generate predictions. If new ML models are created where an existing stock exists, a new version of the model will be created.
+For additional exploration, return to the previous section and generate ML models for other stock symbols. Notice how this notebook should find those new ML models and generate predictions. If new ML models are created where an existing model already exists, a new version of the model will be created. This allows us to track models over time -- parameters may need to be tweaked to handle changing conditions.
 
 Once the notebook has been run, you are ready to move to the next step. 
 

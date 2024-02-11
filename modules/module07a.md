@@ -20,7 +20,7 @@ If you have not created any Fabric resources and consuming this module as a stan
 This module is broken down into 4 sections:
 
 * [Module 07a - Building and storing an ML model](./module07a.md)
-* [Module 07b - Using models, saving to the lakehouse, building a report](./module07b.md)
+* [Module 07b - Using models, saving to the lakehouse](./module07b.md)
 * [Module 07c - Solution in practice](./module07c.md)
 * [Module 07d - Building a Prediction Report](./module07d.md)
 
