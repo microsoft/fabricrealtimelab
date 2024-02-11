@@ -90,7 +90,7 @@ Once imported, the notebooks should be visible in the workspace -- as your works
 
 ![Workspace](../images/module07/workspacelist.png)
 
-Click the *DS 1 - Build Model* notebook to open. It should appear like the image below:
+Click the *DS 1 - Build Model* notebook to open. The notebook should appear like the image below:
 
 ![Notebook](../images/module07/defaultnotebook.png)
 
@@ -121,7 +121,7 @@ The routine that generates the stock data is largely random, but there are some 
 
 ## 5. Run the notebook
 
-You can either run each cell manually as you follow along with the notebook, or click *Run all* in the top toolbar and follow along as the work progresses. The notebook will take roughly 15-20 minutes to execute -- some steps, like training the model and cross validation, will take the longest.
+You can either run each cell manually as you follow along with the notebook, or click *Run all* in the top toolbar and follow along as the work progresses. The notebook will take roughly 15-20 minutes to execute -- some steps, like training the model and cross validation, will take the longest. If you're waiting for the results, feel free to read ahead or take a quick break!
 
 ![Run cells](../images/module07/runcell.png)
 
