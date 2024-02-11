@@ -54,7 +54,7 @@ Prefer video content? These videos illustrate the content in this module:
 
 ## 1. Build a report in Power BI Desktop
 
-If you are unable to use [Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) or prefer to work in the Power BI service, continue to [the step 4](#4-build-a-report-in-the-power-bi-service) to build a similar report using the Power BI service.
+If you are unable to use [Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) or prefer to work in the Power BI service, continue to [the step 2](#2-build-a-report-in-the-power-bi-service) to build a similar report using the Power BI service.
 
 ### 1-1. Build a semantic model
 
@@ -69,55 +69,62 @@ To create a semantic model, open the lakehouse. You can build a new semantic mod
 
 ![Create Semantic Model](../images/module07/createsemanticmodel.png)
 
-Name the model *StocksLakehousePredictions*. If you completed the lakehouse module and have the *dim_symbols* dimension table, add both the *dim_symbols* and the *stocks_prediction* tables to the semantic model. Otherwise, add only the *stocks_prediction* table.
+Name the model *StocksLakehousePredictions*. If you completed the lakehouse module and have the *dim_symbols* dimension table, add both the *dim_symbols* and the *stocks_prediction* tables to the semantic model. Otherwise, add only the *stocks_prediction* table. The *dim_symbol* table will allow us to do a bit more filtering, but is not required.
 
-When the model appears, if you have the *dim_symbols* table, create a relationship between the *stocks_prediction* symbol column (many) to the *dim_symbol* symbol column (one), to create a 1:many relationship between these two entities. This can be done by drag/dropping the columns, or using the *Manage Relationships* button in the top navbar. If you don't have the *dim_symbol* table, that's ok -- just use the single *stocks_prediction* table. The model should look similar to:
+When the model appears, if you have the *dim_symbols* table, create a relationship between the *stocks_prediction* symbol column (many) to the *dim_symbol* symbol column (one), to create a 1:many relationship between these two entities. This can be done by drag/dropping the Symbol column in one table and dropping it on the other Symbol column, or using the *Manage Relationships* button in the top navbar. Set the Cross-filtering to *Both* and check *Assume referential integrity*.
+
+If you don't have the *dim_symbol* table, just use the single *stocks_prediction* table. The model should look similar to:
 
 ![Predictions Semantic Model](../images/module07/stockpredictionsmodel.png)
 
 ### 1-2. Build the report in Power BI Desktop
 
-[Download Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) and install. We'll use Power BI Desktop for the richer integration experience and ability to bring in multiple data sources. If you are unable to run Power BI Desktop on your machine, and no lab environment is available to run Power BI Desktop, you can make due by creating some elements of the report in the Power BI service. Instead of bringing in multiple datasets as outlined in these steps, instead focus on bringing only the single semantic model of the stock prediction data (created above) into the report; to do this, from the semantic model page, click the *Create report* button to create a new report based on this model. 
-
-Launch Power BI Desktop and create a new report. On the *Home* ribbon, click the *OneLake data hub* and first bring in the KQL *StockDB* *StockHistory* table and then the *StocksLakehousePredictions* semantic model: 
+[Download Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) and install. Launch Power BI Desktop and create a new report. On the *Home* ribbon, click the *OneLake data hub* and first bring in the KQL *StockDB* *StockPrice* table. When the *Connection settings* window appears, be sure to select *DirectQuery*.
 
 ![Add KQL from OneLake data hub](../images/module07/pbid-addkql.png)
 
-When adding the *StockHistory* table from the KQL database, be sure to select DirectQuery (and not Import) on the Connection Settings page. When adding the *StocksLakehousePredictions* semantic model, be sure to select all of the tables in the model. 
+From the *OneLake data hub*, select *Power BI semantic models* and load the *StocksLakehousePredictions* semantic model created above. When the *Connect to your data* window opens, be sure to select all tables in the semantic model and click *Submit*. You may receive a security warning: by bringing in disparate data sources, there's a potential for data exposure between these data sources -- in this case, we can dismiss the warning. 
 
-Select the *Modeling* tab, and click on *Manage relationships*. Create a new many-to-many relationship between the *StockHistory* symbol and the *stocks_prediction* Symbol. Set the cross filter direction to *Both*, and be sure the cardinality is set to *Many-to-many*:
+Select the *Modeling* tab, and click on *Manage relationships*. The steps we take to configure the relationships will depend on whether or not we have the *dim_symbol* table in our semantic model. Having the *dim_symbol* table is ideal because it can help connect all of the tables, making cross-filtering easy and automatic. 
+
+If your semantic model includes *dim_symbol*:
+
+Notice the relationship between *stocks_prediction* and *dim_symbol* already exists, as it was created as part of the semantic model. Click *New...* to create a new relationship, and create a relationship between *StockPrice* (many) and *dim_symbol* (one). Set the *Cross filter direction* to *Both*. This should look similar to:
+
+![Add relationship from StockPrice to dim_symbol](../images/module07/pbid-withsymbol-addrelationship.png)
+
+If your semantic model does **not** included *dim_symbol*:
+
+Create a new many-to-many relationship between the *StockPrice* *symbol* and the *stocks_prediction* Symbol. Set the cross filter direction to *Both*, and be sure the cardinality is set to *Many-to-many*:
 
 ![PBID Manage Relationships](../images/module07/pbid-manytomany.png)
 
 > :bulb: **Many to Many Relationships:**
-> Using many-to-many relationships is fairly rare in visuals because data sources are typically normalized for performance and data integrity. However, they are more commonly used in situations where we are mashing up like data from different data sources. This is one of those cases.
+> Using many-to-many relationships is fairly rare in visuals because data sources are typically normalized for performance and data integrity. However, they are more commonly used in situations where we are mashing up like data from different data sources.
 
-Next, add 3 line charts to your report: 2 across the top row, and 1 across the bottom row. Configure them as follows:
+With the relationships configured, we can now add the visuals to the design surface.
 
-Top left chart: StockHistory (KQL)
-* X-axis: Timestamp
-* Y-axis: Price
-* Legend: Symbol
+Begin by adding 3 line charts to your report: 2 across the top row, and 1 across the bottom row. Configure them as follows -- you may receive an error on the visuals until the filters are set; this is due to the visual trying to display too many rows.
 
-Top right chart: StockHistory (KQL)
-* X-axis: Timestamp
-* Y-axis: Price
+Top left chart: StockPrice (KQL)
+* X-axis: timestamp
+* Y-axis: price
+* Legend: symbol
+* Filter: timestamp to *Relative time is in the last 1 hour*.
+
+Top right chart: StockPrice (KQL)
+* X-axis: timestamp
+* Y-axis: price
 * Legend: 
     * Without *dim_symbol* table: None (will show overall market)
     * With *dim_symbol* table: *Market* from *dim_symbol* (will show the NYSE/NASDAQ markets)
+* Filter: timestamp to *Relative time is in the last 1 hour*.
 
 Bottom chart: Prediction
 * X-axis: Timestamp
 * Y-axis: yhat
 * Legend: Symbol
-
-On each visual, configure the filter to only show data as follows:
-
-* For the top left StockHistory / real-time chart, set the *timestamp* to *Relative time* within the last 15 minutes.
-* For the top right StockHistory / market chart, set the *timestamp* to *Relative time* within the last 4 hours (as shown in the screenshot below)
-* For the bottom stocks_prediction chart, set the *predict_time* to a *Relative date* in the next 3 days, including today.
-
-![Time Filters](../images/module07/pbid-timefilter.png)
+* Filter: Predict_time to *Relative date is in the next 5 days*, with *include today* checked.
 
 Once complete, your report should look similar to the image below, showing the time filter on the bottom visual:
 
@@ -125,7 +132,7 @@ Once complete, your report should look similar to the image below, showing the t
 
 Let's review what we are looking at in the screenshot above. The top left chart shows the stock prices in real time (and will ultimately update every second or so). The upper right shows the prices grouped by market, and the bottom chart shows future predictions. Note: if you do not have the *dim_symbol* table available, the top-right market chart will simply show the overall market.
 
-Next, right click the *predicted_price* table and select *New measure*. Measures are formulas written in the Data Analysis Expressions (DAX) language; for this DAX formula, enter *currdate = NOW()* as shown below:
+Next, right click the *stocks_prediction* table and select *New measure*. Measures are formulas written in the Data Analysis Expressions (DAX) language; for this DAX formula, enter *currdate = NOW()* as shown below:
 
 ![Create Measure](../images/module07/pbid-createmeasure.png)
 
@@ -133,11 +140,11 @@ With the prediction chart selected, navigate to the additional visualization opt
 
 ![Add X-Axis Constant Line](../images/module07/pbid-addcurrdatetovisual.png)
 
-You can also add other features, like solid vertical lines (modifying the visual's gridlines). When complete, your chart should look similar to the image below, where the dashed line on the predictions chart shows the current time, the past is shaded slightly, and lines appear for 12 hour block:
+You can also add other features, like solid vertical lines (modifying the visual's gridlines). When complete, your chart should look similar to the image below, where the dashed line on the predictions chart shows the current time while the past is shaded slightly. Naturally, the position of the line and shaded area will vary slightly depending on the time of day:
 
 ![X-Axis Constant Line](../images/module07/pbid-withline.png)
 
-With the relationships in place, all visual should cross filter, so when selecting either a symbol on a chart, or market, all elements should react accordingly. In the image below, the IDGD stock is selected on the real-time chart, and it updated the prediction chart to show only the selected symbol, as well as the market the stock is in:
+With the relationships in place, all visual should cross filter, so when selecting either a symbol on a chart, or market, all elements should react accordingly. In the image below, the IDGD stock is selected on the predictions chart:
 
 ![Cross Filtering](../images/module07/pbid-crossfilter.png)
 
