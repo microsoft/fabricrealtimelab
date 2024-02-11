@@ -144,7 +144,7 @@ You can also add other features, like solid vertical lines (modifying the visual
 
 ![X-Axis Constant Line](../images/module07/pbid-withline.png)
 
-With the relationships in place, all visual should cross filter, so when selecting either a symbol on a chart, or market, all elements should react accordingly. In the image below, the IDGD stock is selected on the predictions chart:
+Because we configured the relationships between tables, all visual should cross filter; when selecting either a symbol or market on a chart, all visuals should react accordingly. In the image below, the NASDAQ market is selected on the upper-right market chart:
 
 ![Cross Filtering](../images/module07/pbid-crossfilter.png)
 
