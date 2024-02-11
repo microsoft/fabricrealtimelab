@@ -17,11 +17,12 @@ If you have not created any Fabric resources and consuming this module as a stan
 
 ## :book: Sections
 
-This module is broken down into 3 sections:
+This module is broken down into 4 sections:
 
 * [Module 07a - Building and storing an ML model](./module07a.md)
 * [Module 07b - Using models, saving to the lakehouse, building a report](./module07b.md)
 * [Module 07c - Solution in practice](./module07c.md)
+* [Module 07d - Building a Prediction Report](./module07d.md)
 
 ## :loudspeaker: Introduction
 
@@ -138,6 +139,7 @@ Metadata, in our case, includes input parameters we may tune for our model, as w
 
 ## :thinking: Additional Learning
 
+* [Machine Learning Experiments in Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/data-science/machine-learning-experiment)
 * [Data Wrangler](https://learn.microsoft.com/en-us/fabric/data-science/data-wrangler)
 * [Prophet](https://facebook.github.io/prophet/)
 

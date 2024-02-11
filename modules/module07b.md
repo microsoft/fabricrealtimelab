@@ -4,7 +4,7 @@
 
 ## :stopwatch: Estimated Duration
 
-* 45 minutes for 07b
+* 20 minutes for 07b
 * 2 hours overall
 
 ## :thinking: Prerequisites
@@ -13,7 +13,7 @@
 
 Recommended modules for reports:
 
-- [x] Completed [Module 01 - KQL Database ](../modules/module01.md)
+- [x] Completed [Module 01 - KQL Database](../modules/module01.md)
 - [x] Completed [Module 02 - KQL Queries](../modules/module02.md)
 - [x] Completed [Module 03 - Reporting](../modules/module03.md)
 - [x] Completed [Module 06 - Lakehouse](../modules/module06a.md)
@@ -22,21 +22,18 @@ You can complete the reporting section without the recommended modules above, bu
 
 ## :book: Sections
 
-This module is broken down into 3 sections:
+This module is broken down into 4 sections:
 
 * [Module 07a - Building and storing an ML model](./module07a.md)
 * [Module 07b - Using models, saving to the lakehouse, building a report](./module07b.md)
 * [Module 07c - Solution in practice](./module07c.md)
+* [Module 07d - Building a Prediction Report](./module07d.md)
 
 ## :loudspeaker: Introduction
 
-This module is a continuation of module 07a. In module 07a, the stock data was analyzed and an ML model was built and registered in MLflow.
+This module is a continuation of module 07a. In module 07a, the stock data was analyzed, an ML model was built and registered in MLflow.
 
-In this module, we'll build a notebook that queries MLflow for available models, and builds predictions. We'll then build a report that leverages the predictions results. We have two options for building this report: we can use Power BI Desktop, or use the Power BI service as we've done in other modules. These options are listed in two different steps below -- you can do either or both as you'd prefer.
-
-Power BI Desktop has a number of advantages, but the primary advantage in this scenario is the ability to create [composite models](https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-composite-models). Composite models allow us to bring many data sources together -- we'll bring the KQL real-time data together with the predictions data we'll be creating.
-
-If you're unable to use or run Power BI Desktop -- or simply prefer to use the Power BI service -- we can create a very similar report in the Power BI service. Instead of using the KQL database for real-time data, we'll use the *raw_stock_data* from the lakehouse that contains near real-time data; this data will be delayed about 2 to 5 minutes. This approach requires the completion of [Module 06 - Lakehouse](../modules/module06a.md).
+In this module, we'll use a notebook that queries MLflow for available models, and builds predictions from those models. The goal of this approach is to illustrate the separation of model creation and consumption. This will bring us one step closer to connecting all of the pieces.
 
 Prefer video content? These videos illustrate the content in this module:
 * [Getting Started with Data Science in Microsoft Fabric, Part 1](https://youtu.be/kdUIUPwIy4g)
@@ -46,13 +43,6 @@ Prefer video content? These videos illustrate the content in this module:
 
 1. [Open and explore the notebook](#1-open-and-explore-the-notebook)
 2. [Run the notebook](#2-run-the-notebook)
-3. [Build a report in Power BI Desktop](#3-build-a-report-in-power-bi-desktop)
-    1. [Build a semantic model](#3-1-build-a-semantic-model)
-    2. [Build a report in Power BI Desktop](#3-2-build-the-report-in-power-bi-desktop)
-    3. [Publish the report](#3-3-publish-the-report)
-4. [Build a Report in the Power BI service](#4-build-a-report-in-the-power-bi-service)
-    1. [Build a semantic model](#4-1-build-a-semantic-model)
-    2. [Build a report in the Power BI service](#4-2-build-the-report-in-the-power-bi-service)
 
 ## 1. Open and explore the notebook
 
@@ -92,188 +82,9 @@ For additional exploration, return to the previous section and generate ML model
 
 Once the notebook has been run, you are ready to move to the next step. 
 
-## 3. Build a report in Power BI Desktop
-
-If you are unable to use [Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) or prefer to work in the Power BI service, continue to [the step 4](#4-build-a-report-in-the-power-bi-service) to build a similar report using the Power BI service.
-
-### 3-1. Build a semantic model
-
-In this step, we'll build a semantic model (formerly called Power BI datasets) to use in our Power BI report. A semantic model represents data that is ready for reporting and acts as an abstraction on top of a data source ([read more on semantic models here](https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand)). Typically, a semantic model will be purpose built (serving a specific reporting need) and may have transformations, relationships, and enrichments like measures to make developing reports easier.
-
-> :bulb: **About the word 'model':**
-> In order to disambiguate the term 'model,' we'll do our best to always qualify the type of model we're referring to. Because this is a machine learning module, we use the term 'model' frequently to refer to a machine learning model (or ML model), which is different from a semantic model.
-
-To create a semantic model, open the lakehouse. You can build a new semantic model by either method below:
-* From the lakehouse mode, select *New semantic model* from the top toolbar
-* From the SQL analytics endpoint mode, select the *Reporting* tab, and select *New semantic model*
-
-![Create Semantic Model](../images/module07/createsemanticmodel.png)
-
-Name the model *StocksLakehousePredictions*. If you completed the lakehouse module and have the *dim_symbols* dimension table, add both the *dim_symbols* and the *stocks_prediction* tables to the semantic model. Otherwise, add only the *stocks_prediction* table.
-
-When the model appears, if you have the *dim_symbols* table, create a relationship between the *stocks_prediction* symbol column (many) to the *dim_symbol* symbol column (one), to create a 1:many relationship between these two entities. This can be done by drag/dropping the columns, or using the *Manage Relationships* button in the top navbar. If you don't have the *dim_symbol* table, that's ok -- just use the single *stocks_prediction* table. The model should look similar to:
-
-![Predictions Semantic Model](../images/module07/stockpredictionsmodel.png)
-
-### 3-2. Build the report in Power BI Desktop
-
-[Download Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) and install. We'll use Power BI Desktop for the richer integration experience and ability to bring in multiple data sources. If you are unable to run Power BI Desktop on your machine, and no lab environment is available to run Power BI Desktop, you can make due by creating some elements of the report in the Power BI service. Instead of bringing in multiple datasets as outlined in these steps, instead focus on bringing only the single semantic model of the stock prediction data (created above) into the report; to do this, from the semantic model page, click the *Create report* button to create a new report based on this model. 
-
-Launch Power BI Desktop and create a new report. On the *Home* ribbon, click the *OneLake data hub* and first bring in the KQL *StockDB* *StockHistory* table and then the *StocksLakehousePredictions* semantic model: 
-
-![Add KQL from OneLake data hub](../images/module07/pbid-addkql.png)
-
-When adding the *StockHistory* table from the KQL database, be sure to select DirectQuery (and not Import) on the Connection Settings page. When adding the *StocksLakehousePredictions* semantic model, be sure to select all of the tables in the model. 
-
-Select the *Modeling* tab, and click on *Manage relationships*. Create a new many-to-many relationship between the *StockHistory* symbol and the *stocks_prediction* Symbol. Set the cross filter direction to *Both*, and be sure the cardinality is set to *Many-to-many*:
-
-![PBID Manage Relationships](../images/module07/pbid-manytomany.png)
-
-> :bulb: **Many to Many Relationships:**
-> Using many-to-many relationships is fairly rare in visuals because data sources are typically normalized for performance and data integrity. However, they are more commonly used in situations where we are mashing up like data from different data sources. This is one of those cases.
-
-Next, add 3 line charts to your report: 2 across the top row, and 1 across the bottom row. Configure them as follows:
-
-Top left chart: StockHistory (KQL)
-* X-axis: Timestamp
-* Y-axis: Price
-* Legend: Symbol
-
-Top right chart: StockHistory (KQL)
-* X-axis: Timestamp
-* Y-axis: Price
-* Legend: 
-    * Without *dim_symbol* table: None (will show overall market)
-    * With *dim_symbol* table: *Market* from *dim_symbol* (will show the NYSE/NASDAQ markets)
-
-Bottom chart: Prediction
-* X-axis: Timestamp
-* Y-axis: yhat
-* Legend: Symbol
-
-On each visual, configure the filter to only show data as follows:
-
-* For the top left StockHistory / real-time chart, set the *timestamp* to *Relative time* within the last 15 minutes.
-* For the top right StockHistory / market chart, set the *timestamp* to *Relative time* within the last 4 hours (as shown in the screenshot below)
-* For the bottom stocks_prediction chart, set the *predict_time* to a *Relative date* in the next 3 days, including today.
-
-![Time Filters](../images/module07/pbid-timefilter.png)
-
-Once complete, your report should look similar to the image below, showing the time filter on the bottom visual:
-
-![Initial Report](../images/module07/pbid-initialreportview.png)
-
-Let's review what we are looking at in the screenshot above. The top left chart shows the stock prices in real time (and will ultimately update every second or so). The upper right shows the prices grouped by market, and the bottom chart shows future predictions. Note: if you do not have the *dim_symbol* table available, the top-right market chart will simply show the overall market.
-
-Next, right click the *predicted_price* table and select *New measure*. Measures are formulas written in the Data Analysis Expressions (DAX) language; for this DAX formula, enter *currdate = NOW()* as shown below:
-
-![Create Measure](../images/module07/pbid-createmeasure.png)
-
-With the prediction chart selected, navigate to the additional visualization options (the magnifying glass/chart icon) and add a new *X-Axis Constant Line*. Under *Value*, use the formula button (fx) to choose a field, and select the *currdate* measure, as shown in the image below. Enable the *Shade area* to *Before*, and configure the transparency and colors to your preference.
-
-![Add X-Axis Constant Line](../images/module07/pbid-addcurrdatetovisual.png)
-
-You can also add other features, like solid vertical lines (modifying the visual's gridlines). When complete, your chart should look similar to the image below, where the dashed line on the predictions chart shows the current time, the past is shaded slightly, and lines appear for 12 hour block:
-
-![X-Axis Constant Line](../images/module07/pbid-withline.png)
-
-With the relationships in place, all visual should cross filter, so when selecting either a symbol on a chart, or market, all elements should react accordingly. In the image below, the IDGD stock is selected on the real-time chart, and it updated the prediction chart to show only the selected symbol, as well as the market the stock is in:
-
-![Cross Filtering](../images/module07/pbid-crossfilter.png)
-
-If you'd like to add some finishing touches, clean up the names, titles, and other elements on each visual to be more readable.
-
-### 3-3. Publish the report
-
-On the Power BI Desktop Home tab, you can publish the report to the Power BI service by clicking the *Publish* button. You may also publish the report to a dashboard, change the refresh interval, and make additional modifications for end-users. 
-
-## 4. Build a report in the Power BI service
-
-If you completed building the report in Power BI Desktop, this step is optional. 
-
-In this step, we'll create a report in the Power BI service that combines near real-time data with the predicted data. This approach requires the completion of [Module 06 - Lakehouse](../modules/module06a.md)
-
-### 4-1. Build a semantic model
-
-In this step, we'll build a semantic model (formerly called Power BI datasets) to use in our Power BI report. A semantic model represents data that is ready for reporting and acts as an abstraction on top of a data source ([read more on semantic models here](https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand)). Typically, a semantic model will be purpose built (serving a specific reporting need) and may have transformations, relationships, and enrichments like measures to make developing reports easier.
-
-To create a semantic model, open the lakehouse. You can build a new semantic model by either method below:
-* From the *Lakehouse* mode (the mode is chosen in the upper-right of the lakehouse window), select *New semantic model* from the top toolbar
-* From the *SQL analytics endpoint* mode, select the *Reporting* tab, and select *New semantic model*
-
-![Create Semantic Model](../images/module07/createsemanticmodel.png)
-
-Name the semantic model *StocksRawWithPredictions*. Add these tables to the model, and then click *Confirm*:
-
-* raw_stock_data
-* dim_symbol
-* stocks_prediction
-
-The designer will load, showing the three tables. Create relationships by drag/dropping the columns below or by using the *Manage Relationships* button in the top navbar. Create the following relationships, setting the cross-direction filter to *Both* and enabling *Assume referential integrity*:
-
-* *raw_stock_data* *symbol* (*) to *dim_symbol* *Symbol* (1)
-* *stocks_prediction* *Symbol* (*) to *dim_symbol* *Symbol* (1)
-
-When drag/dropping and configuring the relationship properties, the UI should look similar to:
-
-![Create Relationship](../images/module07/semantic-model-lakehouse-1.png)
-
-Once complete, the model should look like the image below; verify the relationships are configured properly with the correct many to one cardinality, cross-filter direction set to both, and Assume referential integrity is set to *Yes*:
-
-![Verify Relationships](../images/module07/semantic-model-lakehouse-2.png)
-
-Next, we'll add a new measure to the *stocks_prediction* table. On the right *Data* panel, click the ellipsis to the right of the *stocks_prediction* table for *More options*, and select *New measure*. In the expression editor, enter the following expression:
-
-* currdate = NOW()
-
-See the image below for reference:
-
-![Add measure](../images/module07/semantic-model-lakehouse-3-currdate.png)
-
-The semantic model is complete -- leave the semantic model designer open for the next step.
-
-### 4-2. Build the report in the Power BI service
-
-On the top of the semantic model designer, click *New report*. This should open the semantic model (with all three tables) into a new Power BI report. Add 3 line charts to the report: 2 across the top row, and 1 across the bottom row. Configure them as follows:
-
-Top left chart (current stock prices):
-* X-axis: raw_stock_data - timestamp
-* Y-axis: raw_stock_data - price
-* Legend: raw_stock_data - symbol
-* Filter: timestamp to *Relative time is in the last 1 hour*.
-
-Top right chart (overall by market):
-* X-axis: raw_stock_data - timestamp
-* Y-axis: raw_stock_data - price
-* Legend: dim_symbol - market
-* Filter: timestamp to *Relative time is in the last 4 hours*.
-
-Bottom chart (predictions):
-* X-axis: stocks_prediction - Predict_time
-* Y-axis: stocks_prediction - yhat
-* Legend: stocks_prediction - Symbol
-* Filter: Predict_time to *Relative date is in the next 5 days*, with *include today* checked.
-
-The initial report should look similar to the image below -- the prediction chart settings are highlighted:
-
-![Initial report](../images/module07/pbis-initial-report.png)
-
-With the predictions chart selected, navigate to the additional visualization options (the magnifying glass/chart icon -- see image below) and add a new *X-Axis Constant Line*. Click *Add line*, and under the line settings, select the formula button (fx). On the *Value* window that opens, set the *Format style* to *Field value*, and select *currdate* as the field and click *OK*. Refer to this image as a reference:
-
-![X-axis line](../images/module07/pbis-report-with-xaxis.png)
-
-Adjust the colors and transparency to preference. The dotted line on the chart (the *currdate* measure) shows the current date/time. You can also adjust the *gridlines*, titles, and other visual options. Verify that cross-filtering works -- for example, selecting NASDAQ in the top right chart should filter all charts to show only the NASDAQ stocks:
-
-![X-axis line](../images/module07/pbis-report-filtering.png)
-
-As a final step, configure the report's *Page refresh* to automatically refresh every few minutes as desired.
-
 ## :thinking: Additional Learning
 
-* [Power BI Desktop](https://powerbi.microsoft.com/en-us/desktop/) 
-* [Semantic Models](https://learn.microsoft.com/en-us/power-bi/connect-data/service-datasets-understand)
-* [Power BI Desktop vs Power BI service](https://learn.microsoft.com/en-us/power-bi/fundamentals/service-service-vs-desktop)
-* [Power BI Composite Models](https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-composite-models)
+* [Machine Learning Experiments in Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/data-science/machine-learning-experiment)
 * [Data Wrangler](https://learn.microsoft.com/en-us/fabric/data-science/data-wrangler)
 * [Prophet](https://facebook.github.io/prophet/)
 
