@@ -164,10 +164,11 @@ For even more exploration, if you completed the lakehouse module, check out the 
 
 ## :tada: Summary
 
-In this module, we further refined the process to build a model and generate predictions in a single step.
+In this module, we further refined the process to build a model and generate predictions in a single step, streamlining the process of creating predictions and operationalizing the model generation. 
 
 ## :white_check_mark: Results
 
 - [x] Loaded a notebook into your Fabric environment that focuses on building an ML model and generating predictions.
+- [x] (optional) Configured the DS-4 notebook to use the aggregated data from the lakehouse.
 
 [Continue >](./module07d.md)

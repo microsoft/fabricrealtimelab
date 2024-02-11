@@ -96,6 +96,5 @@ In this module, you followed up on the creation of the ML model by consuming the
 
 - [x] Loaded and ran the DS 2 notebook, which loaded available ML models and generated predictions
 - [x] Stored the predictions in a new lakehouse table
-- [x] Build a Power BI report incorporating the prediction data
 
 [Continue >](./module07c.md)
