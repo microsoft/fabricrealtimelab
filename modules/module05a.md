@@ -73,7 +73,7 @@ In our ETL (extract, transform, and load) process, we'll extract all data that h
 2. [Copy or download the queries](#2-copy-or-download-the-queries)
 3. [Create the staging and ETL objects](#3-create-the-staging-and-etl-objects)
 4. [Build the data pipeline](#4-build-the-data-pipeline)
-5. [Add ForEach activity](#5-add-foreach-activity)
+5. [Build ForEach activity](#5-add-foreach-activity)
 6. [Test the Pipeline](#6-test-the-pipeline)
 
 ## 1. Create a Synapse Data Warehouse in the Fabric workspace
@@ -189,9 +189,13 @@ This should look similar to:
 
 ![Get Watermark](../images/module05/pipeline-getwatermark.png)
 
-## 5. Add ForEach activity
+## 5. Build ForEach activity
 
-Add a *ForEach* activity to the pipeline (click the *Activities* tab and select *ForEach*). Connect the *On Success* event on the *Lookup* activity to the *ForEach* by dragging from the *On Success* checkbox on the right side of the activity to the *ForEach* activity. On the settings tab of the *ForEach*, set the *Items* to:
+### 5-1. Add ForEach activity
+
+Add a *ForEach* activity to the pipeline (click the *Activities* tab and select *ForEach*). Use the default name or a name of your choice. A ForEach activity is a container that contains any number of child activities to be executed as a group. 
+
+Connect the *On Success* event on the *Lookup* activity to the *ForEach* by dragging from the *On Success* checkbox on the right side of the activity to the *ForEach* activity. On the settings tab of the *ForEach*, set the *Items* to:
 
 ```text
 @activity('Get WaterMark').output.value
@@ -202,6 +206,8 @@ This step gets the watermark for all tables we'd like to copy. While we are crea
 This should look similar to the image below:
 
 ![ForEach Added](../images/module05/pipeline-foreach.png)
+
+### 5-2. Add Copy Data activity: *Copy KQL*
 
 Add a *Copy Data* activity within the *ForEach* (click the plus (+) symbol within the ForEach to add a new activity within the ForEach). Configure this new Copy Data activity as follows:
 
@@ -236,11 +242,15 @@ This step first deletes old data from the staging table, and then copies the dat
 
 ![Copy KQL](../images/module05/pipeline-copykql.png)
 
-Next, add a *Lookup* activity to the ForEach activity named *Get New WaterMark*. On the *Settings* tab, select the data warehouse in the current Workspace, and select *Query* for the *Use Query* option. Enter the following query:
+### 5-3. Add Lookup activity: *Get New WaterMark*
+
+Next, add a *Lookup* activity to the ForEach activity named *Get New WaterMark*. On the *Settings* tab, select the data warehouse in the current workspace, and select *Query* for the *Use Query* option. Enter the following query:
 
 ```sql
 @concat('Select Max(timestamp) as WaterMark from stg.', item().ObjectName)
 ```
+
+### 5-4. Add Stored Procedure activity: *Update WaterMark*
 
 Add a new Stored Procedure activity after the *Get New Watermark* activity, with the name *Update WaterMark*. Configure the activity as follows:
 
@@ -248,8 +258,8 @@ Add a new Stored Procedure activity after the *Get New Watermark* activity, with
 * Warehouse: StocksDW
 * Stored Procedure: ETL.sp_IngestSourceInfo_Update
 * Parameters:
-    * ObjectName: @item().ObjectName
-    * WaterMark: @activity('Get New WaterMark').output.firstRow.WaterMark
+    * ObjectName (string): @item().ObjectName
+    * WaterMark (datetime): @activity('Get New WaterMark').output.firstRow.WaterMark
 
 The pipeline should now look similar to:
 
@@ -263,16 +273,16 @@ From the pipeline, we should see the following output:
 
 ![Run Pipeline](../images/module05/pipeline-run.png)
 
-In the data warehouse, we should also see data in the staging table, as shown below:
+In the data warehouse, data should be visible in the staging table, as shown below. Within the data warehouse, selecting a table will show a preview of the data in the table.
 
 ![Data in Data Warehouse Table](../images/module05/dataintable.png)
 
-Note: if we'd like 'reset' our ingestion pipeline, we can run a query like the one below. It's often handy in development to have a reset script to allow for incremental testing. This will reset the date and delete the data from the staging table.
+While we're in the data warehouse, run the script below to reset the ingestion process. It's often handy in development to have a reset script to allow for incremental testing. This will reset the date and delete the data from the staging table.
 
 ```sql
--- ONLY RUN THIS TO 'RESET' the ingestion tables
+-- Run this to 'RESET' the ingestion tables
 
-exec ETL.sp_IngestSourceInfo_Update 'StocksPrices', '2022-12-31 23:59:59.000000'
+exec ETL.sp_IngestSourceInfo_Update 'StocksPrices', '2022-01-01 23:59:59.000000'
 GO
 
 delete stg.StocksPrices
