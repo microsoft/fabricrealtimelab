@@ -81,7 +81,7 @@ In the *Manage fields* pane that opens, click *Add all fields* to add all column
 
 ![Remove Fields](../images/module06/addeventstream-managefields2.png)
 
-When the three fields are removed, click *Done* to close the event processor, and then click *Save* in the bottom right to add the destination to the Eventstream. Once complete, the lakehouse should now be receiving the symbol, price, and timestamp, and look similar to the image below:
+When the three fields are removed, click *Done* to close the event processor, and then click *Add* in the bottom right to add the destination to the Eventstream. Once complete, the lakehouse should now be receiving the symbol, price, and timestamp, and look similar to the image below:
 
 ![Completed Eventstream](../images/module06/addeventstream-complete.png)
 
