@@ -72,7 +72,7 @@ In our ETL (extract, transform, and load) process, we'll extract all data that h
 1. [Create the Synapse Data Warehouse](#1-create-a-synapse-data-warehouse-in-the-fabric-workspace)
 2. [Copy or download the queries](#2-copy-or-download-the-queries)
 3. [Create the staging and ETL objects](#3-create-the-staging-and-etl-objects)
-4. [Create the data pipeline ](#4-create-the-data-pipeline)
+4. [Build the data pipeline](#4-build-the-data-pipeline)
 5. [Add ForEach activity](#5-add-foreach-activity)
 6. [Test the Pipeline](#6-test-the-pipeline)
 
@@ -86,7 +86,7 @@ Or, from the workspace home page, click *New* to add a new item, and select *War
 
 ![Create Data Warehouse](../images/module05/createwarehouse.png)
 
-Name the warehouse *StocksDW* (or another name, if you prefer, but be sure to remember the names of your assets). Once created, you'll see the warehouse is largely empty. Click *New SQL query* at the top of the window. We'll start building our schema in the next step:
+Name the warehouse *StocksDW*; once created, you'll see the warehouse is largely empty. Click *New SQL query* at the top of the window. We'll start building our schema in the next step:
 
 ![Empty Warehouse](../images/module05/emptywarehouse.png)
 
@@ -108,9 +108,11 @@ Note: SQL statements executed in pipeline activities will need to be copied from
 
 ## 3. Create the staging and ETL objects
 
-Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- *stg* and *ETL*; schemas help group workloads by type or function. The *stg* schema is for staging, and contains intermediate tables for the ETL process. The *ETL* schema contains mostly queries used for data movement, as well as a single table for state.  
+In the queries below, the filename they are in will be listed on the first line, if applicable. 
 
-Note that the begin date for the watermark is arbitrarily chosen as some previous date (12/31/2022), ensuring all data is captured -- this date will be updated on each successful run. 
+Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- *stg* and *ETL*; schemas help group workloads by type or function. The *stg* schema is for staging, and contains intermediate tables for the ETL process. The *ETL* schema contains queries used for data movement, as well as a single table for tracking state.  
+
+Note that the begin date for the watermark is arbitrarily chosen as some previous date (1/1/2022), ensuring all data is captured -- this date will be updated on each successful run. 
 
 ```sql
 /* 1 - Create Staging and ETL.sql */
@@ -139,7 +141,7 @@ CREATE TABLE ETL.IngestSourceInfo
 )
 
 INSERT [ETL].[IngestSourceInfo]
-SELECT 'StocksPrices', '12/31/2022 23:59:59', 'Y'
+SELECT 'StocksPrices', '1/1/2022 23:59:59', 'Y'
 ```
 
 The *sp_IngestSourceInfo_Update* procedure updates the watermark; this ensures we are keeping track of which records have already been imported:
@@ -167,11 +169,15 @@ This should look similar to:
 
 ![DW First Queries](../images/module05/dwfirstqueries.png)
 
-## 4. Create the data pipeline 
+## 4. Build the data pipeline 
+
+### 4-1. Create the data pipeline
 
 From the workspace (or from within the Data Factory persona), create a new *Data pipeline* named *PL_Refresh_DWH*. 
 
 ![Create Pipeline](../images/module05/createpipeline.png)
+
+### 4-2. Create lookup activity: *Get WaterMark*
 
 Create a *Lookup* activity on the pipeline named *Get WaterMark*. On the settings tab, set the *Data store type* to *Workspace*, and set the *Workspace data store type* to *Data Warehouse*. For *Data Warehouse*, choose the *StocksDW* data warehouse. Specify a *Query* using the SQL statement below, and ensure *First row only* is *unchecked*.
 
@@ -242,8 +248,8 @@ Add a new Stored Procedure activity after the *Get New Watermark* activity, with
 * Warehouse: StocksDW
 * Stored Procedure: ETL.sp_IngestSourceInfo_Update
 * Parameters:
- * ObjectName: @item().ObjectName
- * WaterMark: @activity('Get New WaterMark').output.firstRow.WaterMark
+    * ObjectName: @item().ObjectName
+    * WaterMark: @activity('Get New WaterMark').output.firstRow.WaterMark
 
 The pipeline should now look similar to:
 

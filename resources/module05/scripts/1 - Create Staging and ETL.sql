@@ -26,7 +26,7 @@ CREATE TABLE ETL.IngestSourceInfo
 GO 
 /**************************************/
 INSERT [ETL].[IngestSourceInfo]
-SELECT 'StocksPrices', '12/31/2022 23:59:59', 'Y'
+SELECT 'StocksPrices', '1/1/2022 23:59:59', 'Y'
 GO
 /**************************************/
 CREATE PROC [ETL].[sp_IngestSourceInfo_Update]
