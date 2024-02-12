@@ -23,9 +23,9 @@ This module is broken down into 3 sections:
 
 With the completion of Module 05a, we have the plumbing in place to ingest data from the KQL database into our data warehouse. The next step is to prep the dimension tables. 
 
-For the date dimension, we'll load this during this module with values for the foreseeable future. 
+For the date dimension, we'll load enough values for the foreseeable future. Date dimensions are fairly similar across all implementations and typically hold specific date details: the day of week, month, quarter, etc. 
 
-For the symbol dimension, we'll incrementally load that during the pipeline -- this way, if new stocks are added at some point, they will get added to the Symbol dimension table during the execution of the pipeline.
+For the symbol dimension, we'll incrementally load that during the pipeline -- this way, if new stocks are added at some point, they will get added to the Symbol dimension table during the execution of the pipeline. The symbol dimension holds additional details about each symbol, such as company name, the stock market it trades on, etc.
 
 We'll also create views to support the pipeline by making it easier to load data from the staging table by aggregating the min, max, and closing price of the stock.
 
@@ -291,7 +291,7 @@ Add another *Stored Procedure* activity to the pipeline named *Populate Fact Sto
 
 * Name: Populate Fact Stocks Daily Prices
 * Settings: 
- * Stored procedure name: [ETL].[sp_Fact_Stocks_Daily_Prices_Load]
+    * Stored procedure name: [ETL].[sp_Fact_Stocks_Daily_Prices_Load]
 
 ![Load prices](../images/module05/pipeline-loadprices.png)
 
@@ -313,7 +313,7 @@ In this second part of module 05, we completed our pipeline by adding the fact a
 
 First, the framework is modular to support additional ingestion tasks as needed with minimal rework. This is done via the *Get Watermark* Lookup that uses a table to keep track of what tables to ingest, and the current watermark of each table.
 
-Second, the pipeline can be run throughout day and supports incremental loading, while keeping processing minimal. 
+Second, the pipeline can be run throughout day and supports incremental loading, so the processing demands are minimized. 
 
 ## :white_check_mark: Results
 

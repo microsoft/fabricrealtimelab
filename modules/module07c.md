@@ -14,11 +14,12 @@
 
 ## :book: Sections
 
-This module is broken down into 3 sections:
+This module is broken down into 4 sections:
 
 * [Module 07a - Building and storing an ML model](./module07a.md)
-* [Module 07b - Using models, saving to the lakehouse, building a report](./module07b.md)
+* [Module 07b - Using models, saving to the lakehouse](./module07b.md)
 * [Module 07c - Solution in practice](./module07c.md)
+* [Module 07d - Building a Prediction Report](./module07d.md)
 
 ## :loudspeaker: Introduction
 
@@ -156,12 +157,18 @@ flowchart LR
 
 For even more exploration, if you completed the lakehouse module, check out the [Prediction vs Actual Reporting](../modules/moduleex03.md) extra module. This module details how to create a report that mashes-up actual prices and predicted prices.
 
+## :thinking: Additional Learning
+
+* [Machine Learning Experiments in Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/data-science/machine-learning-experiment)
+* [Prophet](https://facebook.github.io/prophet/)
+
 ## :tada: Summary
 
-In this module, we further refined the process to build a model and generate predictions in a single step.
+In this module, we further refined the process to build a model and generate predictions in a single step, streamlining the process of creating predictions and operationalizing the model generation. 
 
 ## :white_check_mark: Results
 
 - [x] Loaded a notebook into your Fabric environment that focuses on building an ML model and generating predictions.
+- [x] (optional) Configured the DS-4 notebook to use the aggregated data from the lakehouse.
 
-[Continue >](./module00.md)
+[Continue >](./module07d.md)

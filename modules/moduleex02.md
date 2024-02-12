@@ -28,7 +28,7 @@ KQL is a powerful tool for data aggregation; using KQL, we can aggregate data to
 At the heart of many aggregation KQL queries is the [summarize operator](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/summarizeoperator) and the [arg_max aggregate function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/arg-max-aggfunction). For SQL gurus, this is similar to a *group-by*. Try a simple query:
 
 ```text
-StockHistory
+StockPrice
 | summarize arg_max(timestamp,*) by symbol
 | project symbol, timestamp, mostrecentprice=price;
 ```
@@ -54,11 +54,11 @@ In the query below, LatestPrices stores this table, which is then joined across 
 
 ```text
 let LatestPrices = 
-StockHistory
+StockPrice
 | summarize arg_max(timestamp,*) by symbol
 | project symbol, timestamp, mostrecentprice=price;
 
-StockHistory
+StockPrice
 | where timestamp >= ago(5m)
 | summarize avgprice = avg(price), 
     minprice = min(price), 
@@ -119,7 +119,7 @@ For example, our stock data has per-second precision -- useful for our real-time
 To get the closing price for each day, we can build off our previous query and add a bin, like this:
 
 ```text
-StockHistory
+StockPrice
 | summarize arg_max(timestamp,*) by bin(timestamp, 1d), symbol
 | project symbol, price, timestamp
 ,previousprice = 0.00

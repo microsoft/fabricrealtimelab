@@ -72,8 +72,8 @@ In our ETL (extract, transform, and load) process, we'll extract all data that h
 1. [Create the Synapse Data Warehouse](#1-create-a-synapse-data-warehouse-in-the-fabric-workspace)
 2. [Copy or download the queries](#2-copy-or-download-the-queries)
 3. [Create the staging and ETL objects](#3-create-the-staging-and-etl-objects)
-4. [Create the data pipeline ](#4-create-the-data-pipeline)
-5. [Add ForEach activity](#5-add-foreach-activity)
+4. [Build the data pipeline](#4-build-the-data-pipeline)
+5. [Build ForEach activity](#5-add-foreach-activity)
 6. [Test the Pipeline](#6-test-the-pipeline)
 
 ## 1. Create a Synapse Data Warehouse in the Fabric workspace
@@ -86,7 +86,7 @@ Or, from the workspace home page, click *New* to add a new item, and select *War
 
 ![Create Data Warehouse](../images/module05/createwarehouse.png)
 
-Name the warehouse *StocksDW* (or another name, if you prefer, but be sure to remember the names of your assets). Once created, you'll see the warehouse is largely empty. Click *New SQL query* at the top of the window. We'll start building our schema in the next step:
+Name the warehouse *StocksDW*; once created, you'll see the warehouse is largely empty. Click *New SQL query* at the top of the window. We'll start building our schema in the next step:
 
 ![Empty Warehouse](../images/module05/emptywarehouse.png)
 
@@ -108,9 +108,11 @@ Note: SQL statements executed in pipeline activities will need to be copied from
 
 ## 3. Create the staging and ETL objects
 
-Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- *stg* and *ETL*; schemas help group workloads by type or function. The *stg* schema is for staging, and contains intermediate tables for the ETL process. The *ETL* schema contains mostly queries used for data movement, as well as a single table for state.  
+In the queries below, the filename they are in will be listed on the first line, if applicable. 
 
-Note that the begin date for the watermark is arbitrarily chosen as some previous date (12/31/2022), ensuring all data is captured -- this date will be updated on each successful run. 
+Run the following query that creates the staging tables that will hold the data during the ETL (Extract, Transform, and Load) process. This will also create the two schemas used -- *stg* and *ETL*; schemas help group workloads by type or function. The *stg* schema is for staging, and contains intermediate tables for the ETL process. The *ETL* schema contains queries used for data movement, as well as a single table for tracking state.  
+
+Note that the begin date for the watermark is arbitrarily chosen as some previous date (1/1/2022), ensuring all data is captured -- this date will be updated on each successful run. 
 
 ```sql
 /* 1 - Create Staging and ETL.sql */
@@ -139,7 +141,7 @@ CREATE TABLE ETL.IngestSourceInfo
 )
 
 INSERT [ETL].[IngestSourceInfo]
-SELECT 'StocksPrices', '12/31/2022 23:59:59', 'Y'
+SELECT 'StocksPrices', '1/1/2022 23:59:59', 'Y'
 ```
 
 The *sp_IngestSourceInfo_Update* procedure updates the watermark; this ensures we are keeping track of which records have already been imported:
@@ -167,11 +169,15 @@ This should look similar to:
 
 ![DW First Queries](../images/module05/dwfirstqueries.png)
 
-## 4. Create the data pipeline 
+## 4. Build the data pipeline 
+
+### 4-1. Create the data pipeline
 
 From the workspace (or from within the Data Factory persona), create a new *Data pipeline* named *PL_Refresh_DWH*. 
 
 ![Create Pipeline](../images/module05/createpipeline.png)
+
+### 4-2. Create lookup activity: *Get WaterMark*
 
 Create a *Lookup* activity on the pipeline named *Get WaterMark*. On the settings tab, set the *Data store type* to *Workspace*, and set the *Workspace data store type* to *Data Warehouse*. For *Data Warehouse*, choose the *StocksDW* data warehouse. Specify a *Query* using the SQL statement below, and ensure *First row only* is *unchecked*.
 
@@ -183,9 +189,13 @@ This should look similar to:
 
 ![Get Watermark](../images/module05/pipeline-getwatermark.png)
 
-## 5. Add ForEach activity
+## 5. Build ForEach activity
 
-Add a *ForEach* activity to the pipeline (click the *Activities* tab and select *ForEach*). Connect the *On Success* event on the *Lookup* activity to the *ForEach* by dragging from the *On Success* checkbox on the right side of the activity to the *ForEach* activity. On the settings tab of the *ForEach*, set the *Items* to:
+### 5-1. Add ForEach activity
+
+Add a *ForEach* activity to the pipeline (click the *Activities* tab and select *ForEach*). Use the default name or a name of your choice. A ForEach activity is a container that contains any number of child activities to be executed as a group. 
+
+Connect the *On Success* event on the *Lookup* activity to the *ForEach* by dragging from the *On Success* checkbox on the right side of the activity to the *ForEach* activity. On the settings tab of the *ForEach*, set the *Items* to:
 
 ```text
 @activity('Get WaterMark').output.value
@@ -196,6 +206,8 @@ This step gets the watermark for all tables we'd like to copy. While we are crea
 This should look similar to the image below:
 
 ![ForEach Added](../images/module05/pipeline-foreach.png)
+
+### 5-2. Add Copy Data activity: *Copy KQL*
 
 Add a *Copy Data* activity within the *ForEach* (click the plus (+) symbol within the ForEach to add a new activity within the ForEach). Configure this new Copy Data activity as follows:
 
@@ -230,20 +242,24 @@ This step first deletes old data from the staging table, and then copies the dat
 
 ![Copy KQL](../images/module05/pipeline-copykql.png)
 
-Next, add a *Lookup* activity to the ForEach activity named *Get New WaterMark*. On the *Settings* tab, select the data warehouse in the current Workspace, and select *Query* for the *Use Query* option. Enter the following query:
+### 5-3. Add Lookup activity: *Get New WaterMark*
+
+Next, add a *Lookup* activity to the ForEach activity named *Get New WaterMark*. On the *Settings* tab, select the data warehouse in the current workspace, and select *Query* for the *Use Query* option. Enter the following query:
 
 ```sql
 @concat('Select Max(timestamp) as WaterMark from stg.', item().ObjectName)
 ```
 
+### 5-4. Add Stored Procedure activity: *Update WaterMark*
+
 Add a new Stored Procedure activity after the *Get New Watermark* activity, with the name *Update WaterMark*. Configure the activity as follows:
 
 * Name: Update WaterMark
-* Source: StocksDW
+* Warehouse: StocksDW
 * Stored Procedure: ETL.sp_IngestSourceInfo_Update
 * Parameters:
- * ObjectName: @item().ObjectName
- * WaterMark: @activity('Get New WaterMark').output.firstRow.WaterMark
+    * ObjectName (string): @item().ObjectName
+    * WaterMark (datetime): @activity('Get New WaterMark').output.firstRow.WaterMark
 
 The pipeline should now look similar to:
 
@@ -257,16 +273,16 @@ From the pipeline, we should see the following output:
 
 ![Run Pipeline](../images/module05/pipeline-run.png)
 
-In the data warehouse, we should also see data in the staging table, as shown below:
+In the data warehouse, data should be visible in the staging table, as shown below. Within the data warehouse, selecting a table will show a preview of the data in the table.
 
 ![Data in Data Warehouse Table](../images/module05/dataintable.png)
 
-Note: if we'd like 'reset' our ingestion pipeline, we can run a query like the one below. It's often handy in development to have a reset script to allow for incremental testing. This will reset the date and delete the data from the staging table.
+While we're in the data warehouse, run the script below to reset the ingestion process. It's often handy in development to have a reset script to allow for incremental testing. This will reset the date and delete the data from the staging table.
 
 ```sql
--- ONLY RUN THIS TO 'RESET' the ingestion tables
+-- Run this to 'RESET' the ingestion tables
 
-exec ETL.sp_IngestSourceInfo_Update 'StocksPrices', '2022-12-31 23:59:59.000000'
+exec ETL.sp_IngestSourceInfo_Update 'StocksPrices', '2022-01-01 23:59:59.000000'
 GO
 
 delete stg.StocksPrices

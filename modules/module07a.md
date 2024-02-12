@@ -17,11 +17,12 @@ If you have not created any Fabric resources and consuming this module as a stan
 
 ## :book: Sections
 
-This module is broken down into 3 sections:
+This module is broken down into 4 sections:
 
 * [Module 07a - Building and storing an ML model](./module07a.md)
-* [Module 07b - Using models, saving to the lakehouse, building a report](./module07b.md)
+* [Module 07b - Using models, saving to the lakehouse](./module07b.md)
 * [Module 07c - Solution in practice](./module07c.md)
+* [Module 07d - Building a Prediction Report](./module07d.md)
 
 ## :loudspeaker: Introduction
 
@@ -56,7 +57,7 @@ Finally, Prophet has built-in validation. In developing most models, we'd typica
 
 ## 1. Download the notebook
 
-Notebook files are JSON documents with a .ipynb extension (short for Interactive Python Notebook). To view the notebook, click on the notebook link below. The notebook is presented in a readable format in GitHub -- click the download button near the upper right to download the notebook, and save the ipynb notebook file to a convenient location. There are several notebooks referenced throughout this module. 
+Notebook files are JSON documents with an .ipynb extension (short for Interactive Python Notebook). To view each notebook, click on the notebook link below. The notebook is presented in a readable format in GitHub -- click the download button near the upper right to download the notebook, and save the .ipynb notebook file to a convenient location. There are several notebooks referenced throughout this module. 
 
 All resources (notebooks, scripts, etc.) for all modules can be downloaded in this zip file:
 
@@ -81,19 +82,19 @@ Within your Fabric workspace, select *New* > *Lakehouse*, and create a new lakeh
 
 ## 3. Import the notebook
 
-Switch to the Data Science persona using the persona switcher in the bottom left. On the Data Science homepage, click *Import notebook*, and import the three notebooks listed above. Once the file is imported successfully, a notification should appear allowing you to switch directly to the workspace listing all of the assets.
+Switch to the Data Science persona using the persona switcher in the bottom left. On the Data Science homepage, click *Import notebook*, and import the notebooks listed above. Once imported, a notification should appear allowing you to switch directly to the workspace listing all of the assets.
 
 ![New Lakehouse](../images/module07/importnotebook.png)
 
-Once imported, the notebook should be visible on the workspace:
+Once imported, the notebooks should be visible in the workspace -- as your workspace grows, use filtering to narrow the types of items visible:
 
 ![Workspace](../images/module07/workspacelist.png)
 
-Click the *DS 1 - Build Model* notebook to open. It should appear like the image below:
+Click the *DS 1 - Build Model* notebook to open. The notebook should appear like the image below:
 
 ![Notebook](../images/module07/defaultnotebook.png)
 
-Once loaded, click *Add Lakehouse* to the left of the notebook, select *Existing Lakehouse*, and select the *StocksLakehouse* you created earlier and click *Add*. This action adds the lakehouse to the context of the existing notebook and makes it the default lakehouse. This should look similar to the image below:
+Once loaded, click *Add Lakehouse* to the left of the notebook, select *Existing Lakehouse*, and select the *StocksLakehouse* you created earlier and click *Add*. This action adds the lakehouse to the context of the existing notebook and makes it the default lakehouse. (Note: you'll need to do this for every imported notebook.) This should look similar to the image below:
 
 ![Notebook with lakehouse](../images/module07/notebookwithlakehouse.png)
 
@@ -103,8 +104,8 @@ If this is a new lakehouse, there should be no tables or files, but if you're co
 
 The *DS 1* notebook is documented throughout the notebook, but in short, the notebook carries out the following tasks:
 
-* Downloads historical data to analyze in CSV format
 * Allows us to configure a stock to analyze (such as WHO or IDGD)
+* Downloads historical data to analyze in CSV format
 * Reads the data into a dataframe
 * Completes some basic data cleansing
 * Loads [Prophet](https://facebook.github.io/prophet/), a module for conducting time series analysis and prediction
@@ -115,12 +116,12 @@ The *DS 1* notebook is documented throughout the notebook, but in short, the not
 
 The routine that generates the stock data is largely random, but there are some trends that should emerge. Because we don't know when you might be doing this lab, we've generated several years worth of data. The notebook will load the data and will truncate future data when building the model. As part of an overall solution, we'd then supplement the historical data with new real-time data in our lakehouse, re-training the model as necessary (daily/weekly/monthly).
 
-> :bulb: **Notes about data prediction**
-> The purpose of this module is to demonstrate one way to approach a data science solution in Fabric. Predicting stock prices (fictitious or otherwise) is challenging, particularly with univariate time-series data. Improving the accuracy (as measured by root mean squared error, r2, and other metrics) is not the focus of the challenge.
+> :bulb: **Notes about data prediction:**
+> The purpose of this module is to demonstrate how to approach a data science solution in Fabric. Predicting stock prices (fictitious or otherwise) is challenging, and potentially impossible. The focus is on the method and concepts, not improving the accuracy of the model (as measured by root mean squared error, r2, and other metrics). Still, we'll look at various metrics but don't be discouraged if our predictions turn out to be somewhat inaccurate. 
 
 ## 5. Run the notebook
 
-You can either run each cell manually as you follow along with the notebook, or click *Run all* in the top toolbar and follow along as the work progresses. The notebook will take roughly 15-20 minutes to execute -- some steps, like training the model and cross validation, will take the longest.
+You can either run each cell manually as you follow along with the notebook, or click *Run all* in the top toolbar and follow along as the work progresses. The notebook will take roughly 15-20 minutes to execute -- some steps, like training the model and cross validation, will take the longest. If you're waiting for the results, feel free to read ahead or take a quick break!
 
 ![Run cells](../images/module07/runcell.png)
 
@@ -138,6 +139,7 @@ Metadata, in our case, includes input parameters we may tune for our model, as w
 
 ## :thinking: Additional Learning
 
+* [Machine Learning Experiments in Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/data-science/machine-learning-experiment)
 * [Data Wrangler](https://learn.microsoft.com/en-us/fabric/data-science/data-wrangler)
 * [Prophet](https://facebook.github.io/prophet/)
 
