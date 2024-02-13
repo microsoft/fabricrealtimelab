@@ -245,7 +245,7 @@ delete stg.StocksPrices
 
 This step first deletes old data from the staging table, and then copies the data from the KQL table, selecting data from the last watermark and inserting it into the staging table. Using a watermark is important to avoid processing the entire table; additionally, KQL queries have a maximum rowcount of 500,000 rows. Given the current rate of data ingested, this equates to about 3/4 of one day. 
 
-The *Destination* tab in the activity should look like:
+The *Destination* tab of the activity should look like:
 
 ![Copy KQL](../images/module05/pipeline-copykql.png)
 
@@ -257,7 +257,7 @@ Next, add a *Lookup* activity to the ForEach activity named *Get New WaterMark*.
 @concat('Select Max(timestamp) as WaterMark from stg.', item().ObjectName)
 ```
 
-This should now look like:
+This activity should look similar to:
 
 ![Copy KQL](../images/module05/pipeline-getnewwatermark.png)
 
@@ -271,6 +271,11 @@ Add a new *Stored Procedure* activity after the *Get New WaterMark* activity, wi
 * Parameters (click *Import* to automatically add the parameter names):
     * Name: ObjectName, Type: String, Value: @item().ObjectName
     * Name: WaterMark, Type: DateTime, Value: @activity('Get New WaterMark').output.firstRow.WaterMark
+
+| Name | Type | Value |
+| --- | --- | --- |
+| ObjectName | String | @item().ObjectName |
+| WaterMark | DateTime | @activity('Get New WaterMark').output.firstRow.WaterMark |
 
 The pipeline should now look similar to:
 
