@@ -269,15 +269,13 @@ Add a new *Stored Procedure* activity after the *Get New WaterMark* activity, wi
 * Warehouse: StocksDW
 * Stored Procedure: ETL.sp_IngestSourceInfo_Update
 * Parameters (click *Import* to automatically add the parameter names):
-    * Name: ObjectName, Type: String, Value: @item().ObjectName
-    * Name: WaterMark, Type: DateTime, Value: @activity('Get New WaterMark').output.firstRow.WaterMark
 
 | Name | Type | Value |
 | --- | --- | --- |
 | ObjectName | String | @item().ObjectName |
 | WaterMark | DateTime | @activity('Get New WaterMark').output.firstRow.WaterMark |
 
-The pipeline should now look similar to:
+This activity should look similar to:
 
 ![Update Watermark](../images/module05/pipeline-updatewatermark.png)
 
