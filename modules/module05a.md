@@ -171,7 +171,7 @@ This should look similar to:
 
 ## 4. Build the data pipeline 
 
-These steps will focus on creating and setting up a new data pipeline. 
+Step 4 focuses on creating and setting up a new data pipeline. 
 
 > :bulb: **Tip:**
 > When entering activity names, pay attention to capitalization. You can modify names to suit your preference, but if following along with the names below, using the correct capitalization is important. If you run into errors while running the pipeline, the first thing to check will be the activity names and capitalization.
@@ -196,7 +196,7 @@ This should look similar to:
 
 ## 5. Build ForEach activity
 
-The steps below will focus on building multiple activities within a single ForEach activity. The ForEach activity is a container that executes child activities as a group: in this case, if we had multiple sources to pull data from, we'd repeat these steps for each data source.
+Step 5 focuses on building multiple activities within a single ForEach activity. The ForEach activity is a container that executes child activities as a group: in this case, if we had multiple sources to pull data from, we'd repeat these steps for each data source.
 
 ### 5-1. Add ForEach activity
 
@@ -231,19 +231,21 @@ Add a *Copy Data* activity within the *ForEach* (click the plus (+) symbol withi
     ' )
 ```
 
-This should look similar to:
+The *Source* tab of the activity should look similar to:
 
 ![Copy KQL Query](../images/module05/pipeline-copykql-stockprices.png)
 
 You can click the *Preview data* button next to the query to verify data is returned. A window will open where you can specify a watermark -- enter a recent date such as *2024-01-01*.
 
-Switch to the *Destination* tab on the copy activity. On the destination tab, set the destination to the *StocksDW* warehouse, and select the *stg.StocksPrices* table. Under the *Advanced* section, enter the following SQL script to truncate the table before loading the staging table:
+Switch to the *Destination* tab on the copy activity. On the destination tab, set the destination to the *StocksDW* warehouse, and select the *stg.StocksPrices* table. Under the *Advanced* section, enter the following *Pre-copy script* to truncate the table before loading the staging table:
 
 ```sql
 delete stg.StocksPrices
 ```
 
 This step first deletes old data from the staging table, and then copies the data from the KQL table, selecting data from the last watermark and inserting it into the staging table. Using a watermark is important to avoid processing the entire table; additionally, KQL queries have a maximum rowcount of 500,000 rows. Given the current rate of data ingested, this equates to about 3/4 of one day. 
+
+The *Destination* tab in the activity should look like:
 
 ![Copy KQL](../images/module05/pipeline-copykql.png)
 
