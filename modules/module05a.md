@@ -171,6 +171,11 @@ This should look similar to:
 
 ## 4. Build the data pipeline 
 
+Step 4 focuses on creating and setting up a new data pipeline. 
+
+> :bulb: **Tip:**
+> When entering activity names, pay attention to capitalization. You can modify names to suit your preference, but if following along with the names below, using the correct capitalization is important. If you run into errors while running the pipeline, the first thing to check will be the activity names and capitalization.
+
 ### 4-1. Create the data pipeline
 
 From the workspace (or from within the Data Factory persona), create a new *Data pipeline* named *PL_Refresh_DWH*. 
@@ -179,7 +184,7 @@ From the workspace (or from within the Data Factory persona), create a new *Data
 
 ### 4-2. Create lookup activity: *Get WaterMark*
 
-Create a *Lookup* activity on the pipeline named *Get WaterMark*. On the settings tab, set the *Data store type* to *Workspace*, and set the *Workspace data store type* to *Data Warehouse*. For *Data Warehouse*, choose the *StocksDW* data warehouse. Specify a *Query* using the SQL statement below, and ensure *First row only* is *unchecked*.
+Create a *Lookup* activity on the pipeline named *Get WaterMark*. On the settings tab, set the *Data store type* to *Workspace*, and set the *Workspace data store type* to *Warehouse*. For *Warehouse*, choose the *StocksDW* data warehouse. Specify a *Query* using the SQL statement below, and ensure *First row only* is *unchecked*.
 
 ```sql
 SELECT * FROM [ETL].[IngestSourceInfo] WHERE IsActiveFlag = 'Y'
@@ -191,11 +196,11 @@ This should look similar to:
 
 ## 5. Build ForEach activity
 
+Step 5 focuses on building multiple activities within a single ForEach activity. The ForEach activity is a container that executes child activities as a group: in this case, if we had multiple sources to pull data from, we'd repeat these steps for each data source.
+
 ### 5-1. Add ForEach activity
 
-Add a *ForEach* activity to the pipeline (click the *Activities* tab and select *ForEach*). Use the default name or a name of your choice. A ForEach activity is a container that contains any number of child activities to be executed as a group. 
-
-Connect the *On Success* event on the *Lookup* activity to the *ForEach* by dragging from the *On Success* checkbox on the right side of the activity to the *ForEach* activity. On the settings tab of the *ForEach*, set the *Items* to:
+Add a *ForEach* activity to the pipeline (click the *Activities* tab and select *ForEach*). Use the default name or a name of your choice. Connect the *On Success* event on the *Lookup* activity to the *ForEach* by dragging from the *On Success* checkbox on the right side of the activity to the *ForEach* activity. On the settings tab of the *ForEach*, set the *Items* to:
 
 ```text
 @activity('Get WaterMark').output.value
@@ -226,13 +231,13 @@ Add a *Copy Data* activity within the *ForEach* (click the plus (+) symbol withi
     ' )
 ```
 
-This should look similar to:
+The *Source* tab of the activity should look similar to:
 
 ![Copy KQL Query](../images/module05/pipeline-copykql-stockprices.png)
 
-You can click the *Preview data* button next to the query to verify data is returned. A window will open where you can specify a watermark -- enter a recent date such as *2023-12-01*.
+You can click the *Preview data* button next to the query to verify data is returned. A window will open where you can specify a watermark -- enter a recent date such as *2024-01-01*.
 
-Switch to the *Destination* tab on the copy activity. On the destination tab, set the destination to the *StocksDW* warehouse, and select the *stg.StocksPrices* table. Under the *Advanced* section, enter the following SQL script to truncate the table before loading the staging table:
+Switch to the *Destination* tab on the copy activity. On the destination tab, set the destination to the *StocksDW* warehouse, and select the *stg.StocksPrices* table. Under the *Advanced* section, enter the following *Pre-copy script* to truncate the table before loading the staging table:
 
 ```sql
 delete stg.StocksPrices
@@ -240,34 +245,43 @@ delete stg.StocksPrices
 
 This step first deletes old data from the staging table, and then copies the data from the KQL table, selecting data from the last watermark and inserting it into the staging table. Using a watermark is important to avoid processing the entire table; additionally, KQL queries have a maximum rowcount of 500,000 rows. Given the current rate of data ingested, this equates to about 3/4 of one day. 
 
+The *Destination* tab of the activity should look like:
+
 ![Copy KQL](../images/module05/pipeline-copykql.png)
 
 ### 5-3. Add Lookup activity: *Get New WaterMark*
 
-Next, add a *Lookup* activity to the ForEach activity named *Get New WaterMark*. On the *Settings* tab, select the data warehouse in the current workspace, and select *Query* for the *Use Query* option. Enter the following query:
+Next, add a *Lookup* activity to the ForEach activity named *Get New WaterMark*. Select this new activity within the ForEach to make it active, if it is not already active. On the *Settings* tab, select the data warehouse in the current workspace, and select *Query* for the *Use Query* option. Enter the following query:
 
 ```sql
 @concat('Select Max(timestamp) as WaterMark from stg.', item().ObjectName)
 ```
 
+This activity should look similar to:
+
+![Copy KQL](../images/module05/pipeline-getnewwatermark.png)
+
 ### 5-4. Add Stored Procedure activity: *Update WaterMark*
 
-Add a new Stored Procedure activity after the *Get New Watermark* activity, with the name *Update WaterMark*. Configure the activity as follows:
+Add a new *Stored Procedure* activity after the *Get New WaterMark* activity, with the name *Update WaterMark*. Configure the activity as follows:
 
 * Name: Update WaterMark
 * Warehouse: StocksDW
 * Stored Procedure: ETL.sp_IngestSourceInfo_Update
-* Parameters:
-    * ObjectName (string): @item().ObjectName
-    * WaterMark (datetime): @activity('Get New WaterMark').output.firstRow.WaterMark
+* Parameters (click *Import* to automatically add the parameter names):
 
-The pipeline should now look similar to:
+| Name | Type | Value |
+| --- | --- | --- |
+| ObjectName | String | @item().ObjectName |
+| WaterMark | DateTime | @activity('Get New WaterMark').output.firstRow.WaterMark |
+
+This activity should look similar to:
 
 ![Update Watermark](../images/module05/pipeline-updatewatermark.png)
 
 ## 6. Test the Pipeline
 
-While we aren't quite done, we have enough to test to make sure things are working as expected. From the *Home* tab in the pipeline, select *Run*. The pipeline will first validate to find any configuration errors. This initial run will take a few moments, and will copy the data into the staging table. 
+While we aren't quite done, we have enough to test to make sure things are working as expected. From the *Home* tab in the pipeline, select *Run*. This will prompt to first save the pipeline, and then validate to find any configuration errors. This initial run will take a few moments, and will copy the data into the staging table. 
 
 From the pipeline, we should see the following output:
 
@@ -277,7 +291,7 @@ In the data warehouse, data should be visible in the staging table, as shown bel
 
 ![Data in Data Warehouse Table](../images/module05/dataintable.png)
 
-While we're in the data warehouse, run the script below to reset the ingestion process. It's often handy in development to have a reset script to allow for incremental testing. This will reset the date and delete the data from the staging table.
+While we're in the data warehouse, run the script below in new SQL query window to reset the ingestion process. It's often handy in development to have a reset script to allow for incremental testing. This will reset the date and delete the data from the staging table. (Note: we haven't created the fact or dimensions table yet, but the script should still work.)
 
 ```sql
 -- Run this to 'RESET' the ingestion tables
@@ -285,13 +299,25 @@ While we're in the data warehouse, run the script below to reset the ingestion p
 exec ETL.sp_IngestSourceInfo_Update 'StocksPrices', '2022-01-01 23:59:59.000000'
 GO
 
-delete stg.StocksPrices
+IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES 
+    WHERE TABLE_SCHEMA = 'stg' AND TABLE_NAME = 'StocksPrices'))
+BEGIN
+    delete stg.StocksPrices
+END
 GO
 
-delete dim_Symbol
+IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES 
+    WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'fact_Stocks_Daily_Prices'))
+BEGIN
+    delete dbo.fact_Stocks_Daily_Prices
+END
 GO
 
-delete fact_Stocks_Daily_Prices
+IF (EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES 
+    WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'dim_Symbol'))
+BEGIN
+    delete dbo.dim_Symbol
+END
 GO
 ```
 
