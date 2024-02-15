@@ -48,9 +48,9 @@ From the *StockQueryset* Queryset used in the previous module, select the *Stock
 
 On the report page that opens, we can configure our initial chart. Add a line chart to the design surface, and configure the report as follows:
 
-* Legend: Symbol
-* X-axis: Timestamp
-* Y-axis: Price
+* Legend: symbol
+* X-axis: timestamp
+* Y-axis: price
 
 > :bulb: **Sum, or average?**
 > You may notice the default aggregation is *sum*, such as *Sum of price*. In the event there are multiple prices for a given symbol at the same point in time, this aggregation sets the behavior. *Sum* would, of course, add all prices, whereas *avg* would take the mean for all prices for that symbol at that point in time. However, in theory, we should only have a single price for a symbol at a given point in time, so there should be no visible difference. Average would be more visually correct for our purposes. 
@@ -74,7 +74,7 @@ Repeating the steps above, create a second line chart either beside or below the
 
 * Legend: symbol
 * X-axis: timestamp
-* Y-axis: avgperiodpercentdifference
+* Y-axis: average of avgperiodpercentdifference
 
 Similarly, configure the visual filter to show data only for the last 5 minutes. Next, under the *Visualizations* section, add an additional visualization by selecting the icon with the magnifying glass. Under *Y-Axis Constant Line*, add a constant line with a default value of 0. This adds a dashed line to report, as shown below. This allows us to see if we're above or below the period average. If you'd like to, you can further customize the look of the chart and layout.
 
@@ -90,7 +90,7 @@ Deselect the chart. On the *Visualizations* settings, enable *Page refresh* to a
 
 ## :tada: Summary
 
-In this module, you modified the Power BI admin settings to allow for frequent page refreshes. Next, you created a Power BI report that leveraged the KQL Queryset created in the previous module. The line charts were configured to filtered the data for the last minute, and the page was configured to update every 1 second.
+In this module, you modified the Power BI admin settings to allow for frequent page refreshes. Next, you created a Power BI report that leveraged the KQL Queryset created in the previous module. The line charts were configured to filtered the data for the last minute, and the page was configured to automatically refresh.
 
 ## :white_check_mark: Results
 
