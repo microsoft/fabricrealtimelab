@@ -72,6 +72,10 @@ flowchart LR
     end
 ```
 
+Prefer video content? These videos illustrate the content in this module:
+* [Getting Started with Lakehouses in Microsoft Fabric](https://youtu.be/H2fFDaxUkfY)
+* [Getting Started with Data Wrangler in Microsoft Fabric](https://youtu.be/iMoUXkH6u6c)
+
 ## Table of Contents
 
 1. [Import notebooks](#1-import-notebooks)

@@ -42,48 +42,55 @@ On the following screen, scroll down to the *Power BI workloads* section, and un
 
 ## 2. Create a basic Power BI report
 
-From the *StockByTime* Queryset in the Fabric portal, click the *Build Power BI report* button above the query window.
+From the *StockQueryset* Queryset used in the previous module, select the *StockWithAverages* query tab. Select the entire query and run to view the results. Click *Build Power BI report* button above the query window to bring this query into Power BI.
 
 ![Create Power BI Report](../images/module03/buildpbireport.png)
 
 On the report page that opens, we can configure our initial chart. Add a line chart to the design surface, and configure the report as follows:
 
-* Legend: Symbol
-* X-axis: Timestamp
-* Y-axis: Price
+* Legend: symbol
+* X-axis: timestamp
+* Y-axis: price
 
 > :bulb: **Sum, or average?**
 > You may notice the default aggregation is *sum*, such as *Sum of price*. In the event there are multiple prices for a given symbol at the same point in time, this aggregation sets the behavior. *Sum* would, of course, add all prices, whereas *avg* would take the mean for all prices for that symbol at that point in time. However, in theory, we should only have a single price for a symbol at a given point in time, so there should be no visible difference. Average would be more visually correct for our purposes. 
 
 ![Configure Initial Report](../images/module03/pbiinitialreport.png)
 
-Click File > Save, and name the report RealTimeStocks, and be sure to add it to the RealTimeWorkspace. It may take a few moments for the report to save and appear in the workspace.
+Click File > Save, and name the report RealTimeStocks, and be sure to save it to the RealTimeWorkspace. 
 
-Open the report from the RealTimeStocks workspace. While this is a promising start, let's make sure the chart only shows data for the last minute. Click the edit button to open the report editor, and select the line chart on the report. Configure the Timestamp filter to display data for the last 1 minute.
+Open the report from either the save dialog or from the RealTimeStocks workspace. While this is a promising start, let's make sure the chart only shows data for the last 5 minutes. Click the edit button along the top navigation bar to open the report editor, and select the line chart on the report. Configure a filter for *timestamp* to display data for the last 5 minutes using these settings:
+
+* Filter type: Relative time
+* Show items when the value: is in the last 5 minutes
+
+Click *Apply filter* to enable the filter. This should look similar to:
 
 ![Configure Timestamp Filter](../images/module03/pbitimestampfilter.png)
 
 ## 3. Create a second visual for percent change
 
-Repeating the steps above, create a second line chart either beside or below the existing line chart. Instead of plotting the current stock price, select the percent changed value, which is a positive or negative value based on the previous price. Use these values for the chart:
+Repeating the steps above, create a second line chart either beside or below the existing line chart. Instead of plotting the current stock price, select the *avgperiodpercentdifference* value, which is a positive or negative value based off the difference between the current price, and average over the period defined the KQL period. Use these values for the chart:
 
-* Legend: Stock Symbol
-* X-axis: Timestamp
-* Y-axis: Percent Changed
+* Legend: symbol
+* X-axis: timestamp
+* Y-axis: average of avgperiodpercentdifference
 
-Similarly, configure the visual filter to show data only for the last minute. When complete, your visuals should look similar to the image below:
+Similarly, configure the visual filter to show data only for the last 5 minutes. Next, under the *Visualizations* section, add an additional visualization by selecting the icon with the magnifying glass. Under *Y-Axis Constant Line*, add a constant line with a default value of 0. This adds a dashed line to report, as shown below. This allows us to see if we're above or below the period average. If you'd like to, you can further customize the look of the chart and layout.
+
+When complete, your visuals should look similar to the image below:
 
 ![Both Visuals on Report](../images/module03/bothreports.png)
 
 ## 4. Configure the report to auto-refresh
 
-Deselect the chart. On the *Visualizations* settings, enable *Page refresh* to automatically refresh every second.
+Deselect the chart. On the *Visualizations* settings, enable *Page refresh* to automatically refresh every second or two, based on your preference. Of course, realistically we need to balance the performance implications of refresh frequency, user demand, and system resources.
 
 ![Configure Report Refresh](../images/module03/pbipagerefresh.png)
 
 ## :tada: Summary
 
-In this module, you modified the Power BI admin settings to allow for frequent page refreshes. Next, you created a Power BI report that leveraged the KQL Queryset created in the previous module. The line charts were configured to filtered the data for the last minute, and the page was configured to update every 1 second.
+In this module, you modified the Power BI admin settings to allow for frequent page refreshes. Next, you created a Power BI report that leveraged the KQL Queryset created in the previous module. The line charts were configured to filtered the data for the last minute, and the page was configured to automatically refresh.
 
 ## :white_check_mark: Results
 

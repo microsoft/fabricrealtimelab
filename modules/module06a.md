@@ -27,6 +27,10 @@ This module is broken down into the following sections:
 
 Throughout the lakehouse modules, we'll build a lakehouse architecture to ingest and store our stock data. In this first part, we'll begin by adding the lakehouse to the Eventstream, importing the notebooks, and loading some historical data.
 
+Prefer video content? These videos illustrate the content in this module:
+* [Getting Started with Lakehouses in Microsoft Fabric](https://youtu.be/H2fFDaxUkfY)
+* [Getting Started with Data Wrangler in Microsoft Fabric](https://youtu.be/iMoUXkH6u6c)
+
 ## :bulb: About Notebooks
 
 Most of this lab will be done within Jupyter notebooks, an industry standard way of doing exploratory data analysis, building models, visualizing datasets, and processing data. A notebook itself is separated into individual sections called cells which contain code or documentation. Cells, and even sections within cells, can adapt to different languages as needed (though Python is the most used language). The purpose of the cells are to break tasks down into manageable chunks and make collaboration easier; cells may be run individually or as a whole depending on the purpose of the notebook. 
