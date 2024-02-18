@@ -22,9 +22,10 @@ Prefer video content? These videos illustrate the content in this module:
 
 ## Table of Contents
 
-1. [Create KQL Queryset: StockQueryset](#1-create-kql-queryset-stockbytime)
-2. [Query recent prices](#2-query-recent-prices)
-3. [Calculate biggest price changes and time change occurred](#3-calculate-biggest-price-changes-and-time-change-occurred)
+1. [Create KQL Queryset: StockQueryset](#1-create-kql-queryset-stockqueryset)
+2. [New Query: StockByTime](#2-new-query-stockbytime)
+3. [New Query: StockAggregate](#3-new-query-stockaggregate)
+4. [New Query: StockBinned](#4-new-query-stockbinned)
 
 ## 1. Create KQL Queryset: StockQueryset
 
@@ -87,7 +88,7 @@ In this KQL query, the results are first limited to the most recent 75 minutes. 
 
 Create another new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *StockAggregate*.
 
-This query will find the biggest price difference over a 10 minute period for each stock, and the time it occurred. This query uses the [summarize](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/summarizeoperator) operator, which produces a table that aggregates the input table into groups based on the specified parameters (in this case, *symbol*), while [arg_max](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/arg-max-aggregation-function) returns the greatest value.
+This query will find the biggest price gains over a 10 minute period for each stock, and the time it occurred. This query uses the [summarize](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/summarizeoperator) operator, which produces a table that aggregates the input table into groups based on the specified parameters (in this case, *symbol*), while [arg_max](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/arg-max-aggregation-function) returns the greatest value.
 
 If you just started the lab, consider rerunning this query later to observe the changes. 
 
@@ -107,7 +108,7 @@ StockPrice
 | summarize arg_max(pricedifference_10min, *) by symbol
 ```
 
-## 3. New Query: StockBinned
+## 4. New Query: StockBinned
 
 Create another new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *StockBinned*.
 
@@ -120,41 +121,6 @@ StockPrice
 ```
 
 This is particularly useful when creating reports that aggregate real-time data over a longer time period.
-
-## 3. New Query: StockWithAverages
-
-Create another new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *StockWithAverages*.
-
-In KQL, the *let* statement is used to assign a expression or value to a variable. This is useful for breaking up a complex expression, for readability, or for supporting subqueries. Copy the example below into the editor. To run, be sure to highlight all of the text (both queries), otherwise only one query will run. 
-
-The first query calculates the average of the stocks over the last 1 hour, and assigns it to a variable called *AvgPrices*. Note that this time window -- 1 hour -- is arbitrary and can be set to whatever value makes sense for the data. 
-
-The second query is intended for our real-time dashboard. Here, we grab the latest data (we use 1 hour to constrain the results), and join this to the *AvgPrices*. We can then calculate whether our stock is moving up or down from its low, high, or average price. As you might imagine, we could expand this further to get views over multiple periods, such as 1 minute, 1 hour, and 1 day.
-
-Power BI is capable of filtering the data to a recent time horizon (and, indeed, we'll look at this capability) but it's still a good idea to have some constraints by time or by rowcount. If a query attempts to return more than 500,000 rows, KQL will raise an exception. 
-
-```text
-let AvgPrices = 
-StockPrice
-| where timestamp > ago(1h)
-| summarize 
-    minperiodprice=arg_min(price,*), 
-    maxperiodprice=arg_max(price,*),
-    avgperiodprice=round(avg(price),2) by symbol
-| project symbol, timestamp, avgperiodprice, minperiodprice, maxperiodprice;
-
-StockPrice
-| where timestamp > ago(1h)
-| order by timestamp asc, symbol asc
-| join kind=inner AvgPrices on symbol
-| extend minperiodpercentdifference = round((price - minperiodprice) / minperiodprice, 4)
-| extend maxperiodpercentdifference = round((price - maxperiodprice) / maxperiodprice, 4)
-| extend avgperiodpercentdifference = round((price - avgperiodprice) / avgperiodprice, 4)
-| project timestamp, symbol, price,
-    minperiodprice, minperiodpercentdifference,
-    maxperiodprice, maxperiodpercentdifference, 
-    avgperiodprice, avgperiodpercentdifference
-```
 
 ## :thinking: Tips
 
