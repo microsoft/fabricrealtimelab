@@ -52,9 +52,9 @@ Indeed, we can see this kind of behavior if we rapidly query and catch the resul
 
 ![Query Error](../images/moduleex/moduleex01/orderissue.png)
 
-As you can see in the results, we've ingested a row (symbol WHO), but missing some other symbols. This has caused our use of the *prev()* function to give us the wrong results temporarily (matching the symbol BCUZ). Alarmingly, this erroneously sees this as a massive price drop, but if we were to query this a moment later, you'd likely see the rows complete.
+As you can see in the results, we've ingested a row (symbol WHO), but missing some other symbols. This has caused our use of the *prev()* function to give us the wrong results temporarily (matching the symbol BCUZ). Alarmingly, this erroneously calculates this as a massive price drop, but if we were to query this a moment later, you'd likely see the value is corrected.
 
-While our query should be resilient to these situations, the issue is caused because the code writing the events to the event hub are not (nor should they be) in alphabetical order. While we can review the code that generates the data in another module, the python datatable looks like so:
+While our query should be resilient to these situations, the issue is due to the events being published to the event hub in a different order than specified in the order by. While we can review the code that generates the data in another module, the python datatable that generates the prices looks like so:
 
 ```python
 dataTable = [
@@ -71,10 +71,7 @@ dataTable = [
 
 Because the code iterates through the datatable, we can see the *WHO* symbol is generated first, then *WHAT*, and so on. 
 
-> :bulb: **Did you know?**
-> There is a deliberate order to the stock symbols in the datatable. Do you see it?
-
-Using your own environment, execute the KQL query and/or monitor the Percent Changed chart to see if you notice these anomalies.
+Using your own environment, execute the KQL query and/or monitor the *Percent Changed* chart to see if you notice these anomalies.
 
 ## 2. Consider a mitigation strategy
 
@@ -86,7 +83,7 @@ There are many ways we can mitigate this situation. Let's consider several appro
 
 While #1 might work (or might work nearly all of the time), we don't want to tightly couple the input and output mechanisms. The order can change arbitrarily for different use cases, and even if this did work, the code is fragile to missing data or other similar situations.
 
-Next, #2 will work as a quick band-aid, because it ensures we are trimming any data that is coming in at the moment the data is requested. This keeps the systems loosely coupled, but this solution is equally fragile.
+Next, #2 will work as a quick band-aid, because it ensures we are trimming any data that is coming in at the moment the data is requested. This keeps the systems loosely coupled, but this solution is equally fragile and doesn't handle missing data.
 
 The last solution, #3, is the best approach. Are there any other considerations or approaches?
 

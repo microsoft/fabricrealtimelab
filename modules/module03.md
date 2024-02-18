@@ -46,14 +46,14 @@ From the *StockQueryset* Queryset used in the previous module, select the *Stock
 
 ![Create Power BI Report](../images/module03/buildpbireport.png)
 
-On the report page that opens, we can configure our initial chart. Add a line chart to the design surface, and configure the report as follows:
+On the report preview page that opens, we can configure our initial chart. Don't worry about spacing and any fine details -- we'll open the report in the full editor in just a moment. Initially, add a line chart to the design surface, and configure the report as follows. See the image below as a reference.
 
 * Legend: symbol
 * X-axis: timestamp
 * Y-axis: price
 
 > :bulb: **Sum, or average?**
-> You may notice the default aggregation is *sum*, such as *Sum of price*. In the event there are multiple prices for a given symbol at the same point in time, this aggregation sets the behavior. *Sum* would, of course, add all prices, whereas *avg* would take the mean for all prices for that symbol at that point in time. However, in theory, we should only have a single price for a symbol at a given point in time, so there should be no visible difference. Average would be more visually correct for our purposes. 
+> You may notice the default aggregation for data is *sum*, such as *sum of price*. In the event there are multiple prices for a given symbol at the same point in time, this aggregation sets the behavior. *Sum* would, of course, add all prices, whereas *avg* would take the mean for all prices for that symbol at that point in time. Ideally, we should only have a single price for a symbol at a given point in time, so there should be no visible difference. Average would be more technically correct for our purposes. 
 
 ![Configure Initial Report](../images/module03/pbiinitialreport.png)
 
@@ -70,7 +70,7 @@ Click *Apply filter* to enable the filter. This should look similar to:
 
 ## 3. Create a second visual for percent change
 
-Repeating the steps above, create a second line chart either beside or below the existing line chart. Instead of plotting the current stock price, select the *avgperiodpercentdifference* value, which is a positive or negative value based off the difference between the current price, and average over the period defined the KQL period. Use these values for the chart:
+Repeating the steps above, create a second line chart either beside or below the existing line chart. Instead of plotting the current stock price, select the *avgperiodpercentdifference* value, which is a positive or negative value based off the difference between the current price, and average over the period defined in the KQL period (1 hour). Use these values for the chart:
 
 * Legend: symbol
 * X-axis: timestamp

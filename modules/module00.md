@@ -61,7 +61,7 @@ To learn more about Fabric capacities, visit this page:
 
 Next, we'll create the Workspace within our Fabric capacity. Workspaces are assigned to capacities and serve as logical groupings for collaboration. We'll create a workspace within Fabric to house all of the artifacts for this workshop. 
 
-In the [Fabric portal](https://app.fabric.microsoft.com/), click on Workspaces in the left nav and create a new workspace called RealTimeWorkspace.
+In the [Fabric portal](https://app.fabric.microsoft.com/), click on *Workspaces* in the left nav and create a new workspace called RealTimeWorkspace. You can use whatever name you'd like (provided it is available in your environment), but be sure to substitute your workspace name throughout the lab, if needed, as all items are assumed to be in the same workspace.
 
 ![Create Fabric Workspace](../images/module00/createworkspace.png)
 

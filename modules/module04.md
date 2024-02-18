@@ -15,9 +15,120 @@
 
 ## :loudspeaker: Introduction
 
-Data Activator is an observability tool for automatically monitoring and taking actions when certain conditions (or patterns) are detected in a datastream. Common use cases include monitoring IoT devices, sales data, performance counters, and system health.
+> :bulb: **Did you know?**
+> Data Activator is currently in *public preview*. This module will be updated over time, and some features are subject to change. 
 
-In this module, we'll start by linking the Power BI report monitoring the stock price created in [Module 03](../modules/module03.md) to Data Activator. Additional sub-modules will be added over time for additional scenarios, such as monitoring the Eventstream directly. In this configuration, data flows through the system like this:
+Data Activator is an observability tool for automatically monitoring and taking actions when certain conditions (or patterns) are detected in a datastream. Common use cases include monitoring IoT devices, sales data, performance counters, and system health. Actions are typically notifications (such as e-mails or Teams messages) but can also be customized to launch Power Automate workflows, for example.
+
+Currently, Data Activator can consume data from Power BI and Fabric Eventstreams (such as Azure Event Hubs, Kafka, etc.). In the future, additional sources (like KQL querysets) and more advanced triggering will be added. Read the [Data Activator roadmap](https://learn.microsoft.com/en-us/fabric/release-plan/data-activator) for more information.
+
+In this module, we'll use Data Activator to monitor both Eventstreams and Power BI reports. When we configure Data Activator, we set up one or more *Reflexes*. A Data Activator Reflex is the container that holds all of the information needed about the data connection, the events, and triggers.
+
+Learn more about Data Activator on the [Microsoft Learn Data Activator](https://learn.microsoft.com/en-us/fabric/data-activator/data-activator-introduction) page. 
+
+Prefer video content? This videos illustrate the content in this module:
+* [Getting Started with Data Activator in Microsoft Fabric](https://youtu.be/3DjLJLiwkC0)
+
+## Table of Contents
+
+1. 
+
+1. [Prepare the report](#1-prepare-the-report)
+2. [Create the trigger](#2-create-the-trigger)
+3. [Configure the Reflex](#3-configure-the-reflex)
+4. [Add a property](#4-add-a-property)
+5. [Configure and start trigger](#5-configure-and-start-trigger)
+6. [Configure a new trigger for low price detection](#6-configure-a-new-trigger-for-low-price-detection)
+7. [Optional: Configure a new Reflex for Percent Changed](#7-optional-configure-a-new-reflex-for-percent-changed)
+
+## 1. Using Data Activator with an Eventstream
+
+In this step, we'll configure Data Activator to detect a large increase in price of a stock symbol and send a notification.
+
+When using Data Activator with Eventstreams, our data flow will look like the below diagram. The benefit of this approach is that the number of steps required between source (Event Hub) and trigger (Data Activator) is minimized:
+
+```mermaid
+flowchart LR
+    A[Event Hub] --> B{Eventstream}
+    B --> E{Data Activator}
+```
+
+### 1-1. Configure the Eventstream
+
+Open the *StockEventstream*. Add a new output by clicking the + (plus) symbol on the StockEventstream object, and select *Reflex*. 
+
+![Configure Eventstream](../images/module04/eventstream-createreflex.png)
+
+Configure the Reflex as follows and then click *Add*:
+
+* Destination name: Reflex
+* Workspace: RealTimeWorkspace (or the name of your workspace)
+* Create a new Reflex named EventstreamReflex
+
+After the Reflex is added, open the Reflex by clicking the *Open item* link at the bottom of the page.
+
+### 1-2. Configure the object
+
+When the Reflex is created, we'll need to add a new object. An object represents the item we are observing -- for example, a freezers, packages, or in this case, stock symbols. In the *Assign your data* page:
+
+![Create Object](../images/module04/eventstream-createobject.png)
+
+Enter the following in the *Assign your data* pane and click *Save*:
+
+* Object name: Symbol
+* Assign key column: symbol
+* Assign properties: price, timestamp
+
+### 1-3. Configure the properties
+
+Once saved, the Reflex will load. Select the *price* property. This will load a view of the price property for each symbol as the events are coming in. In the *Add* dropdown on the right of the price window, select *Summarize* > *Average over time*:
+
+![Configure Price](../images/module04/eventstream-configureprice.png)
+
+Configure the *Average over time* to 10 minutes. In the upper right, set the time window to the *Last Hour*, as shown below. This step averages the data over 10 minute blocks: this will help in finding larger swings in price:
+
+![Configure Price](../images/module04/eventstream-configureprice2.png)
+
+### 1-4. Configure the trigger
+
+The next step is to add a new trigger. In the top navigation bar, click the *New Trigger* button. When the new trigger page loads, change the name of the trigger to Price Increase and select the price as the property to monitor, as shown below.
+
+![Configure Trigger](../images/module04/eventstream-createtrigger.png)
+
+If needed, change the time window in the upper right to *Last Hour*. Notice that the *price* chart should retain the summarized view, averaging data in 10 minute intervals. In the *Detect* section, configure the type of detection to *Numeric* > *Increases by*. Set the type of increase to *Percentage*. Start with a value of about 5%, but you will need to modify this depending on the volatility of your data. Set this value to *From last measurement* and *Each time*, as shown below:
+
+![Configure Trigger](../images/module04/eventstream-trigger.png)
+
+For the purposes of visualizing the detections, set the value low enough so you have some detections, but not so many that it is overwhelming. In the example above, with the value set to 6%, there is 1 detection at 14:45, 3 at 15:05, and 4 at 15:15. While we'd probably want to increase this even further, this serves the purpose for demonstrating how Data Activator detects changes.
+
+Next, configure the Action to send an e-mail. If you are in a corporate or owned environment, you should be able to use your e-mail address. If you are in a sandbox lab environment, sending an e-mail will likely not be possible. However, when sending a test e-mail, the message is *always* sent to your (the logged in user) e-mail address, regardless of what is specified in the e-mail field. External recipients outside of the organization are not permitted.
+
+Finally, be sure to add the *price* and *timestamp* to the *Additional information* box. When complete, save the trigger by clicking *Save* on the top navigation bar. The *Send me a test alert* button should become enabled, you can use this to send a test notification if your environment allows:
+
+![Configure Notification](../images/module04/eventstream-trigger2.png)
+
+An e-mail notification looks similar to the following:
+
+![E-mail Notification](../images/module04/emailnotification.png)
+
+### 1-5. Additional challenges
+
+Consider additional filters for conditions like price decreases, number of detections, and so-on. Experiment.
+
+### 1-5. Cleanup and conclusion
+
+Because most participants in this workshop will be in a lab environment that won't allow notifications, when completed, delete the Eventstream-Reflex output from the StockEventStream and, if desired, delete the Eventstream-Reflex from the workspace.
+
+While using Eventstreams in Data Activator is a direct and convenient way to issue notifications, flexibility is limited. For example, what if we only wanted to trigger if the stock price is a percent higher or lower than the previous day's closing price? Or rising faster than the average of all stocks? These conditions are typically answered in a report, so we'll look at how to do this in Power BI next.
+
+> :bulb: **Short on time?**
+> If you're satisfied with your understanding of Data Activator and would like to move ahead, this is a good opportunity to skip to the next module. The steps below are similar, but using a Power BI report to trigger notifications instead of an Eventstream.
+
+## 2. Using Data Activator in Power BI
+
+In this step, we'll create a Data Activator Reflex based off a Power BI report. The advantage in this approach is the ability to trigger off of more conditions. Naturally, this might include data from the Eventstream, loaded from other data sources, augmented with DAX expressions, and so forth. One current limitation (which may change as Data Activator matures): Data Activator monitors Power BI reports for data every hour. This may introduce an unacceptable delay, depending on the nature of the data.
+
+In this example, we'll use our previously created Power BI report, which is powered by a KQL query. Our flow will resemble this diagram:
 
 ```mermaid
 flowchart LR
@@ -27,118 +138,73 @@ flowchart LR
     D --> E{Data Activator}
 ```
 
-Learn more about Data Activator on the [Microsoft Learn Data Activator](https://learn.microsoft.com/en-us/fabric/data-activator/data-activator-introduction) page. 
+### 2-1. Prepare the Report
 
-> :bulb: **Did you know?**
-> Data Activator is currently in *public preview*. This module will be updated over time, and some features are subject to change. 
->
-> Currently, Data Activator can consume data from Power BI and Eventstreams (such as Azure Event Hub, Kafka). In the future, additional sources (like KQL querysets) and more advanced triggering will be added. Read the [Data Activator roadmap](https://learn.microsoft.com/en-us/fabric/release-plan/data-activator) for more information.
+Before we configure Data Activator, we'll clean up the report created in [Module 03](../modules/module03.md), as these labels will be imported into Data Activator and modifying them now will make the Data Activator *Reflex* more readable. As a reminder, a Data Activator reflex is the container that holds all of the information needed about the data connection, the events, and triggers.
 
-Prefer video content? These videos illustrate the content in this module:
-* [Getting Started with Data Activator in Microsoft Fabric](https://youtu.be/3DjLJLiwkC0)
+While modifying the report, it's best to disable auto-refresh temporarily (see [Module 03](../modules/module03.md) for information on configuring this setting). 
 
-## Table of Contents
-
-1. [Prepare the report](#1-prepare-the-report)
-2. [Create the trigger](#2-create-the-trigger)
-3. [Configure the reflex](#3-configure-the-reflex)
-4. [Add a property](#4-add-a-property)
-5. [Configure and start trigger](#5-configure-and-start-trigger)
-6. [Configure a new trigger for low price detection](#6-configure-a-new-trigger-for-low-price-detection)
-7. [Optional: Configure a new Reflex for Percent Changed](#7-optional-configure-a-new-reflex-for-percent-changed)
-
-## 1. Prepare the report
-
-Before we configure Data Activator, we'll clean up the report created in [Module 03](../modules/module03.md), as these labels will be imported into Data Activator and modifying them now will make the Data Activator *reflex* more readable. A Data Activator Reflex is the container that holds all of the information needed about the data connection, the events, and triggers.
-
-While modifying the report, it's usually best to disable auto-refresh temporarily (see [Module 03](../modules/module03.md) for information on configuring this setting). 
-
-For each report, modify the labels for each visual by renaming them. Rename them similar to:
+For each report, modify the labels for each visual by renaming them. You can rename them by selecting the drop-down on each element on the visual and selecting *Rename for this visual*. Rename them similar to:
 
 * *sum of price* to *Price*
-* *timestamp* to *Timestamp*
-* *symbol* to *Symbol*
-* *sum of percentdifference* to *Percent Difference*
+* *timestamp* to *Timestamp* (on both reports)
+* *symbol* to *Symbol* (on both reports)
+* *avg of avgperiodpercentdifference* to *Percent Change*
+
+Finally, we'll need to temporarily remove the Timestamp filter (set to display only the most recent 5 minutes). This is because Data Activator will pull report data once every hour; when the Reflex is configured, filters are also applied to the configuration. We want to make sure there's at least an hour of data for the Reflex. We'll include an example below of what happens when this isn't the case.
 
 When complete, it should look similar to:
 
 ![Configure Report Refresh](../images/module04/pbi-rename.png)
 
-## 2. Create the trigger
+### 2-2. Create the trigger
 
-We'll configure Data Activator to alert when the value of the stock exceeds 1000 or is at/below 1. 
-
-Creating a new Data Activator Reflex for Power BI visuals is done directly within Power BI. On the *more options* ellipses in the corner of the visual, select *Trigger action*.
+We'll configure Data Activator to trigger an alert when the Percent Change value moves above a certain threshold (likely around 0.05). To create a new Reflex and trigger, click on the ellipsis in the corner of the visual for *More options*, and click *Set alert*.
 
 ![Configure Report Refresh](../images/module04/pbi-create-trigger.png)
 
-The *Create an alert* panel will open. The *Measure* allows us to configure what value to monitor (select Price), and *For each* allows us to monitor each symbol. The *Include time axis* is automatically selected as the timestamp is on the x-axis. 
+In the side *Set an alert* window, most settings will be pre-selected. Use the following settings:
 
-> :bulb: **Did you know?**
-> Data Activator currently works best on visuals that contain a time-axis, like we have in the line chart. It's possible to configure Data Activator on a number of visuals -- read more on [Data Activator and Power BI limitations here](https://learn.microsoft.com/en-us/fabric/data-activator/data-activator-limitations). For visuals without a time-axis, consider modifying the semantic model's refresh rate to match the polling frequency of the Reflex (at the present time, the fastest refresh rate of a semantic model is 15 minutes).
+* Measure: Percent Change
+* Condition: Becomes greater than
+* Threshold: 0.05 (we can change this later)
+* Filters: verify there are no filters affecting the visual
+* Notification type: Email
 
-Set the monitoring to *Every 5 minutes*, and configure the alert to detect then the value *Becomes greater than* 1000. Save the reflex in the workspace with a name like *RealTimeStocks-Reflex*.
+Under *Where to save*, use the following settings:
+* Workspace: RealTimeWorkspace (or the name of your workspace)
+* Item: Create a new reflex item
+* Item name: RealTimeStocksReflex
 
-The screen should look similar to:
+Uncheck *Start my alert* and click *Create alert*. After the Reflex is saved, the notification should include a link to open it, so click the link to open the Reflex. The Reflex can also be opened from the workspace items list.
 
-![Create Activator](../images/module04/createactivator.png)
+### 2-3. Configure the Reflex
 
-A pop up will ask you if you would like to start the trigger -- we'll do that in a moment, so close this dialog.
+The Reflex should open on the trigger, named *Percent Change becomes greater than 0.05*. Click the pencil icon on the title and change the title to *Percent Change increases*. Using the drop down in the upper right, change the window to display data within the last 4 hours. Also, be sure to select all stock symbols to display (labelled as IDs) -- the initial visual may only show a few of the stock symbols:
 
-## 3. Configure the reflex
+![Configure Report Refresh](../images/module04/pbi-reflex-configurename.png)
 
-Open the reflex from the workspace. There are two modes to work with, switchable on the bottom of the reflex: *Data* and *Design*. Data allows us to look at the incoming data stream, and Design allows us to configure the reflex. When working with Power BI visuals, we'll primarily work in design mode. 
+The top window should show data for the past hour, and will be updated every hour. The second window defines the detection threshold. You may need to modify this value to make it either more or less restrictive. Increasing the value will reduce the number of detections -- change this value so there are a few detections.
 
-Each reflex object is given a name based on the measure we are monitoring. The name of the object is *Symbol* as we're monitoring every stock symbol in the event stream. The event we are monitoring is *Price*, so it is listed under Events. The trigger we initially created will trigger when the price becomes over 1000.
+If you happen to have your Reflex running for several hours and notice that graphs tend to look like the image below, it means there was not enough data on the visual when the Reflex received the data. The visual will have to have enough data to cover the 1 hour window between polling.
 
-Click on the Trigger *Price becomes over 1000*. After a few minutes, you may notice the screen look similar to the below:
+![Time Filter](../images/module04/pbi-reflex-timefilter.png)
 
-![Data in Activator](../images/module04/reflex-data.png)
+Next, add two properties for Symbol and Timestamp. Click *New Property* in the upper left, and select both Symbol and Timestamp from the *Select a property of event column* drop down, as shown below.
 
-You may notice that there are 'spurts' of data for 1 minute, then 4 minutes where there is no data, and then repeats. This is because our visual is configured to only display 1 minute of information, while the reflex will poll every 5 minutes. To fix this, the visual in the Power BI report needs to contain at least 5 minutes of information, and then the Reflex needs to be created.
+![Configure Report Refresh](../images/module04/pbi-reflex-addproperty.png)
 
-> :bulb: **Did you know?**
-> Data Activator will eventually be able to support KQL queries directly -- so if we'd like more control over the event stream feeding Activator, we'll be able to feed Activator with the KQL results directly. We can also connect Activator to our Event Hub.
+### 2-4. Configure the notification
 
-With our 5 minute data in Power BI, the Reflex now looks like the image below, with no gaps in the data stream.
+Finally, configure the *Act* to send an message, as done in the previous Reflex. Alter the subject, headline, and add properties to the *Additional information* input. 
 
-![Data in Activator - 5 minutes](../images/module04/reflex-data-5min.png)
+![Configure Report Refresh](../images/module04/pbi-reflex-email.png)
 
-## 4. Add a property
-
-Adding properties to our reflex object allows them to be referenced in the notification. Add a *Price* property by clicking *New Property*, and selecting the Price from the event stream. Rename the property to Price.
-
-![Select Property](../images/module04/selectproperty.png)
-
-## 5. Configure and start trigger
-
-The last step is to configure the notification used when the trigger is set. In this case, we'll keep it to a basic e-mail trigger, but optionally can be a Teams message or a custom action in Power Automate, allowing the Reflex to plug directly into any solution. 
-
-Under *Additional Information*, select the *Price* property. The price will then be included in the notification:
-
-![Configure Notification](../images/module04/configurenotification.png)
-
-You can then start the trigger or send a test notification. If the trigger is started, Activator will look at the data every 5 minutes, and trigger as appropriate. In this example, we configured an arbitrary value like 1000 -- a value that has a reasonably high chance of being triggered within a short lab duration. This can be modified based on the situation.
-
-An email notification will look similar to:
-
-![E-mail Notification](../images/module04/emailnotification.png)
-
-## 6. Configure a new trigger for low price detection
-
-Finally, we'll create a trigger for a low price event. By default, the stock can bottom out at 1. Create a new trigger, and select the price from the event stream:
-
-![New Trigger](../images/module04/newtrigger.png)
-
-This time, configure the trigger so it is set each time the price becomes less than or equal to 1:
-
-![Configured New Trigger](../images/module04/configurednewtrigger.png)
-
-Notice that on each trigger page, information about when and which symbol created the trigger is logged, to give you an idea as to how many triggers were created. This is useful for monitoring the activity.
+Finally, you can try to send a test alert by clicking the *Send me a test alert* button. If you are in a corporate or owned environment, you should be able to use your e-mail address. If you are in a sandbox lab environment, sending an e-mail will likely not be possible. However, when sending a test e-mail, the message is *always* sent to your (the logged in user) e-mail address, regardless of what is specified in the e-mail field. External recipients outside of the organization are not permitted.
 
 ## 7. Optional: Configure a new Reflex for Percent Changed
 
-(Optional) Using steps similar to above, configure a new Data Activator Reflex (or, a new object can be added to this Reflex) that monitors the the Percentage Difference visual. Be sure to change its window to 5 minutes to ensure all events are routed into Data Activator.
+(Optional) Using steps similar to the above, configure new triggers based on different report elements. If you are doing more of the lab, consider revising this step when you've completed the lakehouse and data science modules -- a trigger on predicted prices would be an interesting Reflex to configure!
 
 ## :thinking: Additional Learning
 

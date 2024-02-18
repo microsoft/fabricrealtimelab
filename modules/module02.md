@@ -113,9 +113,11 @@ Create another new tab within the queryset by clicking the *+* icon near the top
 
 In KQL, the *let* statement is used to assign a expression or value to a variable. This is useful for breaking up a complex expression, for readability, or for supporting subqueries. Copy the example below into the editor. To run, be sure to highlight all of the text (both queries), otherwise only one query will run. 
 
-The first query calculates the average of the stocks over the last 1 hour, and assigns it to a variable called *AvgPrices*. Note that this time window, 1 hour, is configurable. 
+The first query calculates the average of the stocks over the last 1 hour, and assigns it to a variable called *AvgPrices*. Note that this time window -- 1 hour -- is arbitrary and can be set to whatever value makes sense for the data. 
 
-The second query is intended for our real-time dashboard. Here, we grab the latest data (we use 15 minutes to constrain the results), and join this to the *AvgPrices*. We can then calculate whether our stock is moving up or down from its low, high, or average price. As you might imagine, we could expand this further to get views over multiple periods, such as 1 minute, 1 hour, and 1 day.
+The second query is intended for our real-time dashboard. Here, we grab the latest data (we use 1 hour to constrain the results), and join this to the *AvgPrices*. We can then calculate whether our stock is moving up or down from its low, high, or average price. As you might imagine, we could expand this further to get views over multiple periods, such as 1 minute, 1 hour, and 1 day.
+
+Power BI is capable of filtering the data to a recent time horizon (and, indeed, we'll look at this capability) but it's still a good idea to have some constraints by time or by rowcount. If a query attempts to return more than 500,000 rows, KQL will raise an exception. 
 
 ```text
 let AvgPrices = 
@@ -128,7 +130,7 @@ StockPrice
 | project symbol, timestamp, avgperiodprice, minperiodprice, maxperiodprice;
 
 StockPrice
-| where timestamp > ago(15m)
+| where timestamp > ago(1h)
 | order by timestamp asc, symbol asc
 | join kind=inner AvgPrices on symbol
 | extend minperiodpercentdifference = round((price - minperiodprice) / minperiodprice, 4)
@@ -142,7 +144,7 @@ StockPrice
 
 ## :thinking: Tips
 
-* Too much data? Consider adding a row limit filter, like 'take 1000', to limit the number of rows returned.
+* Too much data? Consider adding a row limit filter, like 'take 1000', to limit the number of rows returned. Be sure to always limit to 500,000 rows if querying a large dataset.
 
 ## :thinking: Additional Learning
 
