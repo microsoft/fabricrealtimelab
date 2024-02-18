@@ -42,7 +42,7 @@ On the following screen, scroll down to the *Power BI workloads* section, and un
 
 ## 2. Create a basic Power BI report
 
-From the *StockQueryset* Queryset used in the previous module, select the *StockWithAverages* query tab. Select the entire query and run to view the results. Click *Build Power BI report* button above the query window to bring this query into Power BI.
+From the *StockQueryset* Queryset used in the previous module, select the *StockByTime* query tab. Select the query and run to view the results. Click *Build Power BI report* button above the query window to bring this query into Power BI.
 
 ![Create Power BI Report](../images/module03/buildpbireport.png)
 
@@ -59,7 +59,7 @@ On the report preview page that opens, we can configure our initial chart. Don't
 
 Click File > Save, and name the report RealTimeStocks, and be sure to save it to the RealTimeWorkspace. 
 
-Open the report from either the save dialog or from the RealTimeStocks workspace. While this is a promising start, let's make sure the chart only shows data for the last 5 minutes. Click the edit button along the top navigation bar to open the report editor, and select the line chart on the report. Configure a filter for *timestamp* to display data for the last 5 minutes using these settings:
+Open the report from either the link on the save dialog or from the RealTimeStocks workspace. While this is a promising start, let's make sure the chart only shows data for the last 5 minutes. Click the edit button along the top navigation bar to open the report editor, and select the line chart on the report. Configure a filter for *timestamp* to display data for the last 5 minutes using these settings:
 
 * Filter type: Relative time
 * Show items when the value: is in the last 5 minutes
@@ -70,11 +70,11 @@ Click *Apply filter* to enable the filter. This should look similar to:
 
 ## 3. Create a second visual for percent change
 
-Repeating the steps above, create a second line chart either beside or below the existing line chart. Instead of plotting the current stock price, select the *avgperiodpercentdifference* value, which is a positive or negative value based off the difference between the current price, and average over the period defined in the KQL period (1 hour). Use these values for the chart:
+Repeating the steps above, create a second line chart either beside or below the existing line chart. Instead of plotting the current stock price, select the *percentdifference_10min* value, which is a positive or negative value based off the difference between the current price, and the value of the price from 10 minutes ago. Use these values for the chart:
 
 * Legend: symbol
 * X-axis: timestamp
-* Y-axis: average of avgperiodpercentdifference
+* Y-axis: average of percentdifference_10min
 
 Similarly, configure the visual filter to show data only for the last 5 minutes. Next, under the *Visualizations* section, add an additional visualization by selecting the icon with the magnifying glass. Under *Y-Axis Constant Line*, add a constant line with a default value of 0. This adds a dashed line to report, as shown below. This allows us to see if we're above or below the period average. If you'd like to, you can further customize the look of the chart and layout.
 
