@@ -33,7 +33,7 @@ Prefer video content? This videos illustrate the content in this module:
 
 1. [Using Data Activator with an Eventstream](#1-using-data-activator-with-an-eventstream)
     1. [Configure the Eventstream](#1-1-configure-the-eventstream)
-    2. [BConfigure the object](#1-2-configure-the-object)
+    2. [Configure the object](#1-2-configure-the-object)
     3. [Configure the properties](#1-3-configure-the-properties)
     4. [Configure the trigger](#1-4-configure-the-trigger)
     5. [Additional challenges](#1-5-additional-challenges)
