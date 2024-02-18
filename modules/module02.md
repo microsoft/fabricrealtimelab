@@ -112,7 +112,7 @@ StockPrice
 
 Create another new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *StockBinned*.
 
-KQL also has a *bin()* function, which can be used to bucket results based on the bin parameter -- in this case, by specifying a timestamp of 1 hour, the result is aggregated for each hour. The time period can be set to minute, hour, day, and so on. 
+KQL also has a [bin() function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/bin-function), which can be used to bucket results based on the bin parameter -- in this case, by specifying a timestamp of 1 hour, the result is aggregated for each hour. The time period can be set to minute, hour, day, and so on. 
 
 ```text
 StockPrice
@@ -132,6 +132,7 @@ This is particularly useful when creating reports that aggregate real-time data 
 * [KQL partition operator](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/partition-operator) 
 * [KQL summarize operator](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/summarizeoperator)
 * [KQL arg_max function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/arg-max-aggregation-function)
+* [KQL bin() function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/bin-function)
 * [MS Learn: Query data in a KQL queryset](https://learn.microsoft.com/en-us/fabric/real-time-analytics/kusto-query-set)
 
 We will explore additional approaches in [the Extras](../modules/moduleex00.md) content. 
