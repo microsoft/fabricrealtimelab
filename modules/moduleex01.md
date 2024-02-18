@@ -109,7 +109,7 @@ StockPrice
   )
 | project timestamp, symbol, price, previousprice
     ,pricedifference = round((price-previousprice),2)
-    ,percentdifference = round((price-previousprice)/previousprice,2)
+    ,percentdifference = round((price-previousprice)/previousprice,4)
 | order by timestamp asc, symbol asc
 ```
 
