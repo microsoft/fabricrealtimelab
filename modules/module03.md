@@ -70,7 +70,7 @@ Click *Apply filter* to enable the filter. This should look similar to:
 
 ## 3. Create a second visual for percent change
 
-Repeating the steps above, create a second line chart either beside or below the existing line chart. Instead of plotting the current stock price, select the *percentdifference_10min* value, which is a positive or negative value based off the difference between the current price, and the value of the price from 10 minutes ago. Use these values for the chart:
+Repeating the steps above, create a second line chart either beside or below the existing line chart. Instead of plotting the current stock price, select the *percentdifference_10min* value, which is a positive or negative value based off the difference between the current price and the value of the price from 10 minutes ago. Use these values for the chart:
 
 * Legend: symbol
 * X-axis: timestamp

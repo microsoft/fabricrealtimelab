@@ -31,15 +31,19 @@ Prefer video content? This videos illustrate the content in this module:
 
 ## Table of Contents
 
-1. 
-
-1. [Prepare the report](#1-prepare-the-report)
-2. [Create the trigger](#2-create-the-trigger)
-3. [Configure the Reflex](#3-configure-the-reflex)
-4. [Add a property](#4-add-a-property)
-5. [Configure and start trigger](#5-configure-and-start-trigger)
-6. [Configure a new trigger for low price detection](#6-configure-a-new-trigger-for-low-price-detection)
-7. [Optional: Configure a new Reflex for Percent Changed](#7-optional-configure-a-new-reflex-for-percent-changed)
+1. [Using Data Activator with an Eventstream](#1-using-data-activator-with-an-eventstream)
+    1. [Configure the Eventstream](#1-1-configure-the-eventstream)
+    2. [BConfigure the object](#1-2-configure-the-object)
+    3. [Configure the properties](#1-3-configure-the-properties)
+    4. [Configure the trigger](#1-4-configure-the-trigger)
+    5. [Additional challenges](#1-5-additional-challenges)
+    6. [Cleanup and conclusion](#1-6-cleanup-and-conclusion)
+2. [Using Data Activator in Power BI](#2-using-data-activator-in-power-bi)
+    1. [Prepare the report](#2-1-prepare-the-report)
+    2. [Create the trigger](#2-2-create-the-trigger)
+    3. [Configure the Reflex](#2-3-configure-the-reflex)
+    4. [Configure the notification](#2-4-configure-the-notification)
+7. [Optional: Configure new Reflexes](#7-optional-configure-new-reflexes)
 
 ## 1. Using Data Activator with an Eventstream
 
@@ -115,7 +119,7 @@ An e-mail notification looks similar to the following:
 
 Consider additional filters for conditions like price decreases, number of detections, and so-on. Experiment.
 
-### 1-5. Cleanup and conclusion
+### 1-6. Cleanup and conclusion
 
 Because most participants in this workshop will be in a lab environment that won't allow notifications, when completed, delete the Eventstream-Reflex output from the StockEventStream and, if desired, delete the Eventstream-Reflex from the workspace.
 
@@ -138,7 +142,7 @@ flowchart LR
     D --> E{Data Activator}
 ```
 
-### 2-1. Prepare the Report
+### 2-1. Prepare the report
 
 Before we configure Data Activator, we'll clean up the report created in [Module 03](../modules/module03.md), as these labels will be imported into Data Activator and modifying them now will make the Data Activator *Reflex* more readable. As a reminder, a Data Activator reflex is the container that holds all of the information needed about the data connection, the events, and triggers.
 
@@ -149,9 +153,9 @@ For each report, modify the labels for each visual by renaming them. You can ren
 * *sum of price* to *Price*
 * *timestamp* to *Timestamp* (on both reports)
 * *symbol* to *Symbol* (on both reports)
-* *avg of avgperiodpercentdifference* to *Percent Change*
+* *avg of percentdifference_10min* to *Percent Change*
 
-Finally, we'll need to temporarily remove the Timestamp filter (set to display only the most recent 5 minutes). This is because Data Activator will pull report data once every hour; when the Reflex is configured, filters are also applied to the configuration. We want to make sure there's at least an hour of data for the Reflex. We'll include an example below of what happens when this isn't the case.
+Finally, we'll need to temporarily remove the Timestamp filter (set to display only the most recent 5 minutes) by clicking the *Clear filter* button on the filter. This is because Data Activator will pull report data once every hour; when the Reflex is configured, filters are also applied to the configuration. We want to make sure there's at least an hour of data for the Reflex; the filter can be added back after the Reflex is configured.  We'll include an example below of what happens when this isn't the case.
 
 When complete, it should look similar to:
 
@@ -167,7 +171,7 @@ In the side *Set an alert* window, most settings will be pre-selected. Use the f
 
 * Measure: Percent Change
 * Condition: Becomes greater than
-* Threshold: 0.05 (we can change this later)
+* Threshold: 0.05 (this will be changed later)
 * Filters: verify there are no filters affecting the visual
 * Notification type: Email
 
@@ -176,23 +180,25 @@ Under *Where to save*, use the following settings:
 * Item: Create a new reflex item
 * Item name: RealTimeStocksReflex
 
-Uncheck *Start my alert* and click *Create alert*. After the Reflex is saved, the notification should include a link to open it, so click the link to open the Reflex. The Reflex can also be opened from the workspace items list.
+Uncheck *Start my alert* and click *Create alert*. After the Reflex is saved, the notification should include a link to edit the Reflex -- click the link to open the Reflex. The Reflex can also be opened from the workspace items list.
 
 ### 2-3. Configure the Reflex
 
-The Reflex should open on the trigger, named *Percent Change becomes greater than 0.05*. Click the pencil icon on the title and change the title to *Percent Change increases*. Using the drop down in the upper right, change the window to display data within the last 4 hours. Also, be sure to select all stock symbols to display (labelled as IDs) -- the initial visual may only show a few of the stock symbols:
+The Reflex should open on the trigger, named *Percent Change becomes greater than 0.05*. Click the pencil icon on the title and change the title to *Percent Change High*. Using the drop down in the upper right, change the window to display data within the last 4 hours. Also, be sure to select all stock symbols to display (labelled as IDs) -- the initial visual may only show a few of the stock symbols:
 
 ![Configure Report Refresh](../images/module04/pbi-reflex-configurename.png)
 
-The top window should show data for the past hour, and will be updated every hour. The second window defines the detection threshold. You may need to modify this value to make it either more or less restrictive. Increasing the value will reduce the number of detections -- change this value so there are a few detections.
+Next, add two properties for Symbol and Timestamp. Click *New Property* in the upper left, and select both Symbol and Timestamp from the *Select a property of event column* drop down, as shown below. Change the name of each property to *Symbol* and *Timestamp*.
+
+![Configure Report Refresh](../images/module04/pbi-reflex-addproperty.png)
+
+Click on the Percent Change High trigger under the Objects > Triggers list. The top window will show data for the past 4 hours, and will be updated every hour. The second window defines the detection threshold. You may need to modify this value to make it either more or less restrictive. Increasing the value will reduce the number of detections -- change this value so there are a few detections, similar to the image below. The specific values will change slightly with your data volatility:
+
+![Configure Report Refresh](../images/module04/pbi-reflex-detection.png)
 
 If you happen to have your Reflex running for several hours and notice that graphs tend to look like the image below, it means there was not enough data on the visual when the Reflex received the data. The visual will have to have enough data to cover the 1 hour window between polling.
 
 ![Time Filter](../images/module04/pbi-reflex-timefilter.png)
-
-Next, add two properties for Symbol and Timestamp. Click *New Property* in the upper left, and select both Symbol and Timestamp from the *Select a property of event column* drop down, as shown below.
-
-![Configure Report Refresh](../images/module04/pbi-reflex-addproperty.png)
 
 ### 2-4. Configure the notification
 
@@ -202,9 +208,9 @@ Finally, configure the *Act* to send an message, as done in the previous Reflex.
 
 Finally, you can try to send a test alert by clicking the *Send me a test alert* button. If you are in a corporate or owned environment, you should be able to use your e-mail address. If you are in a sandbox lab environment, sending an e-mail will likely not be possible. However, when sending a test e-mail, the message is *always* sent to your (the logged in user) e-mail address, regardless of what is specified in the e-mail field. External recipients outside of the organization are not permitted.
 
-## 7. Optional: Configure a new Reflex for Percent Changed
+## 7. Optional: Configure new Reflexes
 
-(Optional) Using steps similar to the above, configure new triggers based on different report elements. If you are doing more of the lab, consider revising this step when you've completed the lakehouse and data science modules -- a trigger on predicted prices would be an interesting Reflex to configure!
+(Optional) Using steps similar to the above, configure new triggers based on different report elements. If you are doing additional lab modules, consider revising this step when you've completed the lakehouse and data science modules -- a trigger on predicted prices would be an interesting Reflex to configure!
 
 ## :thinking: Additional Learning
 
