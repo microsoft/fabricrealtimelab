@@ -82,7 +82,10 @@ StockPrice
 | order by timestamp asc, symbol asc
 ```
 
-In this KQL query, the results are first limited to the most recent 75 minutes. While we ultimately limit the rows to the last 60 minutes, our initial dataset needs enough data to do lookbacks to lookup previous values. The data is then partitioned to group the data by symbol, and we look at the previous price (from 1 second ago) as well as the previous price from 10 minutes ago. Note that this query assumes data is generated at 1 second intervals. For the purposes of our data, subtle fluctuations are acceptable. However, if you need precision in these calculations (such as exactly 10 minutes ago and not 9:59 or 10:01), you'd need to approach this differently.
+In this KQL query, the results are first limited to the most recent 75 minutes. While we ultimately limit the rows to the last 60 minutes, our initial dataset needs enough data to lookup previous values. The data is then partitioned to group the data by symbol, and we look at the previous price (from 1 second ago) as well as the previous price from 10 minutes ago. Note that this query assumes data is generated at 1 second intervals. For the purposes of our data, subtle fluctuations are acceptable. However, if you need precision in these calculations (such as exactly 10 minutes ago and not 9:59 or 10:01), you'd need to approach this differently.
+
+> :bulb: **Are some columns empty?**
+> If you're a fast user, you might get to this query before enough data has been collected to calculate 10 minute averages. As you scroll through the query, you should see more data being populated once enough data has been collected.
 
 ## 3. New Query: StockAggregate
 
@@ -135,7 +138,7 @@ This is particularly useful when creating reports that aggregate real-time data 
 * [KQL bin() function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/bin-function)
 * [MS Learn: Query data in a KQL queryset](https://learn.microsoft.com/en-us/fabric/real-time-analytics/kusto-query-set)
 
-We will explore additional approaches in [the Extras](../modules/moduleex00.md) content. 
+Interested in going deeper with KQL? We will explore concepts in [the Extras](../modules/moduleex00.md) content. 
 
 ## :tada: Summary
 

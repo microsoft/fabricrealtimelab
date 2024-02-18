@@ -57,7 +57,7 @@ On the report preview page that opens, we can configure our initial chart. Don't
 
 ![Configure Initial Report](../images/module03/pbiinitialreport.png)
 
-Click File > Save, and name the report RealTimeStocks, and be sure to save it to the RealTimeWorkspace. 
+Click File > Save, name the report RealTimeStocks, and be sure to save it to the RealTimeWorkspace. 
 
 Open the report from either the link on the save dialog or from the RealTimeStocks workspace. While this is a promising start, let's make sure the chart only shows data for the last 5 minutes. Click the edit button along the top navigation bar to open the report editor, and select the line chart on the report. Configure a filter for *timestamp* to display data for the last 5 minutes using these settings:
 
@@ -79,6 +79,9 @@ Repeating the steps above, create a second line chart either beside or below the
 Similarly, configure the visual filter to show data only for the last 5 minutes. Next, under the *Visualizations* section, add an additional visualization by selecting the icon with the magnifying glass. Under *Y-Axis Constant Line*, add a constant line with a default value of 0. This adds a dashed line to report, as shown below. This allows us to see if we're above or below the period average. If you'd like to, you can further customize the look of the chart and layout.
 
 When complete, your visuals should look similar to the image below:
+
+> :bulb: **Missing some data?**
+> If you're a fast user, you might build this report before enough data has been collected to calculate 10 minute averages. If you are unsure, you can double check the KQL query to ensure it is correct, and verify there is at least 10 minutes of activity.
 
 ![Both Visuals on Report](../images/module03/bothreports.png)
 
