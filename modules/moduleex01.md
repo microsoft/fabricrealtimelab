@@ -21,7 +21,9 @@ This module explores additional KQL concepts.
 
 1. [Examine the original query](#1-examine-the-original-query)
 2. [Using the scan operator](#2-using-the-scan-operator)
-3. [Adding bin to the mix](#3-adding-bin-to-the-mix)
+3. [Mining the data with scan](#3-mining-the-data-with-scan)
+4. [Adding bin to the mix](#4-adding-bin-to-the-mix)
+5. [Combining bin and scan](#5-combining-bin-and-scan)
 
 ## 1. Examine the original query
 
@@ -111,10 +113,11 @@ StockPrice
 | order by delta_pct
 ```
 
-This produces a result like so:
+This produces a result similar to:
 
+![Process Mining by percentage gain](../images/moduleex/moduleex01/mining1.png)
 
-The result above looks for the largest percentage gain in a rally, regardless of length. If we'd like to see the largest rally, we can change the summarization:
+The result above looks for the largest percentage gain in a rally, regardless of length. If we'd like to see the longest rally, we can change the summarization:
 
 ```text
 StockPrice
@@ -147,8 +150,7 @@ StockPrice
 
 This example produces a result that shows the longest rallies for each stock, in terms of total seconds:
 
-
-
+![Process Mining by duration](../images/moduleex/moduleex01/mining2.png)
 
 ## 4. Adding bin to the mix
 
@@ -213,6 +215,8 @@ StockPrice
 ```
 
 This produces a result like:
+
+![Process Mining with bin](../images/moduleex/moduleex01/mining3.png)
 
 ## :books: Resources
 
