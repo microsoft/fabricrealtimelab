@@ -159,13 +159,13 @@ Finally, we'll need to temporarily remove the Timestamp filter (set to display o
 
 When complete, it should look similar to:
 
-![Configure Report Refresh](../images/module04/pbi-rename.png)
+![Clean up labels](../images/module04/pbi-rename.png)
 
 ### 2-2. Create the trigger
 
 We'll configure Data Activator to trigger an alert when the Percent Change value moves above a certain threshold (likely around 0.05). To create a new Reflex and trigger, click on the ellipsis in the corner of the visual for *More options*, and click *Set alert*.
 
-![Configure Report Refresh](../images/module04/pbi-create-trigger.png)
+![Create Data Activator Reflex](../images/module04/pbi-create-trigger.png)
 
 In the side *Set an alert* window, most settings will be pre-selected. Use the following settings:
 
@@ -186,25 +186,25 @@ Uncheck *Start my alert* and click *Create alert*. After the Reflex is saved, th
 
 The Reflex should open on the trigger, named *Percent Change becomes greater than 0.05*. Click the pencil icon on the title and change the title to *Percent Change High*. Using the drop down in the upper right, change the window to display data within the last 4 hours. Also, be sure to select all stock symbols to display (labelled as IDs) -- the initial visual may only show a few of the stock symbols:
 
-![Configure Report Refresh](../images/module04/pbi-reflex-configurename.png)
+![Configure trigger name](../images/module04/pbi-reflex-configurename.png)
 
 Next, add two properties for Symbol and Timestamp. Click *New Property* in the upper left, and select both Symbol and Timestamp from the *Select a property of event column* drop down, as shown below. Change the name of each property to *Symbol* and *Timestamp*.
 
-![Configure Report Refresh](../images/module04/pbi-reflex-addproperty.png)
+![Configure properties](../images/module04/pbi-reflex-addproperty.png)
 
 Click on the Percent Change High trigger under the Objects > Triggers list. The top window will show data for the past 4 hours, and will be updated every hour. The second window defines the detection threshold. You may need to modify this value to make it either more or less restrictive. Increasing the value will reduce the number of detections -- change this value so there are a few detections, similar to the image below. The specific values will change slightly with your data volatility:
 
-![Configure Report Refresh](../images/module04/pbi-reflex-detection.png)
+![Configure detection](../images/module04/pbi-reflex-detection.png)
 
 If you happen to have your Reflex running for several hours and notice that graphs tend to look like the image below, it means there was not enough data on the visual when the Reflex received the data. The visual will have to have enough data to cover the 1 hour window between polling.
 
-![Time Filter](../images/module04/pbi-reflex-timefilter.png)
+![Time filter](../images/module04/pbi-reflex-timefilter.png)
 
 ### 2-4. Configure the notification
 
 Finally, configure the *Act* to send an message, as done in the previous Reflex. Alter the subject, headline, and add properties to the *Additional information* input. 
 
-![Configure Report Refresh](../images/module04/pbi-reflex-email.png)
+![Configure the notification](../images/module04/pbi-reflex-email.png)
 
 Finally, you can try to send a test alert by clicking the *Send me a test alert* button. If you are in a corporate or owned environment, you should be able to use your e-mail address. If you are in a sandbox lab environment, sending an e-mail will likely not be possible. However, when sending a test e-mail, the message is *always* sent to your (the logged in user) e-mail address, regardless of what is specified in the e-mail field. External recipients outside of the organization are not permitted.
 
