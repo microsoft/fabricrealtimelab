@@ -78,7 +78,7 @@ This query is similar in structure to our original query, except instead of usin
 
 ## 3. Mining the data with scan
 
-The scan operator may contain any number of steps that scans rows matching the specified predicates. The power comes from the fact that these steps can chain together state learned from previous steps. This allows us to do process mining on the data. 
+The scan operator may contain any number of steps that scans rows matching the specified predicates. The power comes from the fact that these steps can chain together state learned from previous steps. This allows us to do process mining on the data; read more on [Process mining with Scan](https://techcommunity.microsoft.com/t5/azure-data-explorer-blog/the-new-scan-operator-process-mining-in-azure-data-explorer/ba-p/2378795).
 
 For example, suppose we'd like to find stock rallies: these occur when there is a continuous increase in the stock price. It could be that the price jumped a high amount over a short period of time, or it might be the price slowly rose over a long period of time. As long as the price keeps increasing, we'd like to examine these rallies. 
 
