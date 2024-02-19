@@ -13,7 +13,7 @@
 
 ## :loudspeaker: Introduction
 
-Now that our data is streaming into our KQL database, we can begin to query and explore the data, leveraging KQL to gain insights into the data. A KQL Queryset is used to run queries, view, and transform data from a KQL database. Like other artifacts, a KQL Queryset exists within the context of a workspace. A queryset can contain multiple queries, each stored in a tab.
+Now that our data is streaming into our KQL database, we can begin to query and explore the data, leveraging KQL to gain insights into the data. A KQL queryset is used to run queries, view, and transform data from a KQL database. Like other artifacts, a KQL queryset exists within the context of a workspace. A queryset can contain multiple queries, each stored in a tab.
 
 In this module, we'll create several KQL queries of increasing complexity to support different business uses.
 
@@ -22,19 +22,19 @@ Prefer video content? These videos illustrate the content in this module:
 
 ## Table of Contents
 
-1. [Create KQL Queryset: StockQueryset](#1-create-kql-queryset-stockqueryset)
+1. [Create KQL queryset: StockQueryset](#1-create-kql-queryset-stockqueryset)
 2. [New Query: StockByTime](#2-new-query-stockbytime)
 3. [New Query: StockAggregate](#3-new-query-stockaggregate)
 4. [New Query: StockBinned](#4-new-query-stockbinned)
 5. [New Query: Visualizations](#5-new-query-visualizations)
 
-## 1. Create KQL Queryset: StockQueryset
+## 1. Create KQL queryset: StockQueryset
 
-A KQL Queryset is used to run queries, view, and transform data from a KQL database. Like other artifacts, a KQL Queryset exists within the context of a workspace.
+A KQL queryset is used to run queries, view, and transform data from a KQL database. Like other artifacts, a KQL queryset exists within the context of a workspace.
 
 From your workspace, click *New* > *KQL Queryset*, and enter *StockQueryset* as the name. Select the *StockDB* from the list of available databases. The KQL query window will open, allowing us to query the data.
 
-![KQL Queryset](../images/module02/kqlqueryset-create.png)
+![KQL queryset](../images/module02/kqlqueryset-create.png)
 
 The default query code will look similar to the code below, and contains 3 distinct KQL queries. You may see *YOUR_TABLE_HERE* instead of the *StockPrice* table -- to try this query, replace the table name if necessary. We'll also add a semicolon at the end of each statement; this allows us to run multiple queries in one request:
 
@@ -54,13 +54,13 @@ StockPrice
 
 To run a single query when there are multiple queries in the editor, you can highlight the query text or place your cursor so the cursor is in the context of the query (for example, at the beginning or end of the query) -- the current query should highlight in blue. To run the query, click *Run* in the toolbar. If you'd like to run all 3 to display the results in 3 different tables, each query will need to have a semicolon (;) after the statement, as shown below. Select all of the text, and click *Run*:  
 
-![KQL Queryset](../images/module02/kqlqueryset-runmultiple.png)
+![KQL queryset](../images/module02/kqlqueryset-runmultiple.png)
 
 ## 2. New Query: StockByTime
 
 Create a new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *StockByTime*.
 
-![KQL Queryset](../images/module02/kqlqueryset-newtab.png)
+![KQL queryset](../images/module02/kqlqueryset-newtab.png)
 
 We can begin to add our own calculations, such as calculating the change over time. For example, the [prev()](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/prevfunction) function, a type of windowing function, allows us to look at values from previous rows; we can use this to calculate the change in price. In addition, because the previous price values are stock symbol specific, we can [partition](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/partition-operator) the data when making calculations.
 
@@ -130,7 +130,7 @@ This is particularly useful when creating reports that aggregate real-time data 
 
 Create a final new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *Visualizations*. We'll use this tab to explore visualizing data.
 
-KQL supports a large number of [visualizations](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/render-operator?pivots=fabric) by using the *render* operator. Enter the query below, which is the same as the StockByTime query but with an additional *render* operation added:
+KQL supports a large number of [visualizations](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/render-operator?pivots=fabric) by using the *render* operator. Run the query below, which is the same as the StockByTime query but with an additional *render* operation added:
 
 ```text
 StockPrice
@@ -172,6 +172,6 @@ In this exercise, you created several KQL queries to explore the data. Moreover,
 
 ## :white_check_mark: Results
 
-- [x] Queried the data using KQL
+- [x] Created KQL queryset, and queried the data using KQL using various KQL functions and operators
 
 [Continue >](./module03.md)

@@ -73,7 +73,7 @@ After the Reflex is added, open the Reflex by clicking the *Open item* link at t
 
 ### 1-2. Configure the object
 
-When the Reflex is created, we'll need to add a new object. An object represents the item we are observing -- for example, a freezers, packages, or in this case, stock symbols. In the *Assign your data* page:
+When the Reflex is created, we'll need to add a new object. An object represents the item we are observing -- for example, freezers, packages, or in this case, stock prices (symbols). When first opened, the *Assign your data* panel will be visible:
 
 ![Create Object](../images/module04/eventstream-createobject.png)
 
@@ -95,17 +95,17 @@ Configure the *Average over time* to 10 minutes. In the upper right, set the tim
 
 ### 1-4. Configure the trigger
 
-The next step is to add a new trigger. In the top navigation bar, click the *New Trigger* button. When the new trigger page loads, change the name of the trigger to Price Increase and select the price as the property to monitor, as shown below.
+The next step is to add a new trigger. In the top navigation bar, click the *New Trigger* button. When the new trigger page loads, change the name of the trigger to *Price Increase* and select the price as the property to monitor, as shown below.
 
 ![Configure Trigger](../images/module04/eventstream-createtrigger.png)
 
-If needed, change the time window in the upper right to *Last Hour*. Notice that the *price* chart should retain the summarized view, averaging data in 10 minute intervals. In the *Detect* section, configure the type of detection to *Numeric* > *Increases by*. Set the type of increase to *Percentage*. Start with a value of about 5%, but you will need to modify this depending on the volatility of your data. Set this value to *From last measurement* and *Each time*, as shown below:
+Verify (and change if needed) the time window in the upper right is set to *Last Hour*. Notice that the *price* chart should retain the summarized view, averaging data in 10 minute intervals. In the *Detect* section, configure the type of detection to *Numeric* > *Increases by*. Set the type of increase to *Percentage*. Start with a value of about 5%, but you will need to modify this depending on the volatility of your data. Set this value to *From last measurement* and *Each time*, as shown below:
 
 ![Configure Trigger](../images/module04/eventstream-trigger.png)
 
 For the purposes of visualizing the detections, set the value low enough so you have some detections, but not so many that it is overwhelming. In the example above, with the value set to 6%, there is 1 detection at 14:45, 3 at 15:05, and 4 at 15:15. While we'd probably want to increase this even further, this serves the purpose for demonstrating how Data Activator detects changes.
 
-Next, configure the Action to send an e-mail. If you are in a corporate or owned environment, you should be able to use your e-mail address. If you are in a sandbox lab environment, sending an e-mail will likely not be possible. However, when sending a test e-mail, the message is *always* sent to your (the logged in user) e-mail address, regardless of what is specified in the e-mail field. External recipients outside of the organization are not permitted.
+Next, configure the *Action* to send an e-mail. If you are in a corporate or owned environment, you should be able to use your e-mail address. If you are in a sandbox lab environment, sending an e-mail will likely not be possible. However, when sending a test e-mail, the message is *always* sent to your (the logged in user) e-mail address, regardless of what is specified in the e-mail field. External recipients outside of the organization are not permitted.
 
 Finally, be sure to add the *price* and *timestamp* to the *Additional information* box. When complete, save the trigger by clicking *Save* on the top navigation bar. The *Send me a test alert* button should become enabled, you can use this to send a test notification if your environment allows:
 
@@ -126,7 +126,7 @@ Because most participants in this workshop will be in a lab environment that won
 While using Eventstreams in Data Activator is a direct and convenient way to issue notifications, flexibility is limited. For example, what if we only wanted to trigger if the stock price is a percent higher or lower than the previous day's closing price? Or rising faster than the average of all stocks? These conditions are typically answered in a report, so we'll look at how to do this in Power BI next.
 
 > :bulb: **Short on time?**
-> If you're satisfied with your understanding of Data Activator and would like to move ahead, this is a good opportunity to skip to the next module. The steps below are similar, but using a Power BI report to trigger notifications instead of an Eventstream.
+> If you're satisfied with your understanding of Data Activator and would like to move ahead, this is a good opportunity to skip to the next module. The steps below are similar, using a Power BI report to trigger notifications instead of an Eventstream.
 
 ## 2. Using Data Activator in Power BI
 
@@ -148,14 +148,14 @@ Before we configure Data Activator, we'll clean up the report created in [Module
 
 While modifying the report, it's best to disable auto-refresh temporarily (see [Module 03](../modules/module03.md) for information on configuring this setting). 
 
-For each report, modify the labels for each visual by renaming them. You can rename them by selecting the drop-down on each element on the visual and selecting *Rename for this visual*. Rename them similar to:
+For each report, modify the labels for each visual by renaming them. While renaming them obviously makes the report more readable in Power BI, this will also make them more readable in Data Activator. You can rename them by selecting the drop-down on each field, selecting *Rename for this visual*. Rename them similar to:
 
 * *sum of price* to *Price*
 * *timestamp* to *Timestamp* (on both reports)
 * *symbol* to *Symbol* (on both reports)
 * *avg of percentdifference_10min* to *Percent Change*
 
-Finally, we'll need to temporarily remove the Timestamp filter (set to display only the most recent 5 minutes) by clicking the *Clear filter* button on the filter. This is because Data Activator will pull report data once every hour; when the Reflex is configured, filters are also applied to the configuration. We want to make sure there's at least an hour of data for the Reflex; the filter can be added back after the Reflex is configured.  We'll include an example below of what happens when this isn't the case.
+Finally, we'll need to temporarily remove the Timestamp filter (set to display only the most recent 5 minutes) by clicking the *Clear filter* button on the filter. This is because Data Activator will pull report data once every hour; when the Reflex is configured, filters are also applied to the configuration. We want to make sure there's at least an hour of data for the Reflex; the filter can be added back after the Reflex is configured. We'll include an example below of what happens when this isn't the case.
 
 When complete, it should look similar to:
 
@@ -206,7 +206,7 @@ Finally, configure the *Act* to send an message, as done in the previous Reflex.
 
 ![Configure the notification](../images/module04/pbi-reflex-email.png)
 
-Finally, you can try to send a test alert by clicking the *Send me a test alert* button. If you are in a corporate or owned environment, you should be able to use your e-mail address. If you are in a sandbox lab environment, sending an e-mail will likely not be possible. However, when sending a test e-mail, the message is *always* sent to your (the logged in user) e-mail address, regardless of what is specified in the e-mail field. External recipients outside of the organization are not permitted.
+Finally, if your environment allows, you can send a test alert by clicking the *Send me a test alert* button. If you are in a corporate or owned environment, you should be able to use your e-mail address. If you are in a sandbox lab environment, sending an e-mail will likely not be possible. However, when sending a test e-mail, the message is *always* sent to your (the logged in user) e-mail address, regardless of what is specified in the e-mail field. External recipients outside of the organization are not permitted.
 
 ## 7. Optional: Configure new Reflexes
 
