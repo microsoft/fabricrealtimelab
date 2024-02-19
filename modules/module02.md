@@ -26,6 +26,7 @@ Prefer video content? These videos illustrate the content in this module:
 2. [New Query: StockByTime](#2-new-query-stockbytime)
 3. [New Query: StockAggregate](#3-new-query-stockaggregate)
 4. [New Query: StockBinned](#4-new-query-stockbinned)
+5. [New Query: Visualizations](#5-new-query-visualizations)
 
 ## 1. Create KQL Queryset: StockQueryset
 
@@ -125,7 +126,31 @@ StockPrice
 
 This is particularly useful when creating reports that aggregate real-time data over a longer time period.
 
-## :thinking: Tips
+## 5. New Query: Visualizations
+
+Create a final new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *Visualizations*. We'll use this tab to explore visualizing data.
+
+KQL supports a large number of [visualizations](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/render-operator?pivots=fabric) by using the *render* operator. Enter the query below, which is the same as the StockByTime query but with an additional *render* operation added:
+
+```text
+StockPrice
+| where timestamp > ago(75m)
+| project symbol, price, timestamp
+| partition by symbol
+(
+    order by timestamp asc
+    | extend prev_price = prev(price, 1)
+    | extend prev_price_10min = prev(price, 600)
+)
+| where timestamp > ago(60m)
+| order by timestamp asc, symbol asc
+| extend pricedifference_10min = round(price - prev_price_10min, 2)
+| extend percentdifference_10min = round(round(price - prev_price_10min, 2) / prev_price_10min, 4)
+| order by timestamp asc, symbol asc
+| render linechart with (series=symbol, xcolumn=timestamp, ycolumns=price)
+```
+
+## :bulb: Tips
 
 * Too much data? Consider adding a row limit filter, like 'take 1000', to limit the number of rows returned. Be sure to always limit to 500,000 rows if querying a large dataset, as that is the max rowcount for a KQL query.
 
@@ -137,6 +162,7 @@ This is particularly useful when creating reports that aggregate real-time data 
 * [KQL arg_max function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/arg-max-aggregation-function)
 * [KQL bin() function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/bin-function)
 * [MS Learn: Query data in a KQL queryset](https://learn.microsoft.com/en-us/fabric/real-time-analytics/kusto-query-set)
+* [KQL Visualizations](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/render-operator?pivots=fabric)
 
 Interested in going deeper with KQL? We will explore concepts in [the Extras](../modules/moduleex00.md) content. 
 

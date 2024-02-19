@@ -52,7 +52,7 @@ To create a Fabric capacity outside of a trial environment, create a new resourc
 
 ![Create Fabric Capacity](../images/module00/fabricmarketplace.png)
 
-On the Create Fabric capacity page, assign the capacity to a resource group in a region that is available to you or recommended by your proctor, and change the size to the smallest size to minimize costs.
+On the *Create Fabric* capacity page, assign the capacity to a resource group in a region that is available to you or recommended by your proctor, and change the size to the smallest size to minimize costs. If you are planning on completing all modules, the smallest size may not be sufficient -- consider using a larger instance, or scale temporarily as needed.
 
 ![Create Fabric Capacity](../images/module00/fabriccapacity.png)
 
