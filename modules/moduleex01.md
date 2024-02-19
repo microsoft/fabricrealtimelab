@@ -1,4 +1,4 @@
-# Module Ex-01 - KQL Queryset Improvements
+# Module Ex-01 - Advanced KQL 
 
 [< Previous Module](../modules/moduleex00.md) - **[Home](../README.md)** - [Next Module >](./moduleex02.md)
 
