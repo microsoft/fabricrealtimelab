@@ -44,5 +44,9 @@ Extras: [Additional Content and Continued Learning](./modules/moduleex00.md)
    * Ex-03: [Predicted vs Actual Reporting](./modules/moduleex03.md)
    * Ex-04: [Generate Custom Historical Data](./modules/moduleex04.md)
 
+## :laughing: Some comedic relief
+
+Names for the stocks and scenario were inspired by the iconic skit "Who's on First?" by Abbott and Costello. View this skit here: [Who's on First by Abbott and Costello (6:35)](https://www.youtube.com/watch?v=sYOUFGfK4bU)
+
 <div align="right"><a href="#fabric-real-time-workshop">↥ back to top</a></div>
 
