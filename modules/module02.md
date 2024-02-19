@@ -150,6 +150,10 @@ StockPrice
 | render linechart with (series=symbol, xcolumn=timestamp, ycolumns=price)
 ```
 
+This will render a line chart similar to:
+
+![KQL line chart](../images/module02/kql-linechart.png)
+
 ## :bulb: Tips
 
 * Too much data? Consider adding a row limit filter, like 'take 1000', to limit the number of rows returned. Be sure to always limit to 500,000 rows if querying a large dataset, as that is the max rowcount for a KQL query.

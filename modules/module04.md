@@ -97,7 +97,7 @@ Configure the *Average over time* to 10 minutes. In the upper right, set the tim
 
 The next step is to add a new trigger. In the top navigation bar, click the *New Trigger* button. When the new trigger page loads, change the name of the trigger to *Price Increase* and select the price as the property to monitor, as shown below.
 
-![Configure Trigger](../images/module04/eventstream-createtrigger.png)
+![Create Trigger](../images/module04/eventstream-createtrigger.png)
 
 Verify (and change if needed) the time window in the upper right is set to *Last Hour*. Notice that the *price* chart should retain the summarized view, averaging data in 10 minute intervals. In the *Detect* section, configure the type of detection to *Numeric* > *Increases by*. Set the type of increase to *Percentage*. Start with a value of about 5%, but you will need to modify this depending on the volatility of your data. Set this value to *From last measurement* and *Each time*, as shown below:
 
@@ -179,6 +179,10 @@ Under *Where to save*, use the following settings:
 * Workspace: RealTimeWorkspace (or the name of your workspace)
 * Item: Create a new reflex item
 * Item name: RealTimeStocksReflex
+
+This will look similar to:
+
+![Set an alert](../images/module04/pbi-set-an-alert.png)
 
 Uncheck *Start my alert* and click *Create alert*. After the Reflex is saved, the notification should include a link to edit the Reflex -- click the link to open the Reflex. The Reflex can also be opened from the workspace items list.
 
