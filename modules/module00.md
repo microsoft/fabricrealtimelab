@@ -52,7 +52,7 @@ To create a Fabric capacity outside of a trial environment, create a new resourc
 
 ![Create Fabric Capacity](../images/module00/fabricmarketplace.png)
 
-On the Create Fabric capacity page, assign the capacity to a resource group in a region that is available to you or recommended by your proctor, and change the size to the smallest size to minimize costs.
+On the *Create Fabric* capacity page, assign the capacity to a resource group in a region that is available to you or recommended by your proctor, and change the size to the smallest size to minimize costs. If you are planning on completing all modules, the smallest size may not be sufficient -- consider using a larger instance, or scale temporarily as needed.
 
 ![Create Fabric Capacity](../images/module00/fabriccapacity.png)
 
@@ -61,7 +61,7 @@ To learn more about Fabric capacities, visit this page:
 
 Next, we'll create the Workspace within our Fabric capacity. Workspaces are assigned to capacities and serve as logical groupings for collaboration. We'll create a workspace within Fabric to house all of the artifacts for this workshop. 
 
-In the [Fabric portal](https://app.fabric.microsoft.com/), click on Workspaces in the left nav and create a new workspace called RealTimeWorkspace.
+In the [Fabric portal](https://app.fabric.microsoft.com/), click on *Workspaces* in the left nav and create a new workspace called RealTimeWorkspace. You can use whatever name you'd like (provided it is available in your environment), but be sure to substitute your workspace name throughout the lab, if needed, as all items are assumed to be in the same workspace.
 
 ![Create Fabric Workspace](../images/module00/createworkspace.png)
 

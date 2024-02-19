@@ -25,7 +25,8 @@ In this module, you'll create a simple report that shows predicted vs actual val
 2. [Build the lakehouse views](#2-build-the-lakehouse-views)
 3. [Build a semantic model](#3-build-a-semantic-model)
 4. [Alter the model settings](#4-alter-the-model-settings)
-5. [Next steps](#5-next-steps)
+5. [Create a new report](#5-create-a-new-report)
+5. [Next steps](#6-next-steps)
 
 ## 1. Mashing up the data
 
@@ -148,7 +149,7 @@ If you prefer more of a 'dashboard' style that shows multiple stocks, you can co
 
 ![Completed Report](../images/moduleex/moduleex03/report2.png)
 
-## 5. Next steps
+## 6. Next steps
 
 With the initial report created, we can consider several next steps:
 

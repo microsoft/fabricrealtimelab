@@ -13,7 +13,7 @@
 
 ## :loudspeaker: Introduction
 
-Now that our data is streaming into our KQL database, we can begin to query and explore the data, leveraging KQL to gain insights into the data. A KQL Queryset is used to run queries, view, and transform data from a KQL database. Like other artifacts, a KQL Queryset exists within the context of a workspace. A queryset can contain multiple queries, each stored in a tab.
+Now that our data is streaming into our KQL database, we can begin to query and explore the data, leveraging KQL to gain insights into the data. A KQL queryset is used to run queries, view, and transform data from a KQL database. Like other artifacts, a KQL queryset exists within the context of a workspace. A queryset can contain multiple queries, each stored in a tab.
 
 In this module, we'll create several KQL queries of increasing complexity to support different business uses.
 
@@ -22,17 +22,19 @@ Prefer video content? These videos illustrate the content in this module:
 
 ## Table of Contents
 
-1. [Create KQL Queryset: StockQueryset](#1-create-kql-queryset-stockbytime)
-2. [Query recent prices](#2-query-recent-prices)
-3. [Calculate biggest price changes and time change occurred](#3-calculate-biggest-price-changes-and-time-change-occurred)
+1. [Create KQL queryset: StockQueryset](#1-create-kql-queryset-stockqueryset)
+2. [New Query: StockByTime](#2-new-query-stockbytime)
+3. [New Query: StockAggregate](#3-new-query-stockaggregate)
+4. [New Query: StockBinned](#4-new-query-stockbinned)
+5. [New Query: Visualizations](#5-new-query-visualizations)
 
-## 1. Create KQL Queryset: StockQueryset
+## 1. Create KQL queryset: StockQueryset
 
-A KQL Queryset is used to run queries, view, and transform data from a KQL database. Like other artifacts, a KQL Queryset exists within the context of a workspace.
+A KQL queryset is used to run queries, view, and transform data from a KQL database. Like other artifacts, a KQL queryset exists within the context of a workspace.
 
 From your workspace, click *New* > *KQL Queryset*, and enter *StockQueryset* as the name. Select the *StockDB* from the list of available databases. The KQL query window will open, allowing us to query the data.
 
-![KQL Queryset](../images/module02/kqlqueryset-create.png)
+![KQL queryset](../images/module02/kqlqueryset-create.png)
 
 The default query code will look similar to the code below, and contains 3 distinct KQL queries. You may see *YOUR_TABLE_HERE* instead of the *StockPrice* table -- to try this query, replace the table name if necessary. We'll also add a semicolon at the end of each statement; this allows us to run multiple queries in one request:
 
@@ -52,52 +54,69 @@ StockPrice
 
 To run a single query when there are multiple queries in the editor, you can highlight the query text or place your cursor so the cursor is in the context of the query (for example, at the beginning or end of the query) -- the current query should highlight in blue. To run the query, click *Run* in the toolbar. If you'd like to run all 3 to display the results in 3 different tables, each query will need to have a semicolon (;) after the statement, as shown below. Select all of the text, and click *Run*:  
 
-![KQL Queryset](../images/module02/kqlqueryset-runmultiple.png)
+![KQL queryset](../images/module02/kqlqueryset-runmultiple.png)
 
 ## 2. New Query: StockByTime
 
 Create a new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *StockByTime*.
 
-![KQL Queryset](../images/module02/kqlqueryset-newtab.png)
+![KQL queryset](../images/module02/kqlqueryset-newtab.png)
 
-We can begin to add our own calculations, such as calculating the change over time. For example, the [prev()](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/prevfunction) function, a type of windowing function, allows us to look at values from previous rows; we can use this to calculate the change in price.
+We can begin to add our own calculations, such as calculating the change over time. For example, the [prev()](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/prevfunction) function, a type of windowing function, allows us to look at values from previous rows; we can use this to calculate the change in price. In addition, because the previous price values are stock symbol specific, we can [partition](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/partition-operator) the data when making calculations.
 
 Try the following query and observe the results.
 
 ```text
 StockPrice
+| where timestamp > ago(75m)
+| project symbol, price, timestamp
+| partition by symbol
+(
+    order by timestamp asc
+    | extend prev_price = prev(price, 1)
+    | extend prev_price_10min = prev(price, 600)
+)
 | where timestamp > ago(60m)
 | order by timestamp asc, symbol asc
-| extend pricedifference = round(price - prev(price, 8), 2)
-| extend percentdifference = round(round(price - prev(price, 8), 2) / prev(price, 8), 4)
-| serialize previousprice = prev(price,8,0)
+| extend pricedifference_10min = round(price - prev_price_10min, 2)
+| extend percentdifference_10min = round(round(price - prev_price_10min, 2) / prev_price_10min, 4)
+| order by timestamp asc, symbol asc
 ```
 
-In this KQL query, the results are limited to rows within the last 60 minutes, which is sufficient for our real time dashboard.
+In this KQL query, the results are first limited to the most recent 75 minutes. While we ultimately limit the rows to the last 60 minutes, our initial dataset needs enough data to lookup previous values. The data is then partitioned to group the data by symbol, and we look at the previous price (from 1 second ago) as well as the previous price from 10 minutes ago. Note that this query assumes data is generated at 1 second intervals. For the purposes of our data, subtle fluctuations are acceptable. However, if you need precision in these calculations (such as exactly 10 minutes ago and not 9:59 or 10:01), you'd need to approach this differently.
 
-The previous price is calculated by looking at the previous row of the same symbol (8 rows earlier). This requires the data is *serialized* so the order of the data is guaranteed, as required when using functions like *prev()* or *next()*. However, because we are using an *order by*, the data is automatically serialized so using the *serialize* keyword is not strictly required, but is a good idea for clarity.
+> :bulb: **Are some columns empty?**
+> If you're a fast user, you might get to this query before enough data has been collected to calculate 10 minute averages. As you scroll through the query, you should see more data being populated once enough data has been collected.
 
 ## 3. New Query: StockAggregate
 
 Create another new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *StockAggregate*.
 
-This query will find the biggest price difference to find out the biggest price difference for each stock, and the time it occurred. 
+This query will find the biggest price gains over a 10 minute period for each stock, and the time it occurred. This query uses the [summarize](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/summarizeoperator) operator, which produces a table that aggregates the input table into groups based on the specified parameters (in this case, *symbol*), while [arg_max](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/arg-max-aggregation-function) returns the greatest value.
 
- To do this, we can use the [summarize](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/summarizeoperator) operator, which produces a table that aggregates the input table into groups based on the specified parameters. 
+If you just started the lab, consider rerunning this query later to observe the changes. 
 
 ```text
- StockPrice
+StockPrice
+| project symbol, price, timestamp
+| partition by symbol
+(
+    order by timestamp asc
+    | extend prev_price = prev(price, 1)
+    | extend prev_price_10min = prev(price, 600)
+)
 | order by timestamp asc, symbol asc
-| extend pricedifference = round(price - prev(price, 8), 2)
-| extend percentdifference = round(round(price - prev(price, 8), 2) / prev(price, 8), 4)
-| summarize arg_max(pricedifference, timestamp, price) by symbol
+| extend pricedifference_10min = round(price - prev_price_10min, 2)
+| extend percentdifference_10min = round(round(price - prev_price_10min, 2) / prev_price_10min, 4)
+| order by timestamp asc, symbol asc
+| summarize arg_max(pricedifference_10min, *) by symbol
 ```
 
-## 3. New Query: StockBinned
+## 4. New Query: StockBinned
 
 Create another new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *StockBinned*.
 
-KQL also has a *bin()* function, which can be used to bucket results based on the bin parameter -- in this case, by specifying a timestamp of 1 hour, the result is aggregated for each hour. The time period can be set to minute, hour, day, and so on. 
+KQL also has a [bin() function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/bin-function), which can be used to bucket results based on the bin parameter -- in this case, by specifying a timestamp of 1 hour, the result is aggregated for each hour. The time period can be set to minute, hour, day, and so on. 
 
 ```text
 StockPrice
@@ -107,59 +126,56 @@ StockPrice
 
 This is particularly useful when creating reports that aggregate real-time data over a longer time period.
 
-## 3. New Query: StockWithAverages
+## 5. New Query: Visualizations
 
-Create another new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *StockWithAverages*.
+Create a final new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *Visualizations*. We'll use this tab to explore visualizing data.
 
-In KQL, the *let* statement is used to assign a expression or value to a variable. This is useful for breaking up a complex expression, for readability, or for supporting subqueries. Copy the example below into the editor. To run, be sure to highlight all of the text (both queries), otherwise only one query will run. 
-
-The first query calculates the average of the stocks over the last 1 hour, and assigns it to a variable called *AvgPrices*. Note that this time window, 1 hour, is configurable. 
-
-The second query is intended for our real-time dashboard. Here, we grab the latest data (we use 15 minutes to constrain the results), and join this to the *AvgPrices*. We can then calculate whether our stock is moving up or down from its low, high, or average price. As you might imagine, we could expand this further to get views over multiple periods, such as 1 minute, 1 hour, and 1 day.
+KQL supports a large number of [visualizations](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/render-operator?pivots=fabric) by using the *render* operator. Run the query below, which is the same as the StockByTime query but with an additional *render* operation added:
 
 ```text
-let AvgPrices = 
 StockPrice
-| where timestamp > ago(1h)
-| summarize 
-    minperiodprice=arg_min(price,*), 
-    maxperiodprice=arg_max(price,*),
-    avgperiodprice=round(avg(price),2) by symbol
-| project symbol, timestamp, avgperiodprice, minperiodprice, maxperiodprice;
-
-StockPrice
-| where timestamp > ago(15m)
+| where timestamp > ago(75m)
+| project symbol, price, timestamp
+| partition by symbol
+(
+    order by timestamp asc
+    | extend prev_price = prev(price, 1)
+    | extend prev_price_10min = prev(price, 600)
+)
+| where timestamp > ago(60m)
 | order by timestamp asc, symbol asc
-| join kind=inner AvgPrices on symbol
-| extend minperiodpercentdifference = round((price - minperiodprice) / minperiodprice, 4)
-| extend maxperiodpercentdifference = round((price - maxperiodprice) / maxperiodprice, 4)
-| extend avgperiodpercentdifference = round((price - avgperiodprice) / avgperiodprice, 4)
-| project timestamp, symbol, price,
-    minperiodprice, minperiodpercentdifference,
-    maxperiodprice, maxperiodpercentdifference, 
-    avgperiodprice, avgperiodpercentdifference
+| extend pricedifference_10min = round(price - prev_price_10min, 2)
+| extend percentdifference_10min = round(round(price - prev_price_10min, 2) / prev_price_10min, 4)
+| order by timestamp asc, symbol asc
+| render linechart with (series=symbol, xcolumn=timestamp, ycolumns=price)
 ```
 
-## :thinking: Tips
+This will render a line chart similar to:
 
-* Too much data? Consider adding a row limit filter, like 'take 1000', to limit the number of rows returned.
+![KQL line chart](../images/module02/kql-linechart.png)
+
+## :bulb: Tips
+
+* Too much data? Consider adding a row limit filter, like 'take 1000', to limit the number of rows returned. Be sure to always limit to 500,000 rows if querying a large dataset, as that is the max rowcount for a KQL query.
 
 ## :thinking: Additional Learning
 
-* [KQL prev() function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/prevfunction)
+* [KQL prev function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/prevfunction)
+* [KQL partition operator](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/partition-operator) 
 * [KQL summarize operator](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/summarizeoperator)
+* [KQL arg_max function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/arg-max-aggregation-function)
+* [KQL bin() function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/bin-function)
 * [MS Learn: Query data in a KQL queryset](https://learn.microsoft.com/en-us/fabric/real-time-analytics/kusto-query-set)
+* [KQL Visualizations](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/render-operator?pivots=fabric)
 
-
-While this query is quick and effective, there are other ways to approach aggregation and look-back. We'll revisit this in our add-ons in [the Extras](../modules/moduleex00.md) content. 
-
+Interested in going deeper with KQL? We will explore concepts in [the Extras](../modules/moduleex00.md) content. 
 
 ## :tada: Summary
 
-In this exercise, you create several KQL Querysets to explore the data. Moreover, these Querysets will serve as filters and transformations of the data to feed into the reports we will create in the next module.
+In this exercise, you created several KQL queries to explore the data. Moreover, these queries will serve as filters and transformations of the data to feed into the reports we will create in the next module.
 
 ## :white_check_mark: Results
 
-- [x] Queried the data using KQL
+- [x] Created KQL queryset, and queried the data using KQL using various KQL functions and operators
 
 [Continue >](./module03.md)

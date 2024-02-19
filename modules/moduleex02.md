@@ -21,7 +21,6 @@ KQL is a powerful tool for data aggregation; using KQL, we can aggregate data to
 
 1. [Build a KQL aggregation query](#1-build-a-kql-aggregation-query)
 2. [Build a new dashboard](#2-build-a-new-dashboard)
-3. [One More KQL Tip - Bin](#3-one-more-kql-tip---bin)
 
 ## 1. Build a KQL aggregation query
 
@@ -107,36 +106,6 @@ This can be repeated for table, gauge, and stacked bar visuals -- and of course,
 ![Completed Report](../images/moduleex/moduleex02/completedreport.png)
 
 All that is left is to configure the report to auto-refresh every second or two, and you've built a handy real-time report!
-
-## 3. One More KQL Tip - Bin
-
-In this step, let's look at one more fundamental aggregation KQL statement: [the bin function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/binfunction).
-
-To capstone some common KQL statements, functions, and operators, the *bin* function allows us to create groups of a given size as specified by the bin parameters. This is especially powerful with *datetime* and *timespan* types, as we can combine this with the *summarize* operator to create broader views of our data. 
-
-For example, our stock data has per-second precision -- useful for our real-time dashboard but too much data for most reports. Suppose we'd like to aggregate this into broader groups, such as days, hours, or even minutes. Further, let's make an assumption that the last price on each day (likely 23:59:59 for our data) will serve as our "closing price." 
-
-To get the closing price for each day, we can build off our previous query and add a bin, like this:
-
-```text
-StockPrice
-| summarize arg_max(timestamp,*) by bin(timestamp, 1d), symbol
-| project symbol, price, timestamp
-,previousprice = 0.00
-,pricedifference = 0.00
-,percentdifference = 0.00
-| partition hint.strategy=native by symbol
-  (
-    order by timestamp asc 
-    | scan with (step s output=all: true => previousprice = s.price;)
-  )
-| project timestamp, symbol, price, previousprice
-    ,pricedifference = round((price-previousprice),2)
-    ,percentdifference = round((price-previousprice)/previousprice,4)
-| order by timestamp asc, symbol asc
-```
-
-This query should look very similar to our earlier real-time query, but leverages the *summarize* and *bin* statements to group the data by day and symbol. The result is the closing price for each stock price per day. We can also add min/max/avg prices as needed.
 
 ## :books: Resources
 
