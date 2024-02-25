@@ -16,11 +16,11 @@
         "printonlyerrors": "0",
         "usegrowthrate": "1",
         "usemanagedidentity": "1",
-        "warmuphours": "0",
+        "warmuphours": "8",
         "containerName": "stockgenerator",
         "eventHubName": "stockeventhub",
         "location": "[resourceGroup().location]",
-        "randomString": "[substring(guid(resourceGroup().id), 0, 6)]",
+        "randomString": "[parameters('className')]",
         "namespaceName": "fabricworkshop",
         "fullnamespace": "[format('ehns-{0}-{1}', variables('randomString'), variables('namespaceName'))]",
         "eventHubFQNS": "[format('{0}.servicebus.windows.net', variables('fullnamespace'))]",
@@ -31,8 +31,12 @@
     "parameters": {
         "consumerGroupCount": {
             "type": "int",
-            "defaultValue": 10
-    }
+            "defaultValue": 25
+        },
+        "className": {
+            "type": "string",
+            "defaultValue": "classworkshop"
+        }
     },
     "resources": [
         {
@@ -65,8 +69,7 @@
             ],
             "properties": {
                 "rights": [
-                    "Listen",
-                    "Send"
+                    "Listen"
                 ]
             }
         },
@@ -81,10 +84,10 @@
             "properties": {
                 "retentionDescription": {
                     "cleanupPolicy": "Delete",
-                    "retentionTimeInHours": 1
+                    "retentionTimeInHours": 2
                 },
                 "messageRetentionInDays": 1,
-                "partitionCount": 2,
+                "partitionCount": 4,
                 "status": "Active"
             }
         },
