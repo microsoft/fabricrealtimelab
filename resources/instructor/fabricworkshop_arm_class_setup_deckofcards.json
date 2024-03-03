@@ -8,24 +8,29 @@
         "stockdebuginfo": "0",
         "printonlyerrors": "0",
         "usegrowthrate": "1",
-        "usemanagedidentity": "0",
-        "warmuphours": "0",
+        "usemanagedidentity": "1",
+        "warmuphours": "16",
         "containerName": "stockgenerator",
         "eventHubName": "stockeventhub",
         "location": "[resourceGroup().location]",
-        "randomString": "[substring(guid(resourceGroup().id), 0, 6)]",
+        "randomString": "[parameters('className')]",
         "namespaceName": "fabricworkshop",
         "fullnamespace": "[format('ehns-{0}-{1}', variables('randomString'), variables('namespaceName'))]",
         "eventHubFQNS": "[format('{0}.servicebus.windows.net', variables('fullnamespace'))]",
         "fullcontainername": "[format('aci-{0}-{1}', variables('randomString'), variables('containerName'))]",
         "defaultSASKeyName": "stockeventhub_sas",
-        "authRuleResourceId": "[resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('fullnamespace'), variables('defaultSASKeyName'))]"
+        "consumerGroupNames": "user"
     },
-    "outputs": {
-        "PrimaryConnectionString": {
+    "parameters": {
+        "className": {
             "type": "string",
-            "value": "[listkeys(variables('authRuleResourceId'), '2017-04-01').primaryConnectionString]"
-        }
+            "defaultValue": "classworkshop"
+        },
+        "cardNames": {
+            "type": "array",
+            "defaultValue": ["02","03","04","05","06","07","08","09","10","Jack","Queen","King","Ace"
+            ]
+          }
     },
     "resources": [
         {
@@ -34,8 +39,8 @@
             "name": "[variables('fullnamespace')]",
             "location": "[variables('location')]",
             "sku": {
-                "name": "Basic",
-                "tier": "Basic",
+                "name": "Premium",
+                "tier": "Premium",
                 "capacity": 1
             },
             "properties": {
@@ -58,8 +63,7 @@
             ],
             "properties": {
                 "rights": [
-                    "Listen",
-                    "Send"
+                    "Listen"
                 ]
             }
         },
@@ -74,7 +78,7 @@
             "properties": {
                 "retentionDescription": {
                     "cleanupPolicy": "Delete",
-                    "retentionTimeInHours": 1
+                    "retentionTimeInHours": 2
                 },
                 "messageRetentionInDays": 1,
                 "partitionCount": 2,
@@ -98,10 +102,87 @@
             }
         },
         {
+            "copy": {
+                "name": "cardNameCopy-Spades",
+                "count": "[length(parameters('cardNames'))]"
+              },
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}/{2}-of-spades', variables('fullnamespace'), variables('eventHubName'), parameters('cardNames')[copyIndex()])]",
+            "properties": {
+            "userMetadata": "Consumer group for stock generator"
+            },
+            "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ]
+        },
+        {
+            "copy": {
+                "name": "cardNameCopy-Clubs",
+                "count": "[length(parameters('cardNames'))]"
+              },
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}/{2}-of-clubs', variables('fullnamespace'), variables('eventHubName'), parameters('cardNames')[copyIndex()])]",
+            "properties": {
+            "userMetadata": "Consumer group for stock generator"
+            },
+            "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ]
+        }, 
+        {
+            "copy": {
+                "name": "cardNameCopy-Hearts",
+                "count": "[length(parameters('cardNames'))]"
+              },
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}/{2}-of-hearts', variables('fullnamespace'), variables('eventHubName'), parameters('cardNames')[copyIndex()])]",
+            "properties": {
+            "userMetadata": "Consumer group for stock generator"
+            },
+            "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ]
+        },
+        {
+            "copy": {
+                "name": "cardNameCopy-Diamonds",
+                "count": "[length(parameters('cardNames'))]"
+              },
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}/{2}-of-diamonds', variables('fullnamespace'), variables('eventHubName'), parameters('cardNames')[copyIndex()])]",
+            "properties": {
+            "userMetadata": "Consumer group for stock generator"
+            },
+            "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2020-04-01-preview",
+            "name": "[guid(resourceGroup().id, variables('fullcontainerName'))]",
+            "properties": {
+                "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'f526a384-b230-433a-b45c-95f59c4a2dec')]",
+                "principalId": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups', variables('fullcontainerName')),'2023-05-01', 'full').identity.principalId]",
+                "principalType": "ServicePrincipal",
+                "scope": "[resourceGroup().id]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('fullcontainerName'))]"
+            ]
+        },
+        {
             "type": "Microsoft.ContainerInstance/containerGroups",
             "apiVersion": "2023-05-01",
             "name": "[variables('fullcontainerName')]",
             "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
             "dependsOn": [
                 "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
             ],
@@ -125,7 +206,7 @@
                                 },
                                 {
                                     "name": "EVENTHUBCONNECTIONSTRING",
-                                    "value": "[listkeys(variables('authRuleResourceId'), '2017-04-01').primaryConnectionString]"
+                                    "value": "NotNeededForManagedIdentity"
                                 },
                                 {
                                     "name": "EVENTHUBFQNS",
