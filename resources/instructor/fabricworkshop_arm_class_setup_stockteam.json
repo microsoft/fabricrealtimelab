@@ -1,0 +1,247 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "variables": {
+        "stocks":"{\"stocks\": [{\"name\":\"WHO\",\"startprice\":600,\"minprice\":100,\"maxprice\":1200,\"mu\":0.04,\"sigma\":0.9,\"correctionchance\":0.01,\"correctionlength\":60,\"correctionmodifier\":0.4,\"increasechance0-20\":0.510,\"increasechance20-40\":0.505,\"increasechance40-60\":0.500,\"increasechance60-80\":0.484,\"increasechance80-100\":0.442,\"annualgrowthrate\":0.08},{\"name\":\"WHAT\",\"startprice\":500,\"minprice\":50,\"maxprice\":1050,\"mu\":0.04,\"sigma\":0.8,\"correctionchance\":0.01,\"correctionlength\":60,\"correctionmodifier\":0.4,\"increasechance0-20\":0.510,\"increasechance20-40\":0.502,\"increasechance40-60\":0.500,\"increasechance60-80\":0.481,\"increasechance80-100\":0.442,\"annualgrowthrate\":0.07},{\"name\":\"IDK\",\"startprice\":500,\"minprice\":100,\"maxprice\":1100,\"mu\":0.04,\"sigma\":0.9,\"correctionchance\":0.01,\"correctionlength\":60,\"correctionmodifier\":0.4,\"increasechance0-20\":0.535,\"increasechance20-40\":0.540,\"increasechance40-60\":0.520,\"increasechance60-80\":0.500,\"increasechance80-100\":0.475,\"annualgrowthrate\":0.065},{\"name\":\"WHY\",\"startprice\":550,\"minprice\":25,\"maxprice\":1200,\"mu\":0.04,\"sigma\":0.9,\"correctionchance\":0.01,\"correctionlength\":60,\"correctionmodifier\":0.4,\"increasechance0-20\":0.515,\"increasechance20-40\":0.515,\"increasechance40-60\":0.503,\"increasechance60-80\":0.480,\"increasechance80-100\":0.442,\"annualgrowthrate\":-0.02},{\"name\":\"BCUZ\",\"startprice\":300,\"minprice\":5,\"maxprice\":950,\"mu\":0.03,\"sigma\":0.7,\"correctionchance\":0.01,\"correctionlength\":60,\"correctionmodifier\":0.4,\"increasechance0-20\":0.520,\"increasechance20-40\":0.510,\"increasechance40-60\":0.505,\"increasechance60-80\":0.500,\"increasechance80-100\":0.465,\"annualgrowthrate\":0.06},{\"name\":\"TMRW\",\"startprice\":500,\"minprice\":50,\"maxprice\":1100,\"mu\":0.07,\"sigma\":1.0,\"correctionchance\":0.01,\"correctionlength\":60,\"correctionmodifier\":0.4,\"increasechance0-20\":0.530,\"increasechance20-40\":0.520,\"increasechance40-60\":0.515,\"increasechance60-80\":0.502,\"increasechance80-100\":0.430,\"annualgrowthrate\":0.052},{\"name\":\"TDY\",\"startprice\":700,\"minprice\":225,\"maxprice\":1250,\"mu\":0.07,\"sigma\":1.0,\"correctionchance\":0.01,\"correctionlength\":60,\"correctionmodifier\":0.4,\"increasechance0-20\":0.530,\"increasechance20-40\":0.520,\"increasechance40-60\":0.515,\"increasechance60-80\":0.502,\"increasechance80-100\":0.430,\"annualgrowthrate\":0.02},{\"name\":\"IDGD\",\"startprice\":500,\"minprice\":50,\"maxprice\":1050,\"mu\":0.04,\"sigma\":0.8,\"correctionchance\":0.01,\"correctionlength\":60,\"correctionmodifier\":0.4,\"increasechance0-20\":0.503,\"increasechance20-40\":0.500,\"increasechance40-60\":0.496,\"increasechance60-80\":0.492,\"increasechance80-100\":0.451,\"annualgrowthrate\":0.055}]}",
+        "events":"{\"events\": [{\"type\": \"periodic\", \"name\": \"900-up\", \"frequency\":900, \"increasechance\":1.0, \"duration\": 60, \"modifier\": 0.5},{\"type\": \"periodic\", \"name\": \"5220-down\", \"frequency\":5220, \"increasechance\":0.0, \"duration\": 30, \"modifier\": 0.5},{\"type\": \"random\", \"name\": \"Rando1\", \"frequency\": 0.003, \"increasechance\": 0.504, \"duration\": 30, \"modifier\": 0.4}]}",
+        "timers":"{\"timers\": [{\"name\": \"Workdays\", \"start\":\"08:00:00\", \"end\":\"18:00:00\", \"days\":\"0|1|2|3|4\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":0.0004, \"appliedTo\": \"WHO|WHAT|IDK|WHY|BCUZ|TMRW|TDY|IDGD\"}, {\"name\": \"Evening Decline\", \"start\":\"22:00:00\", \"end\":\"23:59:59\", \"days\":\"0|1|2|3|4|5|6\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":-0.03, \"appliedTo\": \"WHO|WHAT|IDK|WHY|IDGD\"}, {\"name\": \"Morning Rise\", \"start\":\"04:00:00\", \"end\":\"06:00:00\", \"days\":\"0|1|2|3|4|5|6\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":0.0003, \"appliedTo\": \"WHO|WHAT|IDK|WHY|BCUZ|TMRW|TDY|IDGD\"}, {\"name\": \"ET Business Hours MWF\", \"start\":\"14:00:00\", \"end\":\"22:00:00\", \"days\":\"0|2|4\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":0.04, \"appliedTo\": \"WHO|WHAT|WHY\"}, {\"name\": \"WHO Fridays\", \"start\":\"14:00:00\", \"end\":\"22:00:00\", \"days\":\"4\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":-0.06, \"appliedTo\": \"WHO\"}, {\"name\": \"GMT Business Hours M-F\", \"start\":\"08:00:00\", \"end\":\"17:00:00\", \"days\":\"0|1|2|3|4\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":0.015, \"appliedTo\": \"TMRW|TDY\"},  {\"name\": \"Weekend Slide\", \"start\":\"00:00:00\", \"end\":\"23:59:59\", \"days\":\"5|6\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":-0.012, \"appliedTo\": \"TMRW|TDY\"}, {\"name\": \"GMT Business Hours M\", \"start\":\"07:00:00\", \"end\":\"18:00:00\", \"days\":\"0\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":0.025, \"appliedTo\": \"TMRW|TDY\"}, {\"name\": \"Lunch Slump\", \"start\":\"12:00:00\", \"end\":\"13:00:00\", \"days\":\"0|1|2|3|4\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":-0.01, \"appliedTo\": \"WHO|WHAT|IDK|WHY|IDGD\"}, {\"name\": \"Hour of Darkness\", \"start\":\"01:00:00\", \"end\":\"02:00:00\", \"days\":\"0|1|2|3|4|5|6\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":-0.055, \"appliedTo\": \"IDGD\"}, {\"name\": \"Happy Wednesdays\", \"start\":\"01:00:00\", \"end\":\"23:00:00\", \"days\":\"2\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":0.035, \"appliedTo\": \"IDGD\"}, {\"name\": \"BCUZ Weekends\", \"start\":\"00:00:00\", \"end\":\"23:59:59\", \"days\":\"5|6\", \"dayofmonth\":\"all\", \"months\":\"1|2|3|4|5|6|7|8|9|10|11|12\", \"modifier\":0.026, \"appliedTo\": \"BCUZ\"}]}",
+        "stockdebuginfo": "0",
+        "printonlyerrors": "0",
+        "usegrowthrate": "1",
+        "usemanagedidentity": "1",
+        "warmuphours": "16",
+        "containerName": "stockgenerator",
+        "eventHubName": "stockeventhub",
+        "location": "[resourceGroup().location]",
+        "randomString": "[parameters('className')]",
+        "namespaceName": "fabricworkshop",
+        "fullnamespace": "[format('ehns-{0}-{1}', variables('randomString'), variables('namespaceName'))]",
+        "eventHubFQNS": "[format('{0}.servicebus.windows.net', variables('fullnamespace'))]",
+        "fullcontainername": "[format('aci-{0}-{1}', variables('randomString'), variables('containerName'))]",
+        "defaultSASKeyName": "stockeventhub_sas",
+        "consumerGroupNames": "user"
+    },
+    "parameters": {
+        "consumerGroupCount": {
+            "type": "int",
+            "defaultValue": 25
+        },
+        "className": {
+            "type": "string",
+            "defaultValue": "classworkshop"
+        },
+        "teamNames": {
+            "type": "array",
+            "defaultValue": ["WHO","WHAT","IDK","WHY","BCUZ","TMRW","TDY", "IDGD"]
+          }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.EventHub/namespaces",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[variables('fullnamespace')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Premium",
+                "tier": "Premium",
+                "capacity": 1
+            },
+            "properties": {
+                "minimumTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "disableLocalAuth": false,
+                "zoneRedundant": true,
+                "isAutoInflateEnabled": false,
+                "maximumThroughputUnits": 0,
+                "kafkaEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/authorizationrules",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}', variables('fullnamespace'), variables('defaultSASKeyName'))]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', variables('fullnamespace'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/eventhubs",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}', variables('fullnamespace'), variables('eventHubName'))]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', variables('fullnamespace'))]"
+            ],
+            "properties": {
+                "retentionDescription": {
+                    "cleanupPolicy": "Delete",
+                    "retentionTimeInHours": 2
+                },
+                "messageRetentionInDays": 1,
+                "partitionCount": 2,
+                "status": "Active"
+            }
+        },
+        {
+            "type": "Microsoft.EventHub/namespaces/networkrulesets",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/default', variables('fullnamespace'))]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces', variables('fullnamespace'))]"
+            ],
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "defaultAction": "Allow",
+                "virtualNetworkRules": [],
+                "ipRules": [],
+                "trustedServiceAccessEnabled": false
+            }
+        },
+        {
+            "copy": {
+                "name": "consumerGroupCopy-Alpha",
+                "count": "[length(range(1, parameters('consumerGroupCount')))]"
+            },
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}/Alpha-{2:D2}', variables('fullnamespace'), variables('eventHubName'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
+            "properties": {
+            "userMetadata": "Consumer group for stock generator"
+            },
+            "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ]
+        },
+        {
+            "copy": {
+                "name": "consumerGroupCopy-Bravo",
+                "count": "[length(range(1, parameters('consumerGroupCount')))]"
+            },
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}/Bravo-{2:D2}', variables('fullnamespace'), variables('eventHubName'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
+            "properties": {
+            "userMetadata": "Consumer group for stock generator"
+            },
+            "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2020-04-01-preview",
+            "name": "[guid(resourceGroup().id, variables('fullcontainerName'))]",
+            "properties": {
+                "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'f526a384-b230-433a-b45c-95f59c4a2dec')]",
+                "principalId": "[reference(resourceId('Microsoft.ContainerInstance/containerGroups', variables('fullcontainerName')),'2023-05-01', 'full').identity.principalId]",
+                "principalType": "ServicePrincipal",
+                "scope": "[resourceGroup().id]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('fullcontainerName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ContainerInstance/containerGroups",
+            "apiVersion": "2023-05-01",
+            "name": "[variables('fullcontainerName')]",
+            "location": "[variables('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ],
+            "properties": {
+                "sku": "Standard",
+                "containers": [
+                    {
+                        "name": "[variables('fullcontainerName')]",
+                        "properties": {
+                            "image": "realtimelab.azurecr.io/realtimegenerator:v6",
+                            "ports": [
+                                {
+                                    "protocol": "TCP",
+                                    "port": 80
+                                }
+                            ],
+                            "environmentVariables": [
+                                {
+                                    "name": "EVENTHUBNAME",
+                                    "value": "[variables('eventHubName')]"
+                                },
+                                {
+                                    "name": "EVENTHUBCONNECTIONSTRING",
+                                    "value": "NotNeededForManagedIdentity"
+                                },
+                                {
+                                    "name": "EVENTHUBFQNS",
+                                    "value": "[variables('eventHubFQNS')]"
+                                },
+                                {
+                                    "name": "USEMANAGEDIDENTITY",
+                                    "value": "[variables('usemanagedidentity')]"
+                                },
+                                {
+                                    "name": "WARMUPHOURS",
+                                    "value": "[variables('warmuphours')]"
+                                },
+                                {
+                                    "name": "STOCKS",
+                                    "value": "[variables('stocks')]"
+                                },
+                                {
+                                    "name": "EVENTS",
+                                    "value": "[variables('events')]"
+                                },
+                                {
+                                    "name": "TIMERS",
+                                    "value": "[variables('timers')]"
+                                },
+                                {
+                                    "name": "EXTENDEDSTOCKINFO",
+                                    "value": "[variables('stockdebuginfo')]"
+                                },
+                                {
+                                    "name": "PRINTONLYERRORS",
+                                    "value": "[variables('printonlyerrors')]"
+                                },
+                                {
+                                    "name": "USEGROWTHRATE",
+                                    "value": "[variables('usegrowthrate')]"
+                                }
+                            ],
+                            "resources": {
+                                "requests": {
+                                    "memoryInGB": 1,
+                                    "cpu": 1
+                                }
+                            }
+                        }
+                    }
+                ],
+                "initContainers": [],
+                "restartPolicy": "OnFailure",
+                "ipAddress": {
+                    "ports": [
+                        {
+                            "protocol": "TCP",
+                            "port": 80
+                        }
+                    ],
+                    "ip": "20.14.36.176",
+                    "type": "Public"
+                },
+                "osType": "Linux"
+            }
+        }
+    ]
+    
+}
