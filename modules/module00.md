@@ -16,23 +16,27 @@ Depending on the deployment method, you may also need:
 
 ## :loudspeaker: Introduction
 
-In order to follow along with the workshop exercises, a set of resources will need to be provisioned. At the heart of the scenario is the real-time stock price generator script that generates a continuous stream of stock prices that are used throughout the workshop. There are two ways to deploy this application:
+In order to follow along with the workshop exercises, a set of resources will need to be provisioned. At the heart of the scenario is the real-time stock price generator script that generates a continuous stream of stock prices that are used throughout the workshop. There are three ways this application may be deployed:
 
 * Option 1 - Deploy the app via Jupyter notebook
 * Option 2 - Deploy the app via Azure Container Instance
+* Option 3 - Instructor-led Shared Environment
 
-When possible, we recommend deploying the stock price generator via Azure Container Instance (option 2). This is because the default Spark cluster will consume a large number of resources. If you intend on completing the lakehouse and data science modules, you may run into resource contention issues when running multiple notebooks. See the [additional learning section](#thinking-additional-learning) for references that discuss sizing and cluster configuration; running the app in a container will avoid these potential issues. (The pay-as-you-go cost for running the container and event hub is roughly $1.70/day (USD), but verify local costs using the [Azure Price Calculator](https://azure.microsoft.com/en-us/pricing/calculator/) -- the ARM template deploys a basic Event Hub and smallest possible 1 vCPU ACI container.) Please remember to deprovision deployments after the lab is complete.
+If you are taking part in an instructor-led workshop, your instructor may have the app deployed and ready go (option 3). If so, fantastic! The instructor will share the needed information with you in order to complete the environment setup. Proceed to [Option 3 - Instructor-led Shared Environment](#5-option-3---instructor-led-shared-environment).
 
-Running via a Jupyter notebook will keep the solution completely within the Fabric environment, however the notebook must be kept running for the data to be generated. If you anticipate completing the lab in a few hours and not diving too deeply into the lakehouse or data science sections, this is may be easiest approach particularly if you are using a Fabric free trial.
+Otherwise, we recommend deploying the stock price generator via Azure Container Instance (option 2). This is because the default Spark cluster will consume a large number of resources. If you intend on completing the lakehouse and data science modules, you may run into resource contention issues when running multiple notebooks, depending on the size of the Fabric environment. See the [additional learning section](#thinking-additional-learning) for references that discuss sizing and cluster configuration; running the app in a container will avoid these potential issues. (The pay-as-you-go cost for running the container and event hub is roughly $1.70/day (USD), but verify local costs using the [Azure Price Calculator](https://azure.microsoft.com/en-us/pricing/calculator/) -- the ARM template deploys a basic Event Hub and smallest possible 1 vCPU ACI container.) Please remember to deprovision deployments after the lab is complete.
+
+Running via a Jupyter notebook will keep the solution completely within the Fabric environment, however the notebook must be kept running for the data to be generated. If you anticipate completing the lab in a few hours and not diving too deeply into the lakehouse or data science sections, this may be easiest approach particularly if you are using a Fabric free trial.
 
 You can always revisit this option later, should you wish to make a change. Simply deploy the new option, and change the input to the Eventstream to the new source.
 
 ## Table of Contents
 
 1. [Download resource files](#1-download-resource-files)
-2. [Create Fabric Capacity and Workspace](#2-create-fabric-capacity-and-workspace)
+2. [Create Fabric Capacity and Workspace, if required](#2-create-fabric-capacity-and-workspace)
 3. [Option 1 - Deploy and run the app via Jupyter notebook](#3-option-1---deploy-the-app-via-jupyter-notebook)
 4. [Option 2 - Deploy the app via Azure Container Instance](#4-option-2---deploy-the-app-via-azure-container-instance)
+5. [Option 3 - Instructor-led Shared Environment](#5-option-3---instructor-led-shared-environment)
 
 ## 1. Download resource files
 
@@ -176,15 +180,54 @@ To auto-deploy the resources, use these steps below. (All templates are located 
 
 ![Create Eventstream](../images/module00/setupeventstream.png)
 
-7. On the Eventstream, configure a new source and select *Event Hub*:
+7. On the Eventstream, configure a new source and select *Azure Event Hubs*:
 
-![Create Custom App](../images/module00/eventstream-eventhub.png)
+![Select Event Hub](../images/module00/eventstream-eventhub.png)
 
-8. On the Azure Event Hubs configuration page, add a new connection and using the values from Event Hub you noted earlier (the Event Hub namespace, the Event Hub name, the name of the SAS key, and key itself copied to your clipboard), specifying the *$Default* consumer group, and Data format of *JSON*: 
+8. On the Azure Event Hubs configuration page, add a new connection and using the values from Event Hub you noted earlier (the Event Hub namespace, the Event Hub name, the name of the SAS key, and key itself copied to your clipboard). After the connection is created, you may need to select the newly created connection in the *Cloud connection* drop down. Select the *$Default* consumer group, and *JSON* as the *Data format*: 
 
 ![Configure Event Hub](../images/module00/eventstream-hubconnection.png)
 
 9. With the Event Hub configured, click on *Data Preview*. You should see events including the stock symbol, price, and timestamp.
+
+![Data Preview](../images/module00/eventstream-hub-preview.png)
+
+## 5. Option 3 - Instructor-led Shared Environment
+
+This option assumes an instructor, as part of a group workshop, has configured an Event Hub to be shared by the class. In this scenario, the following diagram illustrates the resources deployed:
+
+```mermaid
+flowchart LR
+    subgraph azure [Microsoft Azure]
+    A["Azure Container Instance"] --> B[Event Hub] 
+    end
+    B --> C{Eventstream}
+    subgraph fabric [Microsoft Fabric]
+    C{Eventstream}
+    end
+```
+
+1. Obtain the following information from the instructor, and copy this to a convenient location in case it is needed later:
+
+* The Event Hub namespace (such as *ehns-classname-fabricworkshop*)
+* The Event Hub name (default name is *stockeventhub*)
+* The name of the SAS key (default name is *stockeventhub_sas*)
+* The primary key of the SAS key (copy to the clipboard)
+* The consumer group name to use, which is unique to each participant
+
+2. In your Fabric workspace, switch to the Real-Time Analytics persona (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
+
+![Create Eventstream](../images/module00/setupeventstream.png)
+
+3. On the Eventstream, configure a new source and select *Azure Event Hubs*:
+
+![Select Event Hub](../images/module00/eventstream-eventhub.png)
+
+4. On the Azure Event Hubs configuration page, add a new connection and using the values provided by the instructor (the Event Hub namespace, the Event Hub name, the name of the SAS key, and SAS key itself). After the connection is created, you may need to select the newly created connection in the *Cloud connection* drop down. Be sure to specify the consumer group assigned to you, and select *JSON* as the *Data format*: 
+
+![Configure Event Hub](../images/module00/eventstream-hubconnection.png)
+
+5. With the Event Hub configured, click on *Data Preview*. You should see events including the stock symbol, price, and timestamp.
 
 ![Data Preview](../images/module00/eventstream-hub-preview.png)
 
