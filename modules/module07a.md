@@ -67,8 +67,7 @@ Individually view and download:
 
 * [Download the DS 1 - Build Model Notebook](<../resources/module07/DS 1 - Build Model.ipynb>)
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
-* [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
-* [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>) (optional)
+* [Download the DS 3 - Forecast All](<../resources/module07/DS 3 - Forecast All.ipynb>)
 
 ![Download Notebook](../images/module07/downloadnotebook.png)
 
