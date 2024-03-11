@@ -86,7 +86,7 @@ StocksJson = '{"stocks": [ \
 | 80-100 increase chance | When stock is between 80-100% of its price range, % chance it will increase |
 | Annual Growth Rate (%) | Growth rate of stock, compounded daily; negative values ok |
 
-Each cycle (default is 1 second) a stock will move based on a absolute value of a Python normalvariate(mu,sigma). A mu of .04 indicates a stock will change a mean average of $0.04 per cycle. The sigma is the standard deviation from the mean -- a small value keeps the variability low, higher value increases volatility. 
+In each cycle (default is 1 second) a stock will move based on a absolute value of a Python normalvariate(mu,sigma). A mu of .04 indicates a stock will change a mean average of $0.04 per cycle. The sigma is the standard deviation from the mean -- a small value keeps the variability low, higher value increases volatility. 
 
 Corrections refer to the chance a stock will trend up or down for a period of time. A length of 60 means a correction will last for 60 cycles. This can be increased to very long periods for multi-hour or multi-day runs, but recommend a high correction modifier to keep stocks from running away over long periods of time.
 
