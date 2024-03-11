@@ -4,7 +4,7 @@
 
 ## :stopwatch: Estimated Duration
 
-* 25 minutes for 07d
+* 30 minutes for 07d
 * 2 hours overall
 
 ## :thinking: Prerequisites
@@ -12,13 +12,13 @@
 - [x] Completed [Module 01](../modules/module01.md)
 - [x] Completed Module 07a
 - [x] Completed Module 07b
-- [x] Completed Module 07c
 
 Recommended modules:
 
 - [x] Completed [Module 02 - KQL Queries](../modules/module02.md)
 - [x] Completed [Module 03 - Reporting](../modules/module03.md)
 - [x] Completed [Module 06 - Lakehouse](../modules/module06a.md)
+- [x] Completed [Module 07c - Data Science: Solution in practice](../modules/module07c.md)
 
 ## :book: Sections
 

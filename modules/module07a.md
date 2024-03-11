@@ -4,14 +4,21 @@
 
 ## :stopwatch: Estimated Duration
 
-* 45 minutes for 07a
+* 40 minutes for 07a
 * 2 hours overall
 
 ## :thinking: Prerequisites
 
 - [x] Access to a Fabric environment
 
-We've designed this module to be stand-alone with no dependencies on earlier modules. However, it may be helpful to have completed [Module 01 - Initial Setup](./module01.md) and [Module 06 - Lakehouse](./module06a.md). Module 01 will help you get familiar with the scenario, while Module 06 will introduce the Lakehouse. Our data science solution will be storing data in a Lakehouse, so if you've completed Module 06, you will be ready to dive right in.
+Recommended modules:
+
+- [x] Completed [Module 01 - KQL Database](../modules/module01.md)
+- [x] Completed [Module 02 - KQL Queries](../modules/module02.md)
+- [x] Completed [Module 03 - Reporting](../modules/module03.md)
+- [x] Completed [Module 06 - Lakehouse](../modules/module06a.md)
+
+We've designed module to be stand-alone with limited dependencies on earlier modules. However, [Module 07c - Solution in practice](./module07c.md) requires [Module 06 - Lakehouse](./module06a.md) to be completed. Module 01 will help you get familiar with the scenario, while Module 06 will introduce the Lakehouse. Our data science solution will be storing data in a Lakehouse, so if you've completed Module 06, you will be ready to dive right in.
 
 If you have not created any Fabric resources and consuming this module as a stand-alone exercise, you can follow the instructions in [Module 00 - Create Fabric Capacity](./module00.md#2-create-fabric-capacity-and-workspace) to get a Fabric environment up and running.
 

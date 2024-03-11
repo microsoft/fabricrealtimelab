@@ -11,7 +11,7 @@
 
 - [x] Completed Module 07a
 
-Recommended modules for reports:
+Recommended modules:
 
 - [x] Completed [Module 01 - KQL Database](../modules/module01.md)
 - [x] Completed [Module 02 - KQL Queries](../modules/module02.md)
