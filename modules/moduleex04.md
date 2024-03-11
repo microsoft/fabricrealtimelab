@@ -57,7 +57,7 @@ Stock variables may be left as-is or modified to suit.
 The default stock JSON data looks like:
 
 ```json
-StocksJson = '{"stocks": [ \
+{"stocks": [ \
     {"name":"WHO","startprice":600,"minprice":100,"maxprice":1200,"mu":0.04,"sigma":0.9,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.510,"increasechance20-40":0.505,"increasechance40-60":0.500,"increasechance60-80":0.484,"increasechance80-100":0.442,"annualgrowthrate":0.08}, \
     {"name":"WHAT","startprice":500,"minprice":50,"maxprice":1050,"mu":0.04,"sigma":0.8,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.510,"increasechance20-40":0.502,"increasechance40-60":0.500,"increasechance60-80":0.481,"increasechance80-100":0.442,"annualgrowthrate":0.07}, \
     {"name":"IDK","startprice":500,"minprice":100,"maxprice":1100,"mu":0.04,"sigma":0.9,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.535,"increasechance20-40":0.540,"increasechance40-60":0.520,"increasechance60-80":0.500,"increasechance80-100":0.475,"annualgrowthrate":0.065}, \
@@ -66,7 +66,7 @@ StocksJson = '{"stocks": [ \
     {"name":"TMRW","startprice":500,"minprice":50,"maxprice":1100,"mu":0.07,"sigma":1.0,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.530,"increasechance20-40":0.520,"increasechance40-60":0.515,"increasechance60-80":0.502,"increasechance80-100":0.430,"annualgrowthrate":0.052}, \
     {"name":"TDY","startprice":700,"minprice":225,"maxprice":1250,"mu":0.07,"sigma":1.0,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.530,"increasechance20-40":0.520,"increasechance40-60":0.515,"increasechance60-80":0.502,"increasechance80-100":0.430,"annualgrowthrate":0.02}, \
     {"name":"IDGD","startprice":500,"minprice":50,"maxprice":1050,"mu":0.04,"sigma":0.8,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.503,"increasechance20-40":0.500,"increasechance40-60":0.496,"increasechance60-80":0.492,"increasechance80-100":0.451,"annualgrowthrate":0.055} \
-    ]}'
+]}
 ```
 
 | Value | Explanation |
