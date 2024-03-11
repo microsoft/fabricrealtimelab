@@ -18,7 +18,9 @@ Recommended modules:
 - [x] Completed [Module 03 - Reporting](../modules/module03.md)
 - [x] Completed [Module 06 - Lakehouse](../modules/module06a.md)
 
-We've designed module to be stand-alone with limited dependencies on earlier modules. However, [Module 07c - Solution in practice](./module07c.md) requires [Module 06 - Lakehouse](./module06a.md) to be completed. Module 01 will help you get familiar with the scenario, while Module 06 will introduce the Lakehouse. Our data science solution will be storing data in a Lakehouse, so if you've completed Module 06, you will be ready to dive right in.
+We've designed module to be stand-alone with limited dependencies on earlier modules. However, [Module 07c - Solution in practice](./module07c.md) requires [Module 06 - Lakehouse](./module06a.md) to be completed. 
+
+[Module 07a](./module07a.md) and [Module 07b](./module07b.md) demonstrate building a model, storing the model in MLflow, retrieving the model, and generating predictions. [Module 07c](./module07c.md) shows how these principles can be applied to the solution as a whole, while [Module 07d](./module07d.md) illustrate building a semantic model and including the data in a Power BI report.
 
 If you have not created any Fabric resources and consuming this module as a stand-alone exercise, you can follow the instructions in [Module 00 - Create Fabric Capacity](./module00.md#2-create-fabric-capacity-and-workspace) to get a Fabric environment up and running.
 
