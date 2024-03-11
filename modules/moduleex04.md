@@ -26,7 +26,6 @@ If you are building a large dataset for consumption by a group of participants, 
 2. [Stock parameters](#2-stock-parameters)
 3. [Events and Timers](#3-events-and-timers)
 
-
 ## 1. Understanding the variables
 
 First, the notebook is designed is a tool will various utility cells and not intended to be executed "as-is". 
@@ -53,41 +52,41 @@ The notebook will cycle one reading per second (*intervalInSeconds*), similar to
 
 Stock variables may be left as-is or modified to suit.
 
-*Note: all parameters can be copied to the ARM template for the ACI generator, or StockGeneratorNotebook, so the real-time generator produces consistent data. Note that the ARM template requires single-line and escaped double-quotes (see current ARM template as an example).
+*Note: all parameters can be copied to the ARM template for the ACI generator, or StockGeneratorNotebook, so the real-time generator produces consistent data. The ARM template requires single-line and escaped double-quotes (see current ARM template as an example).
 
-For ease of modification, all stock-specific variables are pipe (|) delimited as shown below:
+The default stock JSON data looks like:
 
-```python
-# ref:      0   1    2   3   4    5  6   7     8     9    10    11    12   13
-WHO_vars="600|100|1200|.04|0.9|0.01|60|0.4|0.510|0.505|0.500|0.484|0.442|0.08"
-WHAT_vars="500|50|1050|.04|0.8|0.01|60|0.4|0.510|0.502|0.500|0.481|0.442|0.07"
-IDK_vars="500|100|1100|.04|0.9|0.01|60|0.4|0.535|0.540|0.520|0.500|0.475|0.065"
-WHY_vars="550|25|1200|.04|0.9|0.01|60|0.4|0.515|0.515|0.503|0.480|0.442|-0.02"
-BCUZ_vars="300|5|950|.03|0.7|0.01|60|0.4|0.520|0.510|0.505|0.500|0.465|0.06"
-TMRW_vars="500|50|1100|.07|1.0|0.01|60|0.4|0.530|0.520|0.515|0.502|0.430|0.052"
-TDY_vars="700|225|1250|.07|1.0|0.01|60|0.4|0.530|0.520|0.515|0.502|0.430|0.02"
-IDGD_vars="500|50|1050|.04|0.8|0.01|60|0.4|0.503|0.500|0.496|0.492|0.451|0.055"
+```json
+StocksJson = '{"stocks": [ \
+    {"name":"WHO","startprice":600,"minprice":100,"maxprice":1200,"mu":0.04,"sigma":0.9,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.510,"increasechance20-40":0.505,"increasechance40-60":0.500,"increasechance60-80":0.484,"increasechance80-100":0.442,"annualgrowthrate":0.08}, \
+    {"name":"WHAT","startprice":500,"minprice":50,"maxprice":1050,"mu":0.04,"sigma":0.8,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.510,"increasechance20-40":0.502,"increasechance40-60":0.500,"increasechance60-80":0.481,"increasechance80-100":0.442,"annualgrowthrate":0.07}, \
+    {"name":"IDK","startprice":500,"minprice":100,"maxprice":1100,"mu":0.04,"sigma":0.9,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.535,"increasechance20-40":0.540,"increasechance40-60":0.520,"increasechance60-80":0.500,"increasechance80-100":0.475,"annualgrowthrate":0.065}, \
+    {"name":"WHY","startprice":550,"minprice":25,"maxprice":1200,"mu":0.04,"sigma":0.9,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.515,"increasechance20-40":0.515,"increasechance40-60":0.503,"increasechance60-80":0.480,"increasechance80-100":0.442,"annualgrowthrate":-0.02}, \
+    {"name":"BCUZ","startprice":300,"minprice":5,"maxprice":950,"mu":0.03,"sigma":0.7,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.520,"increasechance20-40":0.510,"increasechance40-60":0.505,"increasechance60-80":0.500,"increasechance80-100":0.465,"annualgrowthrate":0.06}, \
+    {"name":"TMRW","startprice":500,"minprice":50,"maxprice":1100,"mu":0.07,"sigma":1.0,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.530,"increasechance20-40":0.520,"increasechance40-60":0.515,"increasechance60-80":0.502,"increasechance80-100":0.430,"annualgrowthrate":0.052}, \
+    {"name":"TDY","startprice":700,"minprice":225,"maxprice":1250,"mu":0.07,"sigma":1.0,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.530,"increasechance20-40":0.520,"increasechance40-60":0.515,"increasechance60-80":0.502,"increasechance80-100":0.430,"annualgrowthrate":0.02}, \
+    {"name":"IDGD","startprice":500,"minprice":50,"maxprice":1050,"mu":0.04,"sigma":0.8,"correctionchance":0.01,"correctionlength":60,"correctionmodifier":0.4,"increasechance0-20":0.503,"increasechance20-40":0.500,"increasechance40-60":0.496,"increasechance60-80":0.492,"increasechance80-100":0.451,"annualgrowthrate":0.055} \
+    ]}'
 ```
-The ref line above helps refer to their index and is as follows:
 
-|  | Value | Explanation |
-|--:|---|---|
-| 0 | Starting price | Initial price when script starts |
-| 1 | Min price | Absolute minimum price for stock |
-| 2 | Max price | Max price before factoring YoY growth |
-| 3 | Mu | Mu (mean) value for normalvariate random generation |
-| 4 | Sigma | Sigma (standard deviation) value for normalvariate generation | 
-| 5 | Correction chance | Chance a trend will be begin for given reading |
-| 6 | Correction length | If correction, stock will continually move up/down # of cycles |
-| 7 | Correction modifier | Adjusts per cycle values to make runs more gradual |
-| 8 | 0-20 increase chance | When stock is between 0-20% of its price range, % chance it will increase |
-| 9 | 20-40 increase chance | When stock is between 20-40% of its price range, % chance it will increase |
-| 10 | 40-60 increase chance | When stock is between 40-60% of its price range, % chance it will increase |
-| 11 | 60-80 increase chance | When stock is between 60-80% of its price range, % chance it will increase |
-| 12 | 80-100 increase chance | When stock is between 80-100% of its price range, % chance it will increase |
-| 13 | Annual Growth Rate (%) | Growth rate of stock, compounded daily; negative values ok |
+| Value | Explanation |
+|---|---|
+| Starting price | Initial price when script starts |
+| Min price | Absolute minimum price for stock |
+| Max price | Max price before factoring YoY growth |
+| Mu | Mu (mean) value for normalvariate random generation |
+| Sigma | Sigma (standard deviation) value for normalvariate generation | 
+| Correction chance | Chance a trend will be begin for given reading |
+| Correction length | If correction, stock will continually move up/down # of cycles |
+| Correction modifier | Adjusts per cycle values to make runs more gradual |
+| 0-20 increase chance | When stock is between 0-20% of its price range, % chance it will increase |
+| 20-40 increase chance | When stock is between 20-40% of its price range, % chance it will increase |
+| 40-60 increase chance | When stock is between 40-60% of its price range, % chance it will increase |
+| 60-80 increase chance | When stock is between 60-80% of its price range, % chance it will increase |
+| 80-100 increase chance | When stock is between 80-100% of its price range, % chance it will increase |
+| Annual Growth Rate (%) | Growth rate of stock, compounded daily; negative values ok |
 
-Each cycle (default is 1 second) a stock will move based on a absolute value of a Python normalvariate(mu,sigma). A mu of .04 indicates a stock will change a mean average of $0.04 per cycle. The sigma is the standard deviation from the mean -- a small value keeps the variability low, higher value increases volatility. 
+In each cycle (default is 1 second) a stock will move based on a absolute value of a Python normalvariate(mu,sigma). A mu of .04 indicates a stock will change a mean average of $0.04 per cycle. The sigma is the standard deviation from the mean -- a small value keeps the variability low, higher value increases volatility. 
 
 Corrections refer to the chance a stock will trend up or down for a period of time. A length of 60 means a correction will last for 60 cycles. This can be increased to very long periods for multi-hour or multi-day runs, but recommend a high correction modifier to keep stocks from running away over long periods of time.
 

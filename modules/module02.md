@@ -27,6 +27,7 @@ Prefer video content? These videos illustrate the content in this module:
 3. [New Query: StockAggregate](#3-new-query-stockaggregate)
 4. [New Query: StockBinned](#4-new-query-stockbinned)
 5. [New Query: Visualizations](#5-new-query-visualizations)
+6. [Materialized Views (optional)](#6-materialized-views-optional)
 
 ## 1. Create KQL queryset: StockQueryset
 
@@ -128,7 +129,7 @@ This is particularly useful when creating reports that aggregate real-time data 
 
 ## 5. New Query: Visualizations
 
-Create a final new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *Visualizations*. We'll use this tab to explore visualizing data.
+Create a new tab within the queryset by clicking the *+* icon near the top of the window. Rename this tab to *Visualizations*. We'll use this tab to explore visualizing data.
 
 KQL supports a large number of [visualizations](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/render-operator?pivots=fabric) by using the *render* operator. Run the query below, which is the same as the StockByTime query but with an additional *render* operation added:
 
@@ -154,6 +155,49 @@ This will render a line chart similar to:
 
 ![KQL line chart](../images/module02/kql-linechart.png)
 
+## 6. Materialized Views (optional)
+
+Frequently used aggregation queries can benefit from *materialized views*. Materialized views expose an aggregation query for increased performance and is made up of two parts: the materialized part, a table holding the aggregated data that has already been processed, and the delta, newly ingested records that have not yet been processed. This provides caching of the underlying aggregation while also receiving up-to-date results.
+
+While our KQL database is currently small and will not see much benefit from using materialized views, we can demonstrate the functionality. Create a new tab within the queryset, renaming the tab to *Materialized View*. 
+
+To begin, try the following query and observe the results:
+
+```text
+StockPrice
+| summarize avg(price), min(price), max(price), 
+    arg_max(last_timestamp = timestamp, last_price = price) by bin(timestamp, 1h), symbol
+| sort by timestamp desc, symbol asc
+```
+
+The above query summarizes the data into 1 hour bins. Using the stats tab on the query output, you will see statistics such as the kernel and user time, and also cache hit/miss data. To create a materialized view of this aggregation, run the following:
+
+```text
+.create async materialized-view with ( 
+    backfill=true
+    ) StockByHour on table StockPrice
+{
+StockPrice
+| summarize avg(price), min(price), max(price), 
+    arg_max(last_timestamp = timestamp, last_price = price) by bin(timestamp, 1h), symbol
+}
+```
+
+The above command creates a materialized view named *StockByHour*. Setting backfill to true forces the materialized view to summarize all data in the table (which could take some time, depending on the size of the table); using a backfill of true requires the use of *async*. To query the materialized view, run the following:
+
+```text
+StockByHour
+| sort by timestamp desc, symbol asc
+```
+
+The above query should generate the same results, but will offer better performance -- particularly as the table grows. To delete the materialized view, run the following:
+
+```text
+.drop materialized-view StockByHour
+```
+
+Read more on [materialized views on Microsoft Learn](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/management/materialized-views/materialized-view-overview).
+
 ## :bulb: Tips
 
 * Too much data? Consider adding a row limit filter, like 'take 1000', to limit the number of rows returned. Be sure to always limit to 500,000 rows if querying a large dataset, as that is the max rowcount for a KQL query.
@@ -167,6 +211,7 @@ This will render a line chart similar to:
 * [KQL bin() function](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/bin-function)
 * [MS Learn: Query data in a KQL queryset](https://learn.microsoft.com/en-us/fabric/real-time-analytics/kusto-query-set)
 * [KQL Visualizations](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/render-operator?pivots=fabric)
+* [Materialized views](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/management/materialized-views/materialized-view-overview)
 
 Interested in going deeper with KQL? We will explore concepts in [the Extras](../modules/moduleex00.md) content. 
 

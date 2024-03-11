@@ -4,14 +4,23 @@
 
 ## :stopwatch: Estimated Duration
 
-* 45 minutes for 07a
+* 40 minutes for 07a
 * 2 hours overall
 
 ## :thinking: Prerequisites
 
 - [x] Access to a Fabric environment
 
-We've designed this module to be stand-alone with no dependencies on earlier modules. However, it may be helpful to have completed [Module 01 - Initial Setup](./module01.md) and [Module 06 - Lakehouse](./module06a.md). Module 01 will help you get familiar with the scenario, while Module 06 will introduce the Lakehouse. Our data science solution will be storing data in a Lakehouse, so if you've completed Module 06, you will be ready to dive right in.
+Recommended modules:
+
+- [x] Completed [Module 01 - KQL Database](../modules/module01.md)
+- [x] Completed [Module 02 - KQL Queries](../modules/module02.md)
+- [x] Completed [Module 03 - Reporting](../modules/module03.md)
+- [x] Completed [Module 06 - Lakehouse](../modules/module06a.md)
+
+We've designed module to be stand-alone with limited dependencies on earlier modules. However, [Module 07c - Solution in practice](./module07c.md) requires [Module 06 - Lakehouse](./module06a.md) to be completed. 
+
+[Module 07a](./module07a.md) and [Module 07b](./module07b.md) demonstrate building a model, storing the model in MLflow, retrieving the model, and generating predictions. [Module 07c](./module07c.md) shows how these principles can be applied to the solution as a whole, while [Module 07d](./module07d.md) illustrate building a semantic model and including the data in a Power BI report.
 
 If you have not created any Fabric resources and consuming this module as a stand-alone exercise, you can follow the instructions in [Module 00 - Create Fabric Capacity](./module00.md#2-create-fabric-capacity-and-workspace) to get a Fabric environment up and running.
 
@@ -67,8 +76,7 @@ Individually view and download:
 
 * [Download the DS 1 - Build Model Notebook](<../resources/module07/DS 1 - Build Model.ipynb>)
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
-* [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
-* [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>) (optional)
+* [Download the DS 3 - Forecast All](<../resources/module07/DS 3 - Forecast All.ipynb>)
 
 ![Download Notebook](../images/module07/downloadnotebook.png)
 

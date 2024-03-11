@@ -11,7 +11,7 @@
 
 - [x] Completed Module 07a
 
-Recommended modules for reports:
+Recommended modules:
 
 - [x] Completed [Module 01 - KQL Database](../modules/module01.md)
 - [x] Completed [Module 02 - KQL Queries](../modules/module02.md)
@@ -56,8 +56,7 @@ Individually view and download:
 
 * [Download the DS 1 - Build Model Notebook](<../resources/module07/DS 1 - Build Model.ipynb>)
 * [Download the DS 2 - Predict Stock Prices Notebook](<../resources/module07/DS 2 - Predict Stock Prices.ipynb>)
-* [Download the DS 3 - Build and Predict Notebook](<../resources/module07/DS 3 - Build and Predict.ipynb>)
-* [Download the DS 4 - Use Live Data for Forecast](<../resources/module07/DS 4 - Use Live Data for Forecast.ipynb>) (optional)
+* [Download the DS 3 - Forecast All](<../resources/module07/DS 3 - Forecast All.ipynb>)
 
 Take a few moments to explore the *DS 2 - Predict Stock Prices* notebook, and be sure to add the same default lakehouse to the notebook similar to the steps in module 07a. Many of the elements in this notebook should look familiar to *DS 1*. 
 

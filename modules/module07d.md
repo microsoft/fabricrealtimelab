@@ -4,7 +4,7 @@
 
 ## :stopwatch: Estimated Duration
 
-* 25 minutes for 07d
+* 30 minutes for 07d
 * 2 hours overall
 
 ## :thinking: Prerequisites
@@ -18,6 +18,7 @@ Recommended modules:
 - [x] Completed [Module 02 - KQL Queries](../modules/module02.md)
 - [x] Completed [Module 03 - Reporting](../modules/module03.md)
 - [x] Completed [Module 06 - Lakehouse](../modules/module06a.md)
+- [x] Completed [Module 07c - Data Science: Solution in practice](../modules/module07c.md)
 
 ## :book: Sections
 
@@ -32,7 +33,7 @@ This module is broken down into 4 sections:
 
 In the previous data science sections, data was analyzed, models were built, and predictions generated. But, this data was limited to analysis within the notebooks. This module completes the data science module by building a report that integrates the prediction data, making the data accessible to business users.
 
-There are two options for building this report: we can use Power BI Desktop, or use the Power BI service as we've done in other modules. These options are listed in two different steps below -- you can complete either or both as you'd prefer.
+There are two options for building this report: Power BI Desktop, or the Power BI service as we've done in other modules. These options are listed in two different steps below -- you can complete either or both as you'd prefer; using Power BI Desktop will likely take more time.
 
 Power BI Desktop has a number of advantages, but the primary advantage in this scenario is the ability to create [composite models](https://learn.microsoft.com/en-us/power-bi/transform-model/desktop-composite-models). Composite models allow us to bring many data sources together -- we'll bring the KQL real-time data together with the predictions data in the lakehouse.
 
