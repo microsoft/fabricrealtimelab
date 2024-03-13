@@ -22,34 +22,14 @@
         "consumerGroupNames": "user"
     },
     "parameters": {
-        "consumerGroupCount": {
-            "type": "int",
-            "defaultValue": 15
-        },
         "className": {
             "type": "string",
             "defaultValue": "classworkshop"
         },
-        "teamName_1": {
-            "type": "string",
-            "defaultValue": "Alpha"
-        },
-        "teamName_2": {
-            "type": "string",
-            "defaultValue": "Bravo"
-        },
-        "teamName_3": {
-            "type": "string",
-            "defaultValue": "Charlie"
-        },
-        "teamName_4": {
-            "type": "string",
-            "defaultValue": "Delta"
-        },
-        "teamName_5": {
-            "type": "string",
-            "defaultValue": "Echelon"
-        }
+        "attendeeNames": {
+            "type": "array",
+            "defaultValue": ["user1","user2","user3","user4"]
+          }
     },
     "resources": [
         {
@@ -122,72 +102,12 @@
         },
         {
             "copy": {
-                "name": "consumerGroupCopy-team1",
-                "count": "[length(range(1, parameters('consumerGroupCount')))]"
-            },
+                "name": "attendeeNames",
+                "count": "[length(parameters('attendeeNames'))]"
+              },
             "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
             "apiVersion": "2022-10-01-preview",
-            "name": "[format('{0}/{1}/{2}-{3:D2}', variables('fullnamespace'), variables('eventHubName'), parameters('teamName_1'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
-            "properties": {
-            "userMetadata": "Consumer group for stock generator"
-            },
-            "dependsOn": [
-            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
-            ]
-        },
-        {
-            "copy": {
-                "name": "consumerGroupCopy-team2",
-                "count": "[length(range(1, parameters('consumerGroupCount')))]"
-            },
-            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-            "apiVersion": "2022-10-01-preview",
-            "name": "[format('{0}/{1}/{2}-{3:D2}', variables('fullnamespace'), variables('eventHubName'), parameters('teamName_2'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
-            "properties": {
-            "userMetadata": "Consumer group for stock generator"
-            },
-            "dependsOn": [
-            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
-            ]
-        },
-        {
-            "copy": {
-                "name": "consumerGroupCopy-team3",
-                "count": "[length(range(1, parameters('consumerGroupCount')))]"
-            },
-            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-            "apiVersion": "2022-10-01-preview",
-            "name": "[format('{0}/{1}/{2}-{3:D2}', variables('fullnamespace'), variables('eventHubName'), parameters('teamName_3'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
-            "properties": {
-            "userMetadata": "Consumer group for stock generator"
-            },
-            "dependsOn": [
-            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
-            ]
-        },
-        {
-            "copy": {
-                "name": "consumerGroupCopy-team4",
-                "count": "[length(range(1, parameters('consumerGroupCount')))]"
-            },
-            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-            "apiVersion": "2022-10-01-preview",
-            "name": "[format('{0}/{1}/{2}-{3:D2}', variables('fullnamespace'), variables('eventHubName'), parameters('teamName_4'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
-            "properties": {
-            "userMetadata": "Consumer group for stock generator"
-            },
-            "dependsOn": [
-            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
-            ]
-        },
-        {
-            "copy": {
-                "name": "consumerGroupCopy-team5",
-                "count": "[length(range(1, parameters('consumerGroupCount')))]"
-            },
-            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
-            "apiVersion": "2022-10-01-preview",
-            "name": "[format('{0}/{1}/{2}-{3:D2}', variables('fullnamespace'), variables('eventHubName'), parameters('teamName_5'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
+            "name": "[format('{0}/{1}/{2}', variables('fullnamespace'), variables('eventHubName'), parameters('attendeeNames')[copyIndex()])]",
             "properties": {
             "userMetadata": "Consumer group for stock generator"
             },
@@ -234,7 +154,7 @@
                                 }
                             ],
                             "environmentVariables": [
-                                {
+                                                                {
                                     "name": "EVENTHUBNAME",
                                     "value": "[variables('eventHubName')]"
                                 },
