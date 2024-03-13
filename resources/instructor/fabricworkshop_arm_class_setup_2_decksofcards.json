@@ -22,34 +22,23 @@
         "consumerGroupNames": "user"
     },
     "parameters": {
-        "consumerGroupCount": {
-            "type": "int",
-            "defaultValue": 15
-        },
         "className": {
             "type": "string",
             "defaultValue": "classworkshop"
         },
-        "teamName_1": {
+        "deckName_1": {
             "type": "string",
-            "defaultValue": "Alpha"
+            "defaultValue": "red"
         },
-        "teamName_2": {
+        "deckName_2": {
             "type": "string",
-            "defaultValue": "Bravo"
+            "defaultValue": "blue"
         },
-        "teamName_3": {
-            "type": "string",
-            "defaultValue": "Charlie"
-        },
-        "teamName_4": {
-            "type": "string",
-            "defaultValue": "Delta"
-        },
-        "teamName_5": {
-            "type": "string",
-            "defaultValue": "Echelon"
-        }
+        "cardNames": {
+            "type": "array",
+            "defaultValue": ["02","03","04","05","06","07","08","09","10","Jack","Queen","King","Ace"
+            ]
+          }
     },
     "resources": [
         {
@@ -122,12 +111,12 @@
         },
         {
             "copy": {
-                "name": "consumerGroupCopy-team1",
-                "count": "[length(range(1, parameters('consumerGroupCount')))]"
-            },
+                "name": "cardNameCopy-deck1-Spades",
+                "count": "[length(parameters('cardNames'))]"
+              },
             "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
             "apiVersion": "2022-10-01-preview",
-            "name": "[format('{0}/{1}/{2}-{3:D2}', variables('fullnamespace'), variables('eventHubName'), parameters('teamName_1'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
+            "name": "[format('{0}/{1}/{2}-{3}-of-spades', variables('fullnamespace'), variables('eventHubName'), parameters('deckName_1'), parameters('cardNames')[copyIndex()])]",
             "properties": {
             "userMetadata": "Consumer group for stock generator"
             },
@@ -137,12 +126,27 @@
         },
         {
             "copy": {
-                "name": "consumerGroupCopy-team2",
-                "count": "[length(range(1, parameters('consumerGroupCount')))]"
-            },
+                "name": "cardNameCopy-deck1-Clubs",
+                "count": "[length(parameters('cardNames'))]"
+              },
             "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
             "apiVersion": "2022-10-01-preview",
-            "name": "[format('{0}/{1}/{2}-{3:D2}', variables('fullnamespace'), variables('eventHubName'), parameters('teamName_2'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
+            "name": "[format('{0}/{1}/{2}-{3}-of-clubs', variables('fullnamespace'), variables('eventHubName'), parameters('deckName_1'), parameters('cardNames')[copyIndex()])]",
+            "properties": {
+            "userMetadata": "Consumer group for stock generator"
+            },
+            "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ]
+        }, 
+        {
+            "copy": {
+                "name": "cardNameCopy-deck1-Hearts",
+                "count": "[length(parameters('cardNames'))]"
+              },
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}/{2}-{3}-of-hearts', variables('fullnamespace'), variables('eventHubName'), parameters('deckName_1'), parameters('cardNames')[copyIndex()])]",
             "properties": {
             "userMetadata": "Consumer group for stock generator"
             },
@@ -152,12 +156,12 @@
         },
         {
             "copy": {
-                "name": "consumerGroupCopy-team3",
-                "count": "[length(range(1, parameters('consumerGroupCount')))]"
-            },
+                "name": "cardNameCopy-deck1-Diamonds",
+                "count": "[length(parameters('cardNames'))]"
+              },
             "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
             "apiVersion": "2022-10-01-preview",
-            "name": "[format('{0}/{1}/{2}-{3:D2}', variables('fullnamespace'), variables('eventHubName'), parameters('teamName_3'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
+            "name": "[format('{0}/{1}/{2}-{3}-of-diamonds', variables('fullnamespace'), variables('eventHubName'), parameters('deckName_1'), parameters('cardNames')[copyIndex()])]",
             "properties": {
             "userMetadata": "Consumer group for stock generator"
             },
@@ -167,12 +171,12 @@
         },
         {
             "copy": {
-                "name": "consumerGroupCopy-team4",
-                "count": "[length(range(1, parameters('consumerGroupCount')))]"
-            },
+                "name": "cardNameCopy-deck2-Spades",
+                "count": "[length(parameters('cardNames'))]"
+              },
             "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
             "apiVersion": "2022-10-01-preview",
-            "name": "[format('{0}/{1}/{2}-{3:D2}', variables('fullnamespace'), variables('eventHubName'), parameters('teamName_4'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
+            "name": "[format('{0}/{1}/{2}-{3}-of-spades', variables('fullnamespace'), variables('eventHubName'), parameters('deckName_2'), parameters('cardNames')[copyIndex()])]",
             "properties": {
             "userMetadata": "Consumer group for stock generator"
             },
@@ -182,12 +186,42 @@
         },
         {
             "copy": {
-                "name": "consumerGroupCopy-team5",
-                "count": "[length(range(1, parameters('consumerGroupCount')))]"
-            },
+                "name": "cardNameCopy-deck2-Clubs",
+                "count": "[length(parameters('cardNames'))]"
+              },
             "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
             "apiVersion": "2022-10-01-preview",
-            "name": "[format('{0}/{1}/{2}-{3:D2}', variables('fullnamespace'), variables('eventHubName'), parameters('teamName_5'), range(1, parameters('consumerGroupCount'))[copyIndex()])]",
+            "name": "[format('{0}/{1}/{2}-{3}-of-clubs', variables('fullnamespace'), variables('eventHubName'), parameters('deckName_2'), parameters('cardNames')[copyIndex()])]",
+            "properties": {
+            "userMetadata": "Consumer group for stock generator"
+            },
+            "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ]
+        }, 
+        {
+            "copy": {
+                "name": "cardNameCopy-deck2-Hearts",
+                "count": "[length(parameters('cardNames'))]"
+              },
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}/{2}-{3}-of-hearts', variables('fullnamespace'), variables('eventHubName'), parameters('deckName_2'), parameters('cardNames')[copyIndex()])]",
+            "properties": {
+            "userMetadata": "Consumer group for stock generator"
+            },
+            "dependsOn": [
+            "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+            ]
+        },
+        {
+            "copy": {
+                "name": "cardNameCopy-deck2-Diamonds",
+                "count": "[sub(length(parameters('cardNames')),4)]"
+              },
+            "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+            "apiVersion": "2022-10-01-preview",
+            "name": "[format('{0}/{1}/{2}-{3}-of-diamonds', variables('fullnamespace'), variables('eventHubName'), parameters('deckName_2'), parameters('cardNames')[copyIndex()])]",
             "properties": {
             "userMetadata": "Consumer group for stock generator"
             },
@@ -234,7 +268,7 @@
                                 }
                             ],
                             "environmentVariables": [
-                                {
+                                                                {
                                     "name": "EVENTHUBNAME",
                                     "value": "[variables('eventHubName')]"
                                 },

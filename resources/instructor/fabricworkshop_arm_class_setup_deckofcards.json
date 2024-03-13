@@ -28,8 +28,7 @@
         },
         "cardNames": {
             "type": "array",
-            "defaultValue": ["02","03","04","05","06","07","08","09","10","Jack","Queen","King","Ace"
-            ]
+            "defaultValue": ["02","03","04","05","06","07","08","09","10","Jack","Queen","King","Ace"]
           }
     },
     "resources": [
