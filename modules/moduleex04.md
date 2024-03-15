@@ -1,6 +1,6 @@
 # Module Ex-04 - Generate Custom Historical Data
 
-[< Previous Module](../modules/moduleex03.md) - **[Home](../README.md)** 
+[< Previous Module](../modules/moduleex03.md) - **[Home](../README.md)** - [Next Module >](../modules/moduleex05.md)
 
 ## :stopwatch: Estimated Duration
 
@@ -145,4 +145,4 @@ Using the New Years Day example above over a 1 week window, the data will look s
 
 ![New Years Day Example](../images/moduleex/moduleex04/newyearsdayexample.png)
 
-
+[Continue >](./moduleex05.md)
