@@ -43,6 +43,7 @@ Extras: [Additional Content and Continued Learning](./modules/moduleex00.md)
    * Ex-02: [Additional Real-time Dashboard](./modules/moduleex02.md)
    * Ex-03: [Predicted vs Actual Reporting](./modules/moduleex03.md)
    * Ex-04: [Generate Custom Historical Data](./modules/moduleex04.md)
+   * Ex-05: [Delta File Maintenance](../modules/moduleex05.md)
 
 ## :laughing: Some comedic relief
 

@@ -20,6 +20,8 @@ The modules contained within will explore certain aspects of the solution in mor
 * Ex-01: [Advanced KQL Queries](../modules/moduleex01.md)
 * Ex-02: [Additional Real-time Dashboard](../modules/moduleex02.md)
 * Ex-03: [Prediction vs Actual Reporting](../modules/moduleex03.md)
+* Ex-04: [Generate Custom Historical Data](../modules/moduleex04.md)
+* Ex-05: [Delta File Maintenance](../modules/moduleex05.md)
 
 [Continue >](./moduleex01.md)
 

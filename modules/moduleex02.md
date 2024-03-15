@@ -115,7 +115,7 @@ All that is left is to configure the report to auto-refresh every second or two,
 
 ## :tada: Summary
 
-In this module, you build a KQL queryset to summarize the data, and build a new dashboard powered by the query. 
+In this module, you built a KQL queryset to summarize the data, and built a new dashboard powered by the query. 
 
 ## :white_check_mark: Results
 
