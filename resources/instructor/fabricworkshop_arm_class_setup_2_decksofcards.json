@@ -252,7 +252,7 @@
                 "type": "SystemAssigned"
             },
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+                "cardNameCopy-deck1-Spades","cardNameCopy-deck1-Clubs","cardNameCopy-deck1-Hearts","cardNameCopy-deck1-Diamonds","cardNameCopy-deck2-Spades","cardNameCopy-deck2-Clubs","cardNameCopy-deck2-Hearts","cardNameCopy-deck2-Diamonds"
             ],
             "properties": {
                 "sku": "Standard",
