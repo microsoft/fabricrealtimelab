@@ -1,4 +1,4 @@
-# Module 01 - KQL Database Configuration and Ingestion
+# Module 01 - KQL Database (Eventhouse) Configuration and Ingestion
 
 [< Previous Module](./module00.md) - **[Home](../README.md)** - [Next Module >](./module02.md)
 
@@ -12,35 +12,39 @@
 
 ## :loudspeaker: Introduction
 
-With our environment setup complete, we will complete the ingestion of the Eventstream so the data is ingested into a KQL database. This data will also be stored in Fabric OneLake. 
+With our environment setup complete, we will complete the ingestion of the Eventstream so the data is ingested into a KQL database. All KQL databases are stored within an *eventhouse*; the eventhouse acts as a workspace for one or more KQL databases. Multiple KQL databases can be stored within the same eventhouse, but in this case, we'll have only a single KQL database. This data will also be stored in Fabric OneLake. 
 
 Prefer video content? These videos illustrate the content in this module:
 * [Getting Started with Real-time Analytics in Microsoft Fabric](https://youtu.be/wGox1lf0ve0)
 
 ## Table of Contents
 
-1. [Create KQL Database](#1-create-kql-database)
+1. [Create Eventhouse](#1-create-eventhouse)
 2. [Send data from the Eventstream to the KQL database](#2-send-data-from-the-eventstream-to-the-kql-database)
 
-## 1. Create KQL Database
+## 1. Create Eventhouse
 
-Kusto Query Language (KQL) is the query language used by Real-Time analytics in Microsoft Fabric (along with several other solutions, like Azure Data Explorer, Log Analytics, Microsoft 365 Defender, and others). Similar to Structured Query Language (SQL), KQL is optimized for ad-hoc queries over big data, time series data, and data transformation. 
+Kusto Query Language (KQL) is the query language used by an Eventhouse/KQL databases within Fabric (along with several other solutions, like Azure Data Explorer, Log Analytics, Microsoft 365 Defender, and others). Similar to Structured Query Language (SQL), KQL is optimized for ad-hoc queries over big data, time series data, and data transformation. 
 
 To work with the data, we'll create a KQL database and stream data from the Eventstream into the KQL DB. 
 
-In the Fabric portal, switch to the Real-Time Analytics persona by using the persona icon in the bottom left. This helps contextualize the menus for the features most often used for the current tasks:
+In the Fabric portal, switch to the Real-Time Intelligence workload by using the workload switcher in the bottom left. This helps contextualize the menus for the features most often used for the current tasks:
 
-![Fabric Persona](../images/module01/persona.png)
+![Fabric Workload](../images/module01/workload.png)
 
-Select the RealTimeWorkspace on the left nav, then click *New* > *KQL Database*, and name the database *StockDB*.
+Select the Home icon on the left nav, then click *Eventhouse*, and name the eventhouse *StockDB*. This will create both the eventhouse and the KQL database with the name StockDB. 
 
 ![New KQL Database](../images/module01/createkqldb.png)
 
-When the KQL database is created, we should see the KQL details. An important setting for us to change immediately is enabling *OneLake folders*, which is inactive by default. While this can be changed later, only tables created after the setting is activated will be included in OneLake. Click on the pencil to change the setting and enable OneLake access:
+The Eventhouse main page will be displayed; click on the StockDB database under KQL databases:
+
+![New Eventhouse](../images/module01/eventhousemainpage.png)
+
+When the eventhouse and KQL database is created, we should see the KQL details. An important setting for us to change immediately is enabling *OneLake folders*, which is inactive by default. While this can be changed later, only tables created after the setting is activated will be included in OneLake. Click on the pencil to change the setting and enable OneLake access:
 
 ![Enable OneLake](../images/module01/kqlenableonelake.png)
 
-After enabling OneLake, you may need to refresh the page to verify the OneLake folder integration is active:
+After enabling OneLake, the OneLake folder should show as active. This will now make the data available in OneLake for other processing (notebooks, pipelines, dataflows...); however, we can also add an endpoint to the eventstream as we'll see later on.
 
 ![OneLake Active](../images/module01/kqlonelakeactive.png)
 
@@ -72,7 +76,7 @@ With the above steps completed, we have created a KQL database, and configured t
 
 ## :white_check_mark: Results
 
-- [x] Created the KQL Database
+- [x] Created the Eventhouse/KQL Database
 - [x] Completed the ingestion process from the Eventstream to the KQL database
 
 [Continue >](./module02.md)

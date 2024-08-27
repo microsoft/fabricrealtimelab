@@ -89,7 +89,7 @@ flowchart LR
 
 * [Download the Stock Generator notebook](../resources/module00/StockGeneratorNotebook.ipynb)
 
-2. In your Fabric workspace, switch to the Real-Time Analytics persona (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
+2. In your Fabric workspace, switch to the Real-Time Intelligence workload (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
 
 ![Create Eventstream](../images/module00/setupeventstream.png)
 
@@ -101,7 +101,7 @@ flowchart LR
 
 ![Copy Connection String](../images/module00/copyappconnstring.png)
 
-5. Switch to the Data Science persona. On the home page for the persona, click *Import Notebook* and upload the *StockGeneratorNotebook* you downloaded earlier:
+5. Switch to the Data Science workload. On the home page for the workload, click *Import Notebook* and upload the *StockGeneratorNotebook* you downloaded earlier:
 
 ![Import Notebook](../images/module00/importnotebook.png)
 
@@ -176,7 +176,7 @@ To auto-deploy the resources, use these steps below. (All templates are located 
 
 ![Azure SAS Key](../images/module00/azuresaskey.png)
 
-6. In your Fabric workspace (we recommend having this open in another tab), switch to the Real-Time Analytics persona (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
+6. In your Fabric workspace (we recommend having this open in another tab), switch to the Real-Time Intelligence workload (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
 
 ![Create Eventstream](../images/module00/setupeventstream.png)
 
@@ -215,7 +215,7 @@ flowchart LR
 * The primary key of the SAS key (copy to the clipboard)
 * The consumer group name to use, which is unique to each participant
 
-2. In your Fabric workspace, switch to the Real-Time Analytics persona (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
+2. In your Fabric workspace, switch to the Real-Time Intelligence workload (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
 
 ![Create Eventstream](../images/module00/setupeventstream.png)
 
