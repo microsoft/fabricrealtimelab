@@ -218,7 +218,7 @@
                 "type": "SystemAssigned"
             },
             "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('fullnamespace'), variables('eventHubName'))]"
+                "consumerGroupCopy-team1", "consumerGroupCopy-team2", "consumerGroupCopy-team3", "consumerGroupCopy-team4", "consumerGroupCopy-team5"
             ],
             "properties": {
                 "sku": "Standard",

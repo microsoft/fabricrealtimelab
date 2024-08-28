@@ -16,7 +16,7 @@
 ## :loudspeaker: Introduction
 
 > :bulb: **Did you know?**
-> Data Activator is currently in *public preview*. This module will be updated over time, and some features are subject to change. 
+> Data Activator is currently in *public preview*. This lab module is currently being updated to reflect the latest features. 
 
 Data Activator is an observability tool for automatically monitoring and taking actions when certain conditions (or patterns) are detected in a datastream. Common use cases include monitoring IoT devices, sales data, performance counters, and system health. Actions are typically notifications (such as e-mails or Teams messages) but can also be customized to launch Power Automate workflows, for example.
 

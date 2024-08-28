@@ -89,7 +89,7 @@ flowchart LR
 
 * [Download the Stock Generator notebook](../resources/module00/StockGeneratorNotebook.ipynb)
 
-2. In your Fabric workspace, switch to the Real-Time Analytics persona (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
+2. In your Fabric workspace, switch to the Real-Time Intelligence workload (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
 
 ![Create Eventstream](../images/module00/setupeventstream.png)
 
@@ -101,7 +101,7 @@ flowchart LR
 
 ![Copy Connection String](../images/module00/copyappconnstring.png)
 
-5. Switch to the Data Science persona. On the home page for the persona, click *Import Notebook* and upload the *StockGeneratorNotebook* you downloaded earlier:
+5. Switch to the Data Science workload. On the home page for the workload, click *Import Notebook* and upload the *StockGeneratorNotebook* you downloaded earlier:
 
 ![Import Notebook](../images/module00/importnotebook.png)
 
@@ -161,7 +161,7 @@ To auto-deploy the resources, use these steps below. (All templates are located 
 3. Once the validation has passed, click **Create**.
 
 > :bulb: **Problems deploying?**
-> If you have issues deploying, here are a couple of things to check: you subscription might have limitations on regions or resources, or a region may have capacity constraints. Try a different region, but if the problem persists please ask a proctor for assistance or file an issue with the project. The default template uses a [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) for the deployed app to authenticate with the Event Hub. In the event you are not able to use managed identities, you can configure the app to use SAS (Shared Access Signature) keys. Please use this template for using SAS keys: [Deploy to Azure Using SAS Key](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Ffabricrealtimelab%2Fmain%2Fresources%2Fmodule00%2Ffabricworkshop_arm_sas.json)
+> If you have issues deploying, here are a couple of things to check: you subscription might have limitations on regions or resources, or a region may have capacity constraints. Try a different region, but if the problem persists please ask a proctor for assistance or file an issue with the project. The default template uses a [managed identity](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) for the deployed app to authenticate with the Event Hub. In the event you are not able to use managed identities (you may see an error related to *Microsoft.Authorization/roleAssignments*), you can configure the app to use SAS (Shared Access Signature) keys. Please use this template for using SAS keys: [Deploy to Azure Using SAS Key](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Ffabricrealtimelab%2Fmain%2Fresources%2Fmodule00%2Ffabricworkshop_arm_sas.json)
 
 4. After the deployment has completed, open the resource group and verify the *Event Hub Namespace* and *Azure Container Instance* (ACI) is deployed: 
 
@@ -176,7 +176,7 @@ To auto-deploy the resources, use these steps below. (All templates are located 
 
 ![Azure SAS Key](../images/module00/azuresaskey.png)
 
-6. In your Fabric workspace (we recommend having this open in another tab), switch to the Real-Time Analytics persona (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
+6. In your Fabric workspace (we recommend having this open in another tab), switch to the Real-Time Intelligence workload (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
 
 ![Create Eventstream](../images/module00/setupeventstream.png)
 
@@ -215,7 +215,7 @@ flowchart LR
 * The primary key of the SAS key (copy to the clipboard)
 * The consumer group name to use, which is unique to each participant
 
-2. In your Fabric workspace, switch to the Real-Time Analytics persona (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
+2. In your Fabric workspace, switch to the Real-Time Intelligence workload (bottom left) and create a new *Eventstream*. Name the Eventstream *StockEventStream*.
 
 ![Create Eventstream](../images/module00/setupeventstream.png)
 

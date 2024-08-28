@@ -76,7 +76,7 @@ To manually view and download each notebook, click on the notebook link below fo
 
 ![Download Notebook](../images/module06/downloadnotebook.png)
 
-From the data engineering persona home page, select *Import notebook*, and import each of the above notebooks into your workspace:
+From the data engineering workload home page, select *Import notebook*, and import each of the above notebooks into your workspace:
 
 ![Import Notebook](../images/module06/importnotebook.png)
 

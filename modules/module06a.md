@@ -54,7 +54,7 @@ These layers are not intended to be a hard rule, but rather a guiding principle.
 
 Start by creating a lakehouse. Note: if you are completing this module after the data science module or another module that uses a lakehouse, you may re-use that lakehouse or create a new one, but we'll assume the same lakehouse is shared across all modules.
 
-Within your Fabric workspace, switch to the data engineering persona (bottom left), and from the home page of the persona, create a new lakehouse by clicking the *Lakehouse* button. Name the lakehouse *StocksLakehouse*. 
+Within your Fabric workspace, switch to the data engineering workload (bottom left), and from the home page of the workload, create a new lakehouse by clicking the *Lakehouse* button. Name the lakehouse *StocksLakehouse*. 
 
 ![Create Lakehouse](../images/module06/createlakehouse.png)
 
@@ -108,7 +108,7 @@ To manually view and download each notebook, click on the notebook link below fo
 
 ![Download Notebook](../images/module06/downloadnotebook.png)
 
-From the data engineering persona home page, select *Import notebook*, and import each of the above notebooks into your workspace:
+From the data engineering workload home page, select *Import notebook*, and import each of the above notebooks into your workspace:
 
 ![Import Notebook](../images/module06/importnotebook.png)
 
