@@ -78,7 +78,7 @@ In our ETL (extract, transform, and load) process, we'll extract all data that h
 
 ## 1. Create a Synapse Data Warehouse in the Fabric workspace
 
-To get started, we'll first create the Synapse Data Warehouse in our workspace. There are two ways to do this: from the workspace, switch to the Data Warehouse persona (in the bottom left), and select the *Warehouse* button to create a new Synapse Data Warehouse.
+To get started, we'll first create the Synapse Data Warehouse in our workspace. There are two ways to do this: from the workspace, switch to the Data Warehouse workload (in the bottom left), and select the *Warehouse* button to create a new Synapse Data Warehouse.
 
 ![Create Data Warehouse](../images/module05/createwarehouse-persona.png)
 
@@ -178,7 +178,7 @@ Step 4 focuses on creating and setting up a new data pipeline.
 
 ### 4-1. Create the data pipeline
 
-From the workspace (or from within the Data Factory persona), create a new *Data pipeline* named *PL_Refresh_DWH*. 
+From the workspace (or from within the Data Factory workload), create a new *Data pipeline* named *PL_Refresh_DWH*. 
 
 ![Create Pipeline](../images/module05/createpipeline.png)
 

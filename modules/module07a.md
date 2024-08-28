@@ -90,7 +90,7 @@ Within your Fabric workspace, select *New* > *Lakehouse*, and create a new lakeh
 
 ## 3. Import the notebook
 
-Switch to the Data Science persona using the persona switcher in the bottom left. On the Data Science homepage, click *Import notebook*, and import the notebooks listed above. Once imported, a notification should appear allowing you to switch directly to the workspace listing all of the assets.
+Switch to the Data Science workload using the workload switcher in the bottom left. On the Data Science homepage, click *Import notebook*, and import the notebooks listed above. Once imported, a notification should appear allowing you to switch directly to the workspace listing all of the assets.
 
 ![New Lakehouse](../images/module07/importnotebook.png)
 
